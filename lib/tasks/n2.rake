@@ -206,8 +206,8 @@ namespace :n2 do
 
     desc "Backup an existing N2 application, rebuild the app settings and merge back in the data"
     task :backup_and_rebuild => :environment do
-      dump_file = "#{RAILS_ROOT}/db/backup_#{Time.now.utc.strftime("%Y%m%d%H%M%S")}.sql"
-      full_dump_file = "#{RAILS_ROOT}/db/full_backup_#{Time.now.utc.strftime("%Y%m%d%H%M%S")}.sql"
+      dump_file = "#{Rails.root}/db/backup_#{Time.now.utc.strftime("%Y%m%d%H%M%S")}.sql"
+      full_dump_file = "#{Rails.root}/db/full_backup_#{Time.now.utc.strftime("%Y%m%d%H%M%S")}.sql"
       config = ActiveRecord::Base.configurations[RAILS_ENV]
       raise "Invalid adapter, this only works with mysql." unless config["adapter"] == 'mysql'
 

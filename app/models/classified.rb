@@ -4,7 +4,7 @@ class Classified < ActiveRecord::Base
   acts_as_authorization_object
 
   acts_as_taggable_on :tags, :location
-  acts_as_voteable 
+  acts_as_voteable
   acts_as_media_item
 
   acts_as_categorizable
@@ -13,21 +13,21 @@ class Classified < ActiveRecord::Base
   acts_as_relatable
   acts_as_wall_postable
   acts_as_tweetable
-  
-  named_scope :top, lambda { |*args| { :order => ["created_at desc"], :limit => (args.first || 10)} }
-  named_scope :newest, lambda { |*args| { :order => ["created_at desc"], :limit => (args.first || 10)} }
-  named_scope :auto_expired, lambda { |*args| { :conditions => ["expires_at < ? AND aasm_state IN (?)", Time.zone.now, [:unpublished, :available, :hidden].map(&:to_s)] } }
-  named_scope :no_auto_expire, lambda { |*args| { :conditions => ["expires_at < ? AND aasm_state NOT IN (?)", Time.zone.now, [:unpublished, :available, :hidden].map(&:to_s)] } }
-  named_scope :with_state, lambda { |*args| { :conditions => ["aasm_state = ?", args.first] } }
-  named_scope :for_sale, { :conditions => ["listing_type = ?", "sale"] }
-  named_scope :for_free, { :conditions => ["listing_type = ?", "free"] }
-  named_scope :for_loan, { :conditions => ["listing_type = ?", "loan"] }
-  named_scope :allow_all, { :conditions => ["allow = ?", "all"] }
-  named_scope :allow_friends, { :conditions => ["allow = ?", "friends"] }
-  named_scope :allow_friends_of_friends, { :conditions => ["allow = ?", "friends_of_friends"] }
-  named_scope :available, { :conditions => ["aasm_state = ?", "available"] }
-  named_scope :search_on, lambda { |keyword| { :conditions => ["title LIKE ? OR details LIKE ?", "%#{keyword}%", "%#{keyword}%"] } }
-  named_scope :in_category, lambda { |category_id|
+
+  scope :top, lambda { |*args| { :order => ["created_at desc"], :limit => (args.first || 10)} }
+  scope :newest, lambda { |*args| { :order => ["created_at desc"], :limit => (args.first || 10)} }
+  scope :auto_expired, lambda { |*args| { :conditions => ["expires_at < ? AND aasm_state IN (?)", Time.zone.now, [:unpublished, :available, :hidden].map(&:to_s)] } }
+  scope :no_auto_expire, lambda { |*args| { :conditions => ["expires_at < ? AND aasm_state NOT IN (?)", Time.zone.now, [:unpublished, :available, :hidden].map(&:to_s)] } }
+  scope :with_state, lambda { |*args| { :conditions => ["aasm_state = ?", args.first] } }
+  scope :for_sale, { :conditions => ["listing_type = ?", "sale"] }
+  scope :for_free, { :conditions => ["listing_type = ?", "free"] }
+  scope :for_loan, { :conditions => ["listing_type = ?", "loan"] }
+  scope :allow_all, { :conditions => ["allow = ?", "all"] }
+  scope :allow_friends, { :conditions => ["allow = ?", "friends"] }
+  scope :allow_friends_of_friends, { :conditions => ["allow = ?", "friends_of_friends"] }
+  scope :available, { :conditions => ["aasm_state = ?", "available"] }
+  scope :search_on, lambda { |keyword| { :conditions => ["title LIKE ? OR details LIKE ?", "%#{keyword}%", "%#{keyword}%"] } }
+  scope :in_category, lambda { |category_id|
     return {} if category_id.nil?
     { :conditions => ["id IN (SELECT categorizable_id FROM categorizations WHERE categorizable_type = ? AND category_id = ?)", self.name, category_id] }
   }
@@ -104,12 +104,12 @@ class Classified < ActiveRecord::Base
   def loanable?; listing_type == "loan" end
   def wanted?; listing_type == "wanted" end
   def free?; listing_type == "free" end
-  
+
   def unhide!
     # notify waiting list users
     renewed!
   end
-  
+
   def has_expired?
     Time.now > expires_at
   end
@@ -140,7 +140,7 @@ class Classified < ActiveRecord::Base
     return false unless type
     self.listing_types.include? type.to_sym
   end
-  
+
   def self.allow_types
     [:all, :friends, :friends_of_friends]
   end
@@ -153,7 +153,7 @@ class Classified < ActiveRecord::Base
     return false unless type
     self.allow_types.include? type.to_sym
   end
-  
+
   def is_owner? user
     user == self.user
   end
@@ -234,7 +234,7 @@ class Classified < ActiveRecord::Base
     users = self.voices
     users << self.commentable.user
     # get list of people who liked commentable item
-    users.concat self.commentable.votes.map(&:voter) 
+    users.concat self.commentable.votes.map(&:voter)
     users.delete self.user
     users.uniq
   end
@@ -330,7 +330,7 @@ class Classified < ActiveRecord::Base
     end
 
   private
-    
+
     def self.default_tags(options = {})
       conditions = {
         :context       => (options[:on] || "tags").to_s,

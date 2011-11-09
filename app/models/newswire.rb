@@ -6,8 +6,8 @@ class Newswire < ActiveRecord::Base
   belongs_to :user
   has_one :content
 
-  named_scope :unpublished, { :conditions => ["published = ?", false] }
-  named_scope :newest, lambda { |*args| {  :conditions => ["created_at <= ?", Time.zone.now ], :order => ["created_at desc"], :limit => (args.first || 7)} }
+  scope :unpublished, { :conditions => ["published = ?", false] }
+  scope :newest, lambda { |*args| {  :conditions => ["created_at <= ?", Time.zone.now ], :order => ["created_at desc"], :limit => (args.first || 7)} }
 
   def quick_post user_id = nil, override_image = false
     user_id ||= self.feed.user_id
@@ -59,7 +59,7 @@ class Newswire < ActiveRecord::Base
           if @content.user.is_moderator?
             @content.tweet
           end
-        end      	
+        end
       	return true
       else
       	errors.add(:content, @content.errors.full_messages.join('. '))

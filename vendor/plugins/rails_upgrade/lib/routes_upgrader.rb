@@ -93,55 +93,37 @@ module Rails
         end
       end
       
-      def resources(*args)
-        if block_given?
-          parent = FakeResourceRoute.new(args.shift)
-          debug "mapping resources #{parent.name} with block"
-          
-          parent = stack(parent) do
-            yield(self)
-          end
-          
-          current_parent << parent
-        else
-          if args.last.is_a?(Hash)
-            current_parent << FakeResourceRoute.new(args.shift, args.pop)
-            debug "mapping resources #{current_parent.last.name} w/o block with args"
-          else
-            args.each do |a|              
-              current_parent << FakeResourceRoute.new(a)
-              debug "mapping resources #{current_parent.last.name}"
+      def resources(*args, &block)
+        _res(FakeResourceRoute, args, &block)
+      end
+
+      def resource(*args, &block)
+        _res(FakeSingletonResourceRoute, args, &block)
+      end
+
+      def _res(klass, args)
+        if args.last.is_a?(Hash)
+          options = args.pop
+          debug "options  #{options.inspect}"
+        end
+
+        args.each do |a|
+          current_parent << klass.new(a, options || {})
+          debug "mapping resources #{current_parent.last.name}"
+
+          if block_given?
+            parent = current_parent.last
+
+            parent = stack(parent) do
+              yield(self)
             end
           end
         end
       end
-      
-      def resource(*args)
-        if block_given?
-          parent = FakeSingletonResourceRoute.new(args.shift)
-          debug "mapping resource #{parent.name} with block"
-          
-          parent = stack(parent) do
-            yield(self)
-          end
-          
-          current_parent << parent
-        else
-          if args.last.is_a?(Hash)
-            current_parent << FakeSingletonResourceRoute.new(args.shift, args.pop)
-            debug "mapping resources #{current_parent.last.name} w/o block with args"
-          else
-            args.each do |a|
-              current_parent << FakeSingletonResourceRoute.new(a)
-              debug "mapping resources #{current_parent.last.name}"
-            end
-          end
-        end
-      end
-      
-      def namespace(name)
+
+      def namespace(name, options = {})
         debug "mapping namespace #{name}"
-        namespace = FakeNamespace.new(name)
+        namespace = FakeNamespace.new(name, options)
         
         namespace = stack(namespace) do
           yield(self)
@@ -192,7 +174,7 @@ module Rails
       
       def value_to_string(value)
         case value
-        when Regexp then value.inspect
+        when Regexp, Symbol, Array then value.inspect
         when String then "'" + value.to_s + "'"
         else value.to_s
         end
@@ -200,16 +182,22 @@ module Rails
     end
     
     class FakeNamespace < RouteObject
-      attr_accessor :routes, :name
+      attr_accessor :routes, :name, :options
       
-      def initialize(name)
+      def initialize(name, options = {})
         @routes = []
-        @name = name
+        @name, @options = name, options
         @indent = RouteRedrawer.indent
       end
       
       def to_route_code
-        lines = ["namespace :#{@name} do", @routes.map {|r| r.to_route_code}, "end"]
+        if !@options.empty?
+          options = ', ' + opts_to_string(@options)
+        else
+          options = ''
+        end
+
+        lines = ["namespace :#{@name}#{options} do", @routes.map {|r| r.to_route_code}, "end"]
         
         indent_lines(lines)
       end
@@ -250,10 +238,6 @@ module Rails
           
           if @options[:conditions]
             @options[:via] = @options.delete(:conditions).delete(:method)
-          end
-
-          if @options[:method]
-            @options[:via] = @options.delete(:method).to_s
           end
 
           @options ||= {}

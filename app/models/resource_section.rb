@@ -3,8 +3,8 @@ class ResourceSection < ActiveRecord::Base
    acts_as_moderatable
    acts_as_taggable_on :tags
 
-  named_scope :newest, lambda { |*args| { :order => ["created_at desc"], :limit => (args.first || 10)} }
-  named_scope :alpha, lambda { |*args| { :order => ["name asc"], :limit => (args.first || 10)} }
+  scope :newest, lambda { |*args| { :order => ["created_at desc"], :limit => (args.first || 10)} }
+  scope :alpha, lambda { |*args| { :order => ["name asc"], :limit => (args.first || 10)} }
 
   has_many :resources
 

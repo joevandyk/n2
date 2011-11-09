@@ -1,6 +1,6 @@
 class Metadata::CustomWidget < Metadata
 
-  named_scope :key_sub_type_name, lambda { |*args| { :conditions => ["key_sub_type = ? AND key_name = ?", args.first, args.second] } }
+  scope :key_sub_type_name, lambda { |*args| { :conditions => ["key_sub_type = ? AND key_name = ?", args.first, args.second] } }
 
   validates_format_of :title, :with => /^[A-Za-z _]+$/, :message => "Title must be present and may only contain letters and spaces"
   # HACK:: emulate validate_presence_of

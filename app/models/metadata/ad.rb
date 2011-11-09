@@ -1,6 +1,6 @@
 class Metadata::Ad < Metadata
 
-  named_scope :key_sub_type_name, lambda { |*args| { :conditions => ["key_sub_type = ? AND key_name = ?", args.first, args.second] } }
+  scope :key_sub_type_name, lambda { |*args| { :conditions => ["key_sub_type = ? AND key_name = ?", args.first, args.second] } }
 
   validates_format_of :width, :with => /^[0-9]+(px)?$/, :message => "Width must be a number optionally ending in px"
   validates_format_of :height, :with => /^[0-9]+(px)?$/, :message => "Height must be a number optionally ending in px"

@@ -8,7 +8,7 @@ class GalleryItem < ActiveRecord::Base
 
   default_scope :order => "position desc, created_at asc"
 
-  named_scope :positioned, :order => "position desc, created_at asc"
+  scope :positioned, :order => "position desc, created_at asc"
   #validates_presence_of :user, :gallery, :title
   #validates_presence_of :item_url
   before_validation :gallery_user

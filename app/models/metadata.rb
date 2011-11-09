@@ -3,10 +3,10 @@ class Metadata < ActiveRecord::Base
 
   belongs_to :metadatable, :polymorphic => true
 
-  named_scope :key, lambda { |*args| { :conditions => ["key_name = ?", args.first] } }
-  named_scope :key_type_name, lambda { |*args| { :conditions => ["key_type = ? AND key_name = ?", args.first, args.second] } }
-  named_scope :key_type_sub_name, lambda { |*args| { :conditions => ["key_type = ? AND key_sub_type = ? AND key_name = ?", args.first, args.second, args.third] } }
-  named_scope :meta_type, lambda { |*args| { :conditions => ["meta_type = ?", args.first] } }
+  scope :key, lambda { |*args| { :conditions => ["key_name = ?", args.first] } }
+  scope :key_type_name, lambda { |*args| { :conditions => ["key_type = ? AND key_name = ?", args.first, args.second] } }
+  scope :key_type_sub_name, lambda { |*args| { :conditions => ["key_type = ? AND key_sub_type = ? AND key_name = ?", args.first, args.second, args.third] } }
+  scope :meta_type, lambda { |*args| { :conditions => ["meta_type = ?", args.first] } }
 
   before_save :set_meta_keys
 
@@ -73,5 +73,5 @@ class Metadata < ActiveRecord::Base
   # overwrite in sub metadata models as needed
   def set_meta_keys
   end
-  
+
 end
