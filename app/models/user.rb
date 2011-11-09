@@ -2,7 +2,7 @@ require 'digest/sha1'
 
 class User < ActiveRecord::Base
 
-  acts_as_authorization_subject
+  acts_as_authorization_subject :join_table_name => 'user_roles'
   has_and_belongs_to_many :roles
 
   acts_as_voter
@@ -90,7 +90,7 @@ class User < ActiveRecord::Base
   # friendly_id uses attr_protected!!!
   # and you can't use both attr_accessible and attr_protected
   # so... this line MUST be located beneath attr_accessible or your get runtime errors
-  has_friendly_id :name, :use_slug => true, :reserved => RESERVED_NAMES
+  has_friendly_id :name, :use_slug => true
 
 
   # FB Graph API settings

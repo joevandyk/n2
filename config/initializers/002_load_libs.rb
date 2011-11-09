@@ -59,7 +59,6 @@ Vote.send(:acts_as_scorable)
 Vote.send(:acts_as_moderatable)
 
 # Load plugin model extensions
-require "#{Rails.root}/lib/locale_extensions.rb"
 require "#{Rails.root}/lib/pfeed_extensions.rb"
 
 require "#{Rails.root}/lib/zvent_gem_addon.rb"

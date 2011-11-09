@@ -8,7 +8,7 @@ class ResourceSection < ActiveRecord::Base
 
   has_many :resources
 
-  has_friendly_id :name, :use_slug => true, :reserved => RESERVED_NAMES
+  has_friendly_id :name, :use_slug => true
   validates_presence_of :name, :section, :description
 
   def to_s
