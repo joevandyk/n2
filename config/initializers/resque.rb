@@ -1,6 +1,7 @@
 require 'yaml'
 require 'resque'
 
+=begin
 Rails.root = ENV['Rails.root'] || File.expand_path(File.dirname(__FILE__) + '/../..')
 rails_env = ENV['RAILS_ENV'] || 'development'
 
@@ -35,3 +36,4 @@ begin
   PFEED_RESQUE_KLASS = NotificationWorker
 rescue NameError
 end
+=end

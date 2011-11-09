@@ -1,7 +1,4 @@
-require 'action_controller'
 require 'net/http'
-
-include ActionController::UrlWriter
 
 module Newscloud
 

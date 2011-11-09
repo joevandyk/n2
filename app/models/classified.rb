@@ -337,14 +337,14 @@ class Classified < ActiveRecord::Base
         :taggable_type => self.name,
         :taggable_id   => nil
       }
-      Tagging.find(:all, :include => :tag, :conditions => conditions).map(&:tag).uniq
+      ActsAsTaggableOn::Tagging.find(:all, :include => :tag, :conditions => conditions).map(&:tag).uniq
     end
 
     def self.build_default_tag_on(tag_name, context = "tags")
       return true if self.default_tags(:on => context).map(&:name).include? tag_name.to_s
       tag = Tag.find_or_create_by_name(tag_name.to_s)
       if tag
-      	Tagging.create!({
+      	ActsAsTaggableOn::Tagging.create!({
           :context       => context,
           :taggable_type => self.name,
           :taggable_id   => nil,
