@@ -14,11 +14,11 @@ module Newscloud
           # HACK:: move this out to its own location
           has_many :item_actions, :as => :actionable
 
-          named_scope :active, { :conditions => ["#{self.name.tableize}.is_blocked = 0"] }
-          named_scope :inactive, { :conditions => ["#{self.name.tableize}.is_blocked = 1"] }
-          named_scope :user_items, { :conditions => 
+          scope :active, { :conditions => ["#{self.name.tableize}.is_blocked = 0"] }
+          scope :inactive, { :conditions => ["#{self.name.tableize}.is_blocked = 1"] }
+          scope :user_items, { :conditions =>
               "#{self.name.tableize}.user_id not in (select id from users where is_editor = true or is_moderator = true or is_admin = true)" }
-          named_scope :curator_items, { :conditions => 
+          scope :curator_items, { :conditions =>
               "#{self.name.tableize}.user_id in (select id from users where is_editor = true or is_moderator = true or is_admin = true)" }
 
           include Newscloud::Acts::Moderatable::InstanceMethods

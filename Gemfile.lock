@@ -312,7 +312,6 @@ DEPENDENCIES
   cucumber-rails
   curb!
   database_cleaner!
-  erubis
   factory_girl
   faker
   formtastic
@@ -325,7 +324,7 @@ DEPENDENCIES
   mysql
   newrelic_rpm
   nokogiri
-  oauth
+  oauth2
   omniauth
   paperclip
   pickle

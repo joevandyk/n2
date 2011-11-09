@@ -11,7 +11,7 @@ gem 'mogli'
 gem "formtastic"
 gem "friendly_id"
 gem 'will_paginate'
-gem "oauth"
+gem "oauth2"
 gem "twitter"
 gem "mysql"
 gem "bitly"
@@ -28,13 +28,9 @@ gem "paperclip"
 gem 'amazon-ecs', :git => 'git://github.com/stipple/amazon-ecs.git'
 
 gem "hoptoad_notifier"
-gem "newrelic_rpm"
 gem "acts-as-taggable-on"
 
 gem 'redis-store'
-
-# Rails_xss plugin requirements
-gem 'erubis'
 
 # Feedzirra related
 gem 'nokogiri'
@@ -71,4 +67,5 @@ end
 
 group :production do
   gem "unicorn"
+  gem "newrelic_rpm"
 end

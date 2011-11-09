@@ -1,6 +1,6 @@
 class Translation
 
-  named_scope :with_type, lambda { |type|
+  scope :with_type, lambda { |type|
     return {} if type.nil?
     { :conditions => ["raw_key LIKE ?", "#{type}%"] }
   }
@@ -13,7 +13,7 @@ I18nUtil.class_eval do
   def self.update_from_yml(file_name)
     puts "Loading #{file_name}"
     data = YAML::load(IO.read(file_name))
-    data.each do |code, translations| 
+    data.each do |code, translations|
       locale = Locale.find_or_create_by_code(code)
       backend = I18n::Backend::Simple.new
       keys = self.extract_i18n_keys(translations)
