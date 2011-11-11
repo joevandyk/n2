@@ -2,6 +2,7 @@ require 'yaml'
 require 'resque'
 
 =begin
+# TODO RAILS3
 Rails.root = ENV['Rails.root'] || File.expand_path(File.dirname(__FILE__) + '/../..')
 rails_env = ENV['RAILS_ENV'] || 'development'
 

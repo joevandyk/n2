@@ -3,7 +3,7 @@
 
 app_settings_file = "#{Rails.root}/config/application_settings.yml"
 
-APP_CONFIG = YAML.load_file(app_settings_file)[RAILS_ENV]
+APP_CONFIG = YAML.load_file(app_settings_file)[Rails.env]
 APP_CONFIG['use_view_objects'] = true unless APP_CONFIG.keys.include? "use_view_objects"
 ActionMailer::Base.default_url_options[:host] = 'http://test.com' # APP_CONFIG['base_site_url'].sub(/^https?:\/\//,'')
 

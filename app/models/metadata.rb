@@ -1,5 +1,6 @@
 class Metadata < ActiveRecord::Base
-  serialize :data
+  set_table_name :metadatas
+  serialize :data, Hash
 
   belongs_to :metadatable, :polymorphic => true
 
@@ -33,7 +34,7 @@ class Metadata < ActiveRecord::Base
       super
     rescue ActiveRecord::UnknownAttributeError
       init_data
-      attrs.each {|k,v| data[k.to_sym] = v }
+      attrs.each {|k,v| data[key_from_assign(k)] = v }
     end
   end
 
@@ -48,9 +49,9 @@ class Metadata < ActiveRecord::Base
 #  end
 
   def method_missing(name, *args)
-    return self.send(name, *args) if self.respond_to? name
+    return self.send(name, *args) if self.respond_to?(name)
     init_data
-    name = key_from_assign name
+    name = key_from_assign(name)
     if data[name].present?
       data[name] = args.first if args.present?
       return data[name]
@@ -63,7 +64,7 @@ class Metadata < ActiveRecord::Base
 
   def key_from_assign key
     key = $1 if key.to_s =~ /^(.*)=$/
-    key.to_sym
+    key.to_s
   end
 
   def init_data

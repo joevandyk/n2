@@ -5,6 +5,7 @@
 #    return true
 # View:
 #   - view_object.set('foo') { Content.top }
+require 'app/models/view_object'
 class ViewObject
   include Enumerable
   extend Forwardable

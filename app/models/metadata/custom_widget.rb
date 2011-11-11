@@ -5,7 +5,8 @@ class Metadata::CustomWidget < Metadata
   validates_format_of :title, :with => /^[A-Za-z _]+$/, :message => "Title must be present and may only contain letters and spaces"
   # HACK:: emulate validate_presence_of
   # these are dynamicly created attributes to they don't exist for the model
-  validates_format_of :custom_data, :with => /^.+$/, :message => "Custom Data can't be blank"
+  #validates_format_of :custom_data, :with => /^.+$/, :message => "Custom Data can't be blank"
+  validates :custom_data, :presence => true
 
   validate :on_content_type
 
@@ -56,8 +57,8 @@ class Metadata::CustomWidget < Metadata
     end
   end
 
-  def custom_data() self.data[:custom_data] end
-  def custom_data=(val) self.data[:custom_data] = val end
+  #def custom_data() self.data[:custom_data] end
+  #def custom_data=(val) self.data[:custom_data] = val end
 
   private
 
