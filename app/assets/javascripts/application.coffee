@@ -1,3 +1,5 @@
+$ = jQuery
+
 rebuild_facebook_dom = ->
   try
     FB.XFBML.Host.parseDomTree()
@@ -33,7 +35,7 @@ $$$ = (key) ->
   $.cache[key] = $.cache[key] or {}
   $.cache[key]
 
-(($) ->
+$.ready ->
   modal_dialog_response = (title, message) ->
     $("#login-overlay .contentWrap").html message
     $("#login-overlay").overlay
@@ -296,8 +298,8 @@ $$$ = (key) ->
       submitBtn.show()
       $(":input", form).not(":button, :submit, :reset, :hidden").val ""
     ), "html"
-) jQuery
-(($) ->
+
+$.ready -> 
   set_carousel = (carousel) ->
     my_carousel = carousel
   my_carousel = null
@@ -438,8 +440,8 @@ $$$ = (key) ->
 
   $("#resource_url").trigger "blur"  unless $("form.post_resource #resource_url").val() is ""
   $(".ellipsis_text").ellipsis()
-) jQuery
-(($) ->
+
+$.ready ->
   $("#thumbnails").scrollable(
     size: 3
     clickable: false
@@ -455,7 +457,7 @@ $$$ = (key) ->
         wrap.html "<img src=\"" + @getTrigger().attr("src").replace(/thumb/, "medium") + "\"/>"
 
   $("#images").scrollable()
-) jQuery
+
 window.fbAsyncInit = ->
   FB.init
     appId: fbAppId
@@ -472,4 +474,5 @@ window.fbAsyncInit = ->
   js.src = "//connect.facebook.net/en_US/all.js#xfbml=1"
   fjs.parentNode.insertBefore js, fjs
 ) document, "script", "facebook-jssdk"
+
 addthis.addEventListener "addthis.menu.share", shareEventHandler
