@@ -15,14 +15,14 @@ $(document).ajaxSend (e, xhr, options) ->
   xhr.setRequestHeader "X-CSRF-Token", token
 
 fbAppId = window.Newscloud.config.fbAppId
-(($) ->
+
+$.ready ->
   $.fn.serializeJSON = ->
     json = {}
-    jQuery.map $(this).serializeArray(), (e, i) ->
+    $.map $(this).serializeArray(), (e, i) ->
       json[e.name] = e.value
 
     json
-) jQuery
 
 $$ = (param) ->
   node = $(param)[0]
@@ -321,7 +321,8 @@ $.ready ->
             $("#scrollbox").show()
             $(".scrollable").scrollable()
             api = $(".scrollable").data("scrollable")
-            jQuery.each data.images, (i, url) ->
+
+            $.each data.images, (i, url) ->
               api.addItem "<img src=\"" + url + "\" width=\"75\" height=\"75\" />"
 
             $(".items img").click ->
@@ -365,7 +366,7 @@ $.ready ->
             $("#scrollbox").show()
             $(".scrollable").scrollable()
             api = $(".scrollable").data("scrollable")
-            jQuery.each data.images, (i, url) ->
+            $.each data.images, (i, url) ->
               api.addItem "<img src=\"" + url + "\" width=\"75\" height=\"75\" />"
 
             $(".items img").click ->
@@ -410,7 +411,7 @@ $.ready ->
             $("#scrollbox").show()
             $(".scrollable").scrollable()
             api = $(".scrollable").data("scrollable")
-            jQuery.each data.images, (i, url) ->
+            $.each data.images, (i, url) ->
               api.addItem "<img src=\"" + url + "\" width=\"75\" height=\"75\" />"
 
             $(".items img").click ->
