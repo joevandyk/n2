@@ -1,6 +1,6 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
-  include TagsHelper
+  include ActsAsTaggableOn::TagsHelper
 
   def timeago(date, options = {})
     options[:class] ||= "timeago"
@@ -82,7 +82,7 @@ module ApplicationHelper
   end
 
   #remove this method when self.title methods created
-  def linked_item_details(item, length = 150, url = false)    
+  def linked_item_details(item, length = 150, url = false)
     return "" if item.details.nil? || item.details.empty?
     caption = caption(item.details.sanitize_standard, length)
     "#{caption} #{link_to 'More', (url ? url : item)}".html_safe
@@ -101,7 +101,7 @@ module ApplicationHelper
 
   # Adopted from http://daniel.collectiveidea.com/blog/2007/7/10/a-prettier-truncate-helper
   def caption(text, length = 150, truncate_string = "...")
-    return "" if text.nil?    
+    return "" if text.nil?
     l = length - truncate_string.length
     text.length > length ? text[/^.{0,#{l}}\w*\;?/m][/.*[\w\;]/m] + truncate_string : text
   end
@@ -159,7 +159,7 @@ module ApplicationHelper
     	link_options[:canvas] = options[:canvas]
     	options.delete(:canvas)
     end
-    destination = user_path(user, link_options) if destination.class.name == 'User' 
+    destination = user_path(user, link_options) if destination.class.name == 'User'
     if user.facebook_user?
       options.merge!(:linked => false)
       options[:size] = 'square' unless options[:size].present?
@@ -221,10 +221,10 @@ module ApplicationHelper
     elsif user.twitter_user? and user.system_user?
       image_tag 'https://si0.twimg.com/images/dev/cms/intents/bird/bird_blue/bird_16_blue.png', :class => "moderator"
     elsif user.is_host?
-      image_tag 'default/icon-host-badge.png', :class => "moderator"    
+      image_tag 'default/icon-host-badge.png', :class => "moderator"
     end
   end
-  
+
   def local_linked_profile_name(user, options={})
     link_options = {}
     if options[:format].present?
@@ -242,10 +242,10 @@ module ApplicationHelper
     if options[:target].present?
     	target = options.delete(:target)
     end
-    if user.facebook_user?      
+    if user.facebook_user?
       options.merge!(:linked => false)
       unless options[:useyou] == true
-        options.merge!(:capitalize => false)        
+        options.merge!(:capitalize => false)
       end
       firstnameonly = get_setting('firstnameonly').try(:value) || false
       options.merge!(:firstnameonly => firstnameonly) if firstnameonly
@@ -266,7 +266,7 @@ module ApplicationHelper
   def facebook_profile_url user
     "http://www.facebook.com/profile.php?id=#{user.fb_user_id}"
   end
-  
+
   def external_linked_profile_name user, opts = {}
     if user.twitter_user?
       link_to user.twitter_name, twitter_url(user)
@@ -276,7 +276,7 @@ module ApplicationHelper
       link_to user.public_name, user
     end
   end
-  
+
   def external_profile_link user, opts = {}
     if user.twitter_user?
       twitter_url(user)
@@ -286,7 +286,7 @@ module ApplicationHelper
       user
     end
   end
-  
+
   def nl2br(string)
     string.gsub(/<.?br.*?>/i,"<br />").gsub("\n\r","<br />").gsub("\r", "").gsub("\n", "<br />")
   end
@@ -295,7 +295,7 @@ module ApplicationHelper
     firstnameonly = get_setting('firstnameonly').try(:value) || false
     external_linked_profile_name(user)
   end
-  
+
   def path_to_self(item, use_canvas = false)
     canvas = (use_canvas and iframe_facebook_request?) ? true : false
     url_for(send("#{item.class.to_s.underscore}_url", item, :canvas => canvas, :only_path => false))
@@ -353,7 +353,7 @@ module ApplicationHelper
     end
 
   end
-      
+
   def base_url(path = '')
     path = "/#{path}" if path.present? and not path =~ %r{^/} and not base_site_url =~ %r{/$}
     if base_site_url.present?
@@ -375,7 +375,7 @@ module ApplicationHelper
       messages << content_tag(:div, content_tag(:p, flash[type]), :class => "flash flash_#{type}") if flash[type].present?
       flash[type] = nil
     end
-    
+
     (messages.size > 0) ? messages.join.html_safe : ''
   end
 
@@ -466,15 +466,15 @@ EMBED
     <<EMBED
 <div class="player"><p id="audioplayer_1">#{audio.artist}</p></div>
 <h3>#{audio.default_title}</h3>
-<script type="text/javascript">  
+<script type="text/javascript">
 $(function() {
-  AudioPlayer.embed("audioplayer_1", {  
-        soundFile: "#{audio.url}",  
-        titles: "#{audio.title}",  
-        artists: "#{audio.artist}"  
-  });  
+  AudioPlayer.embed("audioplayer_1", {
+        soundFile: "#{audio.url}",
+        titles: "#{audio.title}",
+        artists: "#{audio.artist}"
+  });
 });
-</script>  
+</script>
 EMBED
   end
 
@@ -562,21 +562,21 @@ EMBED
   def breadcrumbs item, initial_set = []
     [initial_set].push(item.crumb_items.flatten.inject([]) {|set,crumb| set << (set.empty? ? crumb.crumb_text : link_to(crumb.crumb_text, crumb.crumb_link)) }.reverse).flatten
   end
-  
-  
+
+
   def add_image(form_builder)
     link_to_function "Add Another Image", :id => "add_image" do |page|
         form_builder.fields_for :images, Image.new, :child_index => 'NEW_RECORD' do |image_form|
           html = render(:partial => 'shared/forms/image', :locals => {:f => image_form })
-          page << "$('#{escape_javascript(html)}'.replace(/NEW_RECORD/g, new Date().getTime())).insertBefore('#add_image');" 
+          page << "$('#{escape_javascript(html)}'.replace(/NEW_RECORD/g, new Date().getTime())).insertBefore('#add_image');"
         end
       end
   end
-  
+
   def delete_image(form_builder)
     if form_builder.object.new_record?
       link_to_function("Remove", "$(this).parents('.image-fieldset').remove()", :class=>"delete_image")
-    else 
+    else
       form_builder.hidden_field(:_delete) +
       link_to_function("Remove", "$(this).parents('.image-fieldset').hide(); $(this).prev().value = '1'", :class=>"delete_image")
     end
@@ -586,7 +586,7 @@ EMBED
     link_to_function title, :id => "add_image" do |page|
         form_builder.fields_for :images, Image.new, :child_index => 'NEW_RECORD' do |image_form|
           html = render(:partial => 'shared/forms/image_simple', :locals => {:f => image_form })
-          page << "$('#{escape_javascript(html)}'.replace(/NEW_RECORD/g, new Date().getTime())).insertBefore($('#add_image').parent());" 
+          page << "$('#{escape_javascript(html)}'.replace(/NEW_RECORD/g, new Date().getTime())).insertBefore($('#add_image').parent());"
         end
       end
   end
@@ -596,7 +596,7 @@ EMBED
     link_to_function I18n.translate('galleries.add_additional_items'), :id => "add_gallery_item" do |page|
         form_builder.fields_for :gallery_items, GalleryItem.new, :child_index => 'NEW_RECORD' do |gallery_item_form|
           html = render(:partial => 'shared/forms/gallery_item_simple', :locals => {:gallery_form => gallery_item_form, :full_form => full_form, :enable_file_uploads => @enable_file_uploads })
-          page << "$('#{escape_javascript(html)}'.replace(/NEW_RECORD/g, new Date().getTime())).insertBefore($('#add_gallery_item'));" 
+          page << "$('#{escape_javascript(html)}'.replace(/NEW_RECORD/g, new Date().getTime())).insertBefore($('#add_gallery_item'));"
         end
       end
   end
@@ -604,12 +604,12 @@ EMBED
   def delete_image_simple(form_builder)
     if form_builder.object.new_record?
       link_to_function("-", "$(this).parents('fieldset.inputs').remove()", :class=>"delete_image")
-    else 
+    else
       form_builder.hidden_field(:_delete) +
       link_to_function("-", "$(this).parents('fieldset.inputs').hide(); $(this).prev().value = '1'", :class=>"delete_image")
     end
   end
-  
+
   def render_ad(ad_size, in_layout, ad_slot)
     platform = get_setting('platform').try(:value) || 'default'
     unless in_layout.nil? || platform == 'default'
@@ -629,5 +629,5 @@ EMBED
   def render_ad_partial(ad_slot)
     render :partial => 'shared/ads_banner' ,:locals => { :slot_data => ad_slot }
   end
-  
+
 end

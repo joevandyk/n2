@@ -1,0 +1,103 @@
+/* for web grid */
+/* line 3, ../../../app/stylesheets/scrollable.sass */
+.feature_scrollable_panel_5 .half-panel, .feature_scrollable_panel_5 .third-panel, .feature_scrollable_panel_5 .third-panel-small, .feature_scrollable_panel_5 .quarter-panel, .feature_scrollable_panel_4 .half-panel, .feature_scrollable_panel_4 .third-panel, .feature_scrollable_panel_4 .third-panel-small, .feature_scrollable_panel_4 .quarter-panel, .feature_scrollable_panel_3 .half-panel, .feature_scrollable_panel_3 .third-panel, .feature_scrollable_panel_3 .third-panel-small, .feature_scrollable_panel_3 .quarter-panel, .feature_scrollable_panel_sidebar .half-panel, .feature_scrollable_panel_sidebar .third-panel, .feature_scrollable_panel_sidebar .third-panel-small, .feature_scrollable_panel_sidebar .quarter-panel, .feature_scrollable_panel_mini .half-panel, .feature_scrollable_panel_mini .third-panel, .feature_scrollable_panel_mini .third-panel-small, .feature_scrollable_panel_mini .quarter-panel, .newswire_scrollable_panel .half-panel, .newswire_scrollable_panel .third-panel, .newswire_scrollable_panel .third-panel-small, .newswire_scrollable_panel .quarter-panel, .feature_vertical_scrollable_items .half-panel, .feature_vertical_scrollable_items .third-panel, .feature_vertical_scrollable_items .third-panel-small, .feature_vertical_scrollable_items .quarter-panel {
+  margin-bottom: 60px;
+}
+
+/* line 6, ../../../app/stylesheets/scrollable.sass */
+.feature_scrollable_panel_5 {
+  /* required settings */
+  position: relative;
+  overflow: hidden;
+  width: 620px;
+  height: 209px;
+}
+
+/* line 13, ../../../app/stylesheets/scrollable.sass */
+.feature_scrollable_panel_4 {
+  /* required settings */
+  position: relative;
+  overflow: hidden;
+  width: 620px;
+  height: 120px;
+}
+
+/* line 20, ../../../app/stylesheets/scrollable.sass */
+.feature_scrollable_panel_3 {
+  /* required settings */
+  position: relative;
+  overflow: hidden;
+  width: 620px;
+  height: 235px;
+}
+
+/* line 27, ../../../app/stylesheets/scrollable.sass */
+.feature_scrollable_panel_sidebar {
+  /* required settings */
+  position: relative;
+  overflow: hidden;
+  width: 300px;
+  height: 357px;
+}
+
+/* line 34, ../../../app/stylesheets/scrollable.sass */
+.feature_scrollable_panel_mini {
+  /* required settings */
+  position: relative;
+  overflow: hidden;
+  width: 300px;
+  height: 170px;
+}
+
+/* line 41, ../../../app/stylesheets/scrollable.sass */
+.newswire_scrollable_panel {
+  /* required settings */
+  position: relative;
+  overflow: hidden;
+  width: 300px;
+  height: 400px;
+}
+
+/* note widget panels arent needed in scrollable_fb */
+/* line 49, ../../../app/stylesheets/scrollable.sass */
+.widgets_scrollable_panel {
+  /* required settings */
+  position: relative;
+  overflow: hidden;
+  width: 300px;
+  height: 140px;
+}
+
+/* line 56, ../../../app/stylesheets/scrollable.sass */
+.feature_scrollable_items {
+  /* this cannot be too large */
+  width: 20000em;
+  position: absolute;
+}
+/* line 60, ../../../app/stylesheets/scrollable.sass */
+.feature_scrollable_items .panel_items {
+  float: left;
+  width: 620px;
+}
+/* line 63, ../../../app/stylesheets/scrollable.sass */
+.feature_scrollable_items .newswire_panel_items {
+  float: left;
+  width: 300px;
+}
+/* line 66, ../../../app/stylesheets/scrollable.sass */
+.feature_scrollable_items .widgets_panel_items {
+  float: left;
+  width: 300px;
+}
+
+/* line 70, ../../../app/stylesheets/scrollable.sass */
+.feature_vertical_scrollable_items {
+  /* this cannot be too large */
+  height: 20000em;
+  position: absolute;
+}
+/* line 74, ../../../app/stylesheets/scrollable.sass */
+.feature_vertical_scrollable_items .panel_items {
+  float: left;
+  width: 620px;
+}
