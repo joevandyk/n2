@@ -3,10 +3,12 @@ source :gemcutter
 gem "rails", "3.1.1"
 gem "rack", "1.3.5"
 
+gem 'haml'
 gem 'compass'
 gem 'compass-960-plugin'
 gem 'json'
 gem 'mogli'
+gem 'coffee-script', '2.2.0'
 
 gem "formtastic"
 gem "friendly_id"

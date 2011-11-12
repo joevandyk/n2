@@ -100,6 +100,10 @@ GEM
       ffi (~> 1.0.6)
     chunky_png (1.2.5)
     cocaine (0.2.0)
+    coffee-script (2.2.0)
+      coffee-script-source
+      execjs
+    coffee-script-source (1.1.3)
     compass (0.11.5)
       chunky_png (~> 1.2)
       fssm (>= 0.2.7)
@@ -119,6 +123,8 @@ GEM
       nokogiri (>= 1.5.0)
     diff-lcs (1.1.3)
     erubis (2.7.0)
+    execjs (1.2.9)
+      multi_json (~> 1.0)
     factory_girl (2.2.0)
       activesupport
     faker (1.0.1)
@@ -135,6 +141,7 @@ GEM
     fssm (0.2.7)
     gherkin (2.6.2)
       json (>= 1.4.6)
+    haml (3.1.3)
     hashie (1.2.0)
     highline (1.6.5)
     hike (1.2.1)
@@ -306,6 +313,7 @@ DEPENDENCIES
   capistrano
   capistrano-ext
   capybara!
+  coffee-script (= 2.2.0)
   compass
   compass-960-plugin
   cucumber
@@ -316,6 +324,7 @@ DEPENDENCIES
   faker
   formtastic
   friendly_id
+  haml
   hoptoad_notifier
   json
   launchy
