@@ -7,9 +7,9 @@ project_path = Rails.root if defined?(Rails.root)
 http_path = "/"
 css_dir = "public/stylesheets/compiled"
 sass_dir = "app/stylesheets"
-images_dir = "public/images"
-javascripts_dir = "public/javascripts"
+images_dir = "app/assets/images"
+javascripts_dir = "app/assets/javascripts"
 # To enable relative paths to assets via compass helper functions. Uncomment:
 # relative_assets = true
-http_stylesheets_path = "/stylesheets"
-http_javascripts_path = "/javascripts"
+http_stylesheets_path = "/assets"
+http_javascripts_path = "/assets"

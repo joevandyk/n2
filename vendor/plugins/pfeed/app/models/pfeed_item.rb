@@ -2,17 +2,14 @@ class PfeedItem < ActiveRecord::Base
 
   serialize :data, Hash
   serialize :participants, Array
-
+   
   belongs_to :originator, :polymorphic => true
   belongs_to :participant, :polymorphic => true
 
-  has_many :pfeed_deliveries, :dependent => :destroy
-
-  # Only show pfeed items newer than provided pfeed_item
-  scope :newer_than, lambda { |*args| { :conditions => ["pfeed_items.id > ?", args.first] } }
-
-  attr_accessor :temp_references # this is an temporary Hash to hold references to temporary Objects
-
+  has_many :pfeed_deliveries, :dependent => :destroy   
+  
+  attr_accessor :temp_references # this is an temporary Hash to hold references to temporary Objects 
+  
   def self.log(ar_obj,method_name,method_name_in_past_tense,returned_result,*args_supplied_to_method,&block_supplied_to_method)
 
      #puts "#{ar_obj.class.to_s},#{method_name},#{method_name_in_past_tense},#{returned_result},#{args_supplied_to_method.length}"
@@ -25,11 +22,11 @@ class PfeedItem < ActiveRecord::Base
     end
 
     raise ArgumentError, "originator object must to be saved" if ar_obj.new_record?
-
+     
       temp_references = Hash.new
       temp_references[:originator] = ar_obj
       temp_references[:participant] = nil
-      temp_references[:participant] = args_supplied_to_method[0] if args_supplied_to_method &&  args_supplied_to_method.length >= 1 && args_supplied_to_method[0].class.superclass.to_s == "ActiveRecord::Base"
+      temp_references[:participant] = args_supplied_to_method[0] if args_supplied_to_method && args_supplied_to_method.length >= 1 && args_supplied_to_method[0].class < ActiveRecord::Base
 
       pfeed_class_name = "#{ar_obj.class.to_s.underscore}_#{method_name_in_past_tense}".camelize # may be I could use .classify
       constructor_options = { :originator_id => temp_references[:originator].id , :originator_type => temp_references[:originator].class.to_s , :participant_id => (temp_references[:participant] ? temp_references[:participant].id : nil) , :participant_type => (temp_references[:participant] ? temp_references[:participant].class.to_s : nil) } # there is a reason why I didnt use {:originator => temp_references[:originator]} , if originator is new record it might get saved here un intentionally
@@ -42,35 +39,23 @@ class PfeedItem < ActiveRecord::Base
       p_item.save!
       #puts "Trying to deliver to #{ar_obj}  #{ar_obj.pfeed_audience_hash[method_name.to_sym]}"
       p_item.attempt_delivery(ar_obj,ar_obj.pfeed_audience_hash[method_name.to_sym])   # attempting the delivery of the feed
-  end
-
+  end  
+  
   @@dj = (defined? Delayed) == "constant" && (instance_methods.include? 'send_later') #this means Delayed_job exists , so make use of asynchronous delivery of pfeed
-  #@@resque = (defined? Resque) == "constant" && (defined? PFEED_RESQUE_KLASS == "constant" and PFEED_RESQUE_KLASS.respond_to?(:perform)) #this means Resque exists, so make use of asynchronous delivery of pfeed. NOTE: Set PFEED_RESQUE_KLASS in your resque initializer to be the worker class you want to use
 
   def attempt_delivery (ar_obj,method_name_arr)
     return if method_name_arr.empty?
 
     if @@dj
-      send_later(:deliver,ar_obj,method_name_arr)
-    elsif self.class.use_resque
-      Resque.enqueue(PFEED_RESQUE_KLASS, self.id, ar_obj.class.name, ar_obj.id, method_name_arr)
+      send_later(:deliver,ar_obj,method_name_arr)  
     else  # regular instant delivery
-      send(:deliver,ar_obj,method_name_arr)
+      send(:deliver,ar_obj,method_name_arr)    
     end
-  end
-
-  def self.use_resque
-    @@use_resque ||= (defined? Resque) == "constant" && (defined? PFEED_RESQUE_KLASS == "constant" and PFEED_RESQUE_KLASS.respond_to?(:perform)) #this means Resque exists, so make use of asynchronous delivery of pfeed. NOTE: Set PFEED_RESQUE_KLASS in your resque initializer to be the worker class you want to use
   end
 
   def deliver(ar_obj,method_name_arr)
     method_name_arr.map { |method_name|
-      if method_name.to_s =~ /^participant_(.*)$/
-      	return nil unless self.participant
-      	self.participant.send($1)
-      else
-        ar_obj.send(method_name)
-      end
+      ar_obj.send(method_name)
     }.flatten.uniq.map {|o| deliver_to(o) }.compact
   end
 
@@ -92,18 +77,18 @@ class PfeedItem < ActiveRecord::Base
   end
 
   def accessible?
-    true
+    true 
   end
 
-  def view_template_name
+  def view_template_name 
     "#{self.class.to_s.underscore}".split("/").last
   end
-
+  
   def audience
     # return list of objects to whom feed gets delivered
   end
-
-  def pack_data(method_name,method_name_in_past_tense,returned_result,*args_supplied_to_method,&block_supplied_to_method)
+  
+  def pack_data(method_name,method_name_in_past_tense,returned_result,*args_supplied_to_method,&block_supplied_to_method) 
     self.data = {} if ! self.data
     action_string = method_name_in_past_tense.humanize.downcase
     hash_to_be_merged = {:action_string => action_string, :originator_identity => guess_identification(originator)}
@@ -111,13 +96,13 @@ class PfeedItem < ActiveRecord::Base
     if current_user = Thread.current[:current_user]
       hash_to_be_merged.merge!(:current_user_identity => guess_identification(current_user))
     end
-
+    
     self.data.merge!  hash_to_be_merged
   end
-
+  
   IDENTIFICATIONS = {}
   def guess_identification(ar_obj)
-    if identifier = ar_obj.respond_to?(:pfeed_options) && ar_obj.pfeed_options[:identified_by]
+    if identifier = ar_obj.respond_to?(:pfeed_options) && ar_obj.pfeed_options[:pfeed_identification]
       return ar_obj.send(identifier)
     end
 
@@ -129,7 +114,7 @@ class PfeedItem < ActiveRecord::Base
     end
 
     possible_attributes = ["username","login","name","company_name","first_name","last_name","login_name","login_id","given_name","nick_name","nick","short_name"]
-
+    
     possible_attributes = self.data[:config][:identifications] + possible_attributes if self.data[:config] && self.data[:config][:identifications] && self.data[:config][:identifications].is_a?(Array)
     matched_name = ar_obj.attribute_names & possible_attributes # intersection of two sets
 
@@ -138,7 +123,7 @@ class PfeedItem < ActiveRecord::Base
       result = ar_obj.read_attribute(attribute)
       next unless result.present? && result.kind_of?(String)
       IDENTIFICATIONS[ar_obj.class] = attribute
-      identi = result
+      identi = result 
       break
     end
 
@@ -148,14 +133,14 @@ class PfeedItem < ActiveRecord::Base
         result = ar_obj.send(attribute) rescue nil
         next unless result.present? && result.kind_of?(String)
         IDENTIFICATIONS[ar_obj.class] = attribute
-        identi = result
-        break
+        identi = result 
+        break 
       end
     end
-
+    
     identi =  "#{ar_obj.class.to_s}(\##{ar_obj.id})" if identi.blank?
     identi
-  end
+  end  
 
   # look for custom pfeed class, with or withour Pfeed:: prefix
   CUSTOM_CLASSES = {}
@@ -169,18 +154,18 @@ class PfeedItem < ActiveRecord::Base
           constructor_options.merge(:temp_references => temp_references))
       rescue NameError
         unless retried
-          CUSTOM_CLASSES[pfeed_class_name] = nil
+          CUSTOM_CLASSES[pfeed_class_name] = false
           retried = true
           pfeed_class_name = "Pfeeds::"+pfeed_class_name
           retry
         end
-        PfeedItem.new(constructor_options)
-      end
+        PfeedItem.new(constructor_options) 
+      end   
     else
       if !klass
-        PfeedItem.new(constructor_options)
+        PfeedItem.new(constructor_options) 
       else
-        klass.new(constructor_options)
+        klass.new(constructor_options) 
       end
     end
   end

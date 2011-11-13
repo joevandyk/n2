@@ -1,5 +1,8 @@
 $ = jQuery
 
+$.ready -> 
+  alert("hello!")
+
 rebuild_facebook_dom = ->
   try
     FB.XFBML.Host.parseDomTree()
@@ -477,3 +480,4 @@ window.fbAsyncInit = ->
 ) document, "script", "facebook-jssdk"
 
 addthis.addEventListener "addthis.menu.share", shareEventHandler
+
