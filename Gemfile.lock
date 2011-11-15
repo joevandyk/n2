@@ -24,14 +24,6 @@ GIT
       nokogiri (> 0.0.0)
 
 GIT
-  remote: git://github.com/stipple/amazon-ecs.git
-  revision: 5a0403b9a31dcea8f67f9f8b73ed1ef599695169
-  specs:
-    amazon-ecs (1.1.0)
-      nokogiri
-      ruby-hmac
-
-GIT
   remote: git://github.com/taf2/curb.git
   revision: d296fb4b478a3369fc1f11addf8a69a3141b47e4
   specs:
@@ -76,6 +68,9 @@ GEM
     acts-as-taggable-on (2.1.1)
       rails
     addressable (2.2.6)
+    amazon-ecs (2.2.1)
+      nokogiri (>= 1.4.0)
+      ruby-hmac (>= 0.3.2)
     arel (2.2.1)
     awesome_print (0.4.0)
     aws-s3 (0.6.2)
@@ -306,7 +301,7 @@ DEPENDENCIES
   aasm
   acl9
   acts-as-taggable-on
-  amazon-ecs!
+  amazon-ecs
   awesome_print
   aws-s3
   bitly

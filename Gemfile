@@ -27,7 +27,7 @@ gem "aasm"
 gem "aws-s3"
 gem "acl9"
 gem "paperclip"
-gem 'amazon-ecs', :git => 'git://github.com/stipple/amazon-ecs.git'
+gem 'amazon-ecs'
 
 gem "hoptoad_notifier"
 gem "acts-as-taggable-on"
