@@ -14,7 +14,7 @@
     = javascript_include_tag 'jquery.tablesorter.min'
     = javascript_include_tag 'admin.js'
 
-    -# IE Debugging 
+    -# IE Debugging
     =# javascript_include_tag 'http://getfirebug.com/releases/lite/1.2/firebug-lite-compressed.js'
 
     = stylesheet_link_tag 'compiled/grid.css', :media => 'screen, projection'
@@ -135,13 +135,13 @@
               %li
                 %a{:href => "#module-settings-wizards"} Wizards
                 %ul
-                  %li= link_to 'Bit.ly Shortcuts', edit_admin_setting_group_path(:id => :bitly_config)                 
+                  %li= link_to 'Bit.ly Shortcuts', edit_admin_setting_group_path(:id => :bitly_config)
                   %li= link_to 'Google Analytics', edit_admin_setting_group_path(:id => :analytics_config)
-                  %li= link_to 'Google Search', edit_admin_setting_group_path(:id => :google_custom_search_engine_config)                
-                  %li= link_to 'Site Description', edit_admin_setting_group_path(:id => :basic_site_config)                
+                  %li= link_to 'Google Search', edit_admin_setting_group_path(:id => :google_custom_search_engine_config)
+                  %li= link_to 'Site Description', edit_admin_setting_group_path(:id => :basic_site_config)
                   %li= link_to 'Site Maps (SEO)', edit_admin_setting_group_path(:id => :sitemap_seo_config)
                   %li= link_to 'Twitter Integration', admin_twitter_settings_path
-                  %li= link_to 'Welcome Panel', edit_admin_setting_group_path(:id => :welcome_panel_config)                
+                  %li= link_to 'Welcome Panel', edit_admin_setting_group_path(:id => :welcome_panel_config)
               %li
                 %a{:href => "#modules-metadata"} General
                 %ul
@@ -156,14 +156,16 @@
                   %li= link_to 'Ad layouts', admin_metadata_ad_layouts_path
                   %li= link_to 'Ad banners', admin_metadata_ads_path
                   %li= link_to 'Sponsor zones', admin_metadata_sponsor_zones_path
-              %li
-                %a{:href => "#modules-settings-locales"} Text
-                %ul
-                  %li= link_to 'Default text', admin_locale_translations_path(:locale_id => 'en')
-                  %li= link_to 'Default pages', admin_locale_translations_path(:locale_id => 'en',:type => 'static_pages')
-                  %li= link_to 'Locales', admin_locales_path
-                  %li= link_to 'Translations', admin_translations_path
-                  %li= link_to 'Refresh changes', refresh_admin_locales_path
+              - # RAILS3 TODO
+              - if false
+                %li
+                  %a{:href => "#modules-settings-locales"} Text
+                  %ul
+                    %li= link_to 'Default text', admin_locale_translations_path(:locale_id => 'en')
+                    %li= link_to 'Default pages', admin_locale_translations_path(:locale_id => 'en',:type => 'static_pages')
+                    %li= link_to 'Locales', admin_locales_path
+                    %li= link_to 'Translations', admin_translations_path
+                    %li= link_to 'Refresh changes', refresh_admin_locales_path
           %li
             %a{:href => "#links"} Your Site
             %ul
