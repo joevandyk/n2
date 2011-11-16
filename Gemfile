@@ -29,6 +29,8 @@ gem "acl9"
 gem "paperclip"
 gem 'amazon-ecs'
 
+gem 'i18n_backend_database', :git => "git://github.com/joevandyk/i18n_backend_database.git"
+
 gem "hoptoad_notifier"
 gem "acts-as-taggable-on"
 

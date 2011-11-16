@@ -17,6 +17,13 @@ GIT
       xpath (~> 0.1.4)
 
 GIT
+  remote: git://github.com/joevandyk/i18n_backend_database.git
+  revision: c0836839486428448448130dc6565d92d38f5f72
+  specs:
+    i18n_backend_database (0.0.1)
+      rails (>= 3)
+
+GIT
   remote: git://github.com/pauldix/sax-machine.git
   revision: 41cae0195263b97da3029147d7214bfe3d24d0e4
   specs:
@@ -321,6 +328,7 @@ DEPENDENCIES
   friendly_id
   haml
   hoptoad_notifier
+  i18n_backend_database!
   json
   launchy
   loofah
