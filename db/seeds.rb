@@ -364,6 +364,7 @@ settings = [
  { :key_sub_type => 'twitter_standard_list', :key_name => 'list_widget_title', :value => (APP_CONFIG['site_title'] || "Default Title"), :hint => 'The title for the widget' },
  { :key_sub_type => 'twitter_standard_list', :key_name => 'list_widget_caption', :value =>"Tweets about #{(APP_CONFIG['site_topic'] || "Default Topic" )}", :hint => 'The caption for the widget' },
  { :key_sub_type => 'options', :key_name => 'rackspace_hosting_credit',  :value => "false" , :hint => 'If you are using credited Rackspace hosting, please activate this setting.' },
+ { :key_sub_type => 'options', :key_name => 'native_voting',  :value => "false" , :hint => 'False turns on Add This toolbar with Facebook Likes. True turns on native likes and Twitter Connect.' },
  { :key_sub_type => 'options', :key_name => 'extended_footer_content',  :value => "false" , :hint => 'Advanced users only - place additional javascript for the footer here.' },
 ]
 
@@ -821,9 +822,13 @@ view_objects = [
   		:locale_title    => "classifieds.top_classifieds_title",
   		:locale_subtitle => nil,
   		:use_post_button => true,
-  		:kommands        => [
+      :version => 2,
+      :kommands        => [
   		  {
   		    :method_name => "available"
+  		  },
+  		  {
+  		    :method_name => "allow_all"
   		  },
   		  {
           :method_name => "top",
@@ -977,9 +982,13 @@ view_objects = [
   		:locale_title    => "classifieds.newest_classifieds_title",
   		:locale_subtitle => nil,
   		:use_post_button => true,
+      :version => 2,
   		:kommands        => [
   		  {
   		    :method_name => "available"
+  		  },
+  		  {
+  		    :method_name => "allow_all"
   		  },
   		  {
           :method_name => "newest",
