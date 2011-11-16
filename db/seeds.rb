@@ -1235,8 +1235,6 @@ view_objects = [
   }
 ]
 view_objects.each do |view_object_hash|
-  # TODO RAILS 3
-  next
   view_object = ViewObject.where(:name => view_object_hash[:name]).first
   next if view_object and view_object.version == view_object_hash[:settings][:version]
 

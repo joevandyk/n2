@@ -2,8 +2,8 @@ N2::Application.routes.draw do
   resources :oauth_consumers do
 
     member do
-  get :callback
-  end
+      get :callback
+    end
 
   end
 
@@ -98,9 +98,9 @@ N2::Application.routes.draw do
   match '/classifieds/category/:category/page/:page.:format' => 'classifieds#categories', :as => :categorized_classifieds_with_page
   resources :amazon_products do
     collection do
-  get :search
-  post :search
-  end
+      get :search
+      post :search
+    end
 
 
   end
@@ -109,41 +109,41 @@ N2::Application.routes.draw do
   resources :answers do
 
     member do
-  get :like
-  post :like
-  end
+      get :like
+      post :like
+    end
 
   end
 
   resources :articles do
     collection do
-  get :index
-  post :index
-  get :drafts
-  end
+      get :index
+      post :index
+      get :drafts
+    end
 
 
   end
 
   resources :cards do
     collection do
-  get :my_received
-  get :my_sent
-  end
+      get :my_received
+      get :my_sent
+    end
     member do
-  get :post_sent
-  post :post_sent
-  get :get_card_form
-  post :get_card_form
-  end
+      get :post_sent
+      post :post_sent
+      get :get_card_form
+      post :get_card_form
+    end
 
   end
 
   resources :classifieds do
     collection do
-   :borrowed_items
-   :my_items
-  end
+      :borrowed_items
+      :my_items
+    end
 
 
   end
@@ -151,28 +151,28 @@ N2::Application.routes.draw do
   resources :comments do
 
     member do
-  get :like
-  post :like
-  get :dislike
-  post :dislike
-  end
+      get :like
+      post :like
+      get :dislike
+      post :dislike
+    end
 
   end
 
   resources :contents
   resources :events do
     collection do
-  get :index
-  post :index
-  get :import_facebook
-  post :import_facebook
-  end
+      get :index
+      post :index
+      get :import_facebook
+      post :import_facebook
+    end
     member do
-  get :like
-  post :like
-  get :my_events
-  post :my_events
-  end
+      get :like
+      post :like
+      get :my_events
+      post :my_events
+    end
 
   end
 
@@ -180,105 +180,107 @@ N2::Application.routes.draw do
   resources :galleries do
 
     member do
-  get :add_gallery_item
-  post :add_gallery_item
-  end
+      get :add_gallery_item
+      post :add_gallery_item
+    end
 
   end
 
   resources :go, :only => :show
   resources :home do
     collection do
-  get :about
-  get :index
-  post :index
-  get :openx_ads
-  get :contact_us
-  post :contact_us
-  get :helios_ads
-  get :app_tab
-  post :app_tab
-  get :helios_alt2_ads
-  get :preview_widgets
-  get :faq
-  get :helios_alt3_ads
-  get :default_ads
-  get :terms
-  get :helios_alt4_ads
-  get :google_ads
-  end
+      get :about
+      get :index
+      post :index
+      get :openx_ads
+      get :contact_us
+      post :contact_us
+      get :helios_ads
+      get :app_tab
+      post :app_tab
+      get :helios_alt2_ads
+      get :preview_widgets
+      get :faq
+      get :helios_alt3_ads
+      get :default_ads
+      get :terms
+      get :helios_alt4_ads
+      get :google_ads
+    end
     member do
-  get :render_widget
-  post :render_widget
-  end
+      get :render_widget
+      post :render_widget
+    end
 
   end
 
   resources :idea_boards
   resources :ideas do
     collection do
-  get :index
-  post :index
-  end
+      get :index
+      post :index
+    end
     member do
-  get :like
-  post :like
-  get :my_ideas
-  post :my_ideas
-  end
+      get :like
+      post :like
+      get :my_ideas
+      post :my_ideas
+    end
 
   end
 
   resources :newswires do
 
     member do
-  get :quick_post
-  post :quick_post
-  end
+      get :quick_post
+      post :quick_post
+    end
 
   end
 
   resources :prediction_groups do
     collection do
-  get :index
-  post :index
-  get :play
-  post :play
-  end
+      get :index
+      post :index
+      get :play
+      post :play
+    end
     member do
-  get :like
-  post :like
-  end
+      get :like
+      post :like
+    end
 
   end
 
   resources :prediction_questions do
     collection do
-  get :index
-  post :index
-  end
+      get :index
+      post :index
+    end
     member do
-  get :like
-  post :like
-  end
+      get :like
+      post :like
+    end
 
   end
 
   resources :predictions do
     collection do
-  get :my_predictions
-  post :my_predictions
-  get :index
-  post :index
-  get :scores
-  post :scores
-  end
+      get :my_predictions
+      post :my_predictions
+      get :index
+      post :index
+      get :scores
+      post :scores
+    end
 
 
   end
 
   resources :questions do
     collection do
-  get :index
-  post :index
+      get :index
+      post :index
+    end
+  end
 end
