@@ -18,7 +18,7 @@ GIT
 
 GIT
   remote: git://github.com/joevandyk/i18n_backend_database.git
-  revision: c0836839486428448448130dc6565d92d38f5f72
+  revision: 30cf3f6a0a701a950f3d1ea7b011c6ca6023caba
   specs:
     i18n_backend_database (0.0.1)
       rails (>= 3)
