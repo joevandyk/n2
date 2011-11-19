@@ -54,9 +54,12 @@ group :development do
 	gem "capistrano-ext"
 end
 
-group :test, :cucumber do
+group :development, :test do
 	gem "rspec"
 	gem "rspec-rails"
+end
+
+group :test, :cucumber do
 	gem "faker"
 	gem "database_cleaner", :git => "git://github.com/bmabey/database_cleaner.git"
 	gem "capybara", :git => "git://github.com/jnicklas/capybara.git"

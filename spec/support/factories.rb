@@ -55,7 +55,7 @@ Factory.define :comment do |f|
 end
 
 Factory.define :flag do |f|
-  f.flag_type   Flag.flag_types.rand
+  f.flag_type   Flag.flag_types.sample
   f.association :flaggable, :factory => :content
   f.association :user, :factory => :user
 end
