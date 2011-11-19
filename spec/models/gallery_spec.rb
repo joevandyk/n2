@@ -8,7 +8,7 @@ describe Gallery do
   it "should require a title" do
     gallery = Factory.build(:gallery, :title => nil)
     gallery.should_not be_valid
-    gallery.errors.on(:title).should_not be_nil
+    gallery.errors[:title].should be_present
     gallery.title = Faker::Company.catch_phrase
     gallery.should be_valid
   end
@@ -16,7 +16,7 @@ describe Gallery do
   it "should require a description" do
     gallery = Factory.build(:gallery, :description => nil)
     gallery.should_not be_valid
-    gallery.errors.on(:description).should_not be_nil
+    gallery.errors[:description].should be_present
     gallery.description = Faker::Lorem.paragraph
     gallery.should be_valid
   end
@@ -24,7 +24,7 @@ describe Gallery do
   it "should require a user" do
     gallery = Factory.build(:gallery, :user => nil)
     gallery.should_not be_valid
-    gallery.errors.on(:user).should_not be_nil
+    gallery.errors[:user].should be_present
     gallery.user = Factory(:user)
     gallery.should be_valid
   end
@@ -86,7 +86,7 @@ describe Gallery do
     end
 
     context "With valid data" do
-      before(:all) do 
+      before(:all) do
         @gallery = Gallery.build_from_youtube_playlist "http://www.youtube.com/view_play_list?p=E18841CABEA24090", Factory(:user)
       end
 

@@ -128,6 +128,10 @@ class Classified < ActiveRecord::Base
   end
 
   def self.enable_sale_items?
+    # TODO RAILS3
+    return true
+
+    # Probably a better way to do the below
     return @enable_sale_items if defined?(@enable_sale_items)
     @enable_sale_items = Metadata::Setting.get_setting('enable_sale_items').try(:value)
   end
