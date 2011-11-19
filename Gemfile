@@ -13,7 +13,7 @@ gem 'coffee-script', '2.2.0'
 gem "formtastic"
 gem "friendly_id"
 gem 'will_paginate'
-gem "oauth2"
+gem "oauth-plugin", ">= 0.4.0.pre1"
 gem "twitter"
 gem "mysql"
 gem "bitly"

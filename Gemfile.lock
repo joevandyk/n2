@@ -184,6 +184,12 @@ GEM
       net-ssh (>= 1.99.1)
     newrelic_rpm (3.3.0)
     nokogiri (1.5.0)
+    oauth (0.4.5)
+    oauth-plugin (0.4.0.rc2)
+      multi_json
+      oauth (~> 0.4.4)
+      oauth2
+      rack
     oauth2 (0.5.1)
       faraday (~> 0.7.4)
       multi_json (~> 1.0.3)
@@ -336,7 +342,7 @@ DEPENDENCIES
   mysql
   newrelic_rpm
   nokogiri
-  oauth2
+  oauth-plugin (>= 0.4.0.pre1)
   omniauth
   paperclip
   pickle
