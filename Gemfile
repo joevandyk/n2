@@ -19,7 +19,7 @@ gem "mysql"
 gem "bitly"
 gem "redis"
 gem "redis-namespace"
-gem "resque"
+gem "resque", :git => 'git://github.com/defunkt/resque.git'
 gem "resque-scheduler", :require => 'resque_scheduler'
 gem 'sitemap_generator'
 gem "SystemTimer"
@@ -29,7 +29,9 @@ gem "acl9"
 gem "paperclip"
 gem 'amazon-ecs'
 
-gem 'i18n_backend_database', :git => "git://github.com/joevandyk/i18n_backend_database.git"
+# JVD: having problems getting this working with an empty database
+# The gem tries to load the locales table before it exists.
+# gem 'i18n_backend_database', :git => "git://github.com/joevandyk/i18n_backend_database.git"
 
 gem "hoptoad_notifier"
 gem "acts-as-taggable-on"
