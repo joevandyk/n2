@@ -1,4 +1,5 @@
 class Metadata::Setting < Metadata
+  metadata_keys :setting_sub_type_name, :setting_name, :setting_value, :setting_hint
 
   scope :key_sub_type_name, lambda { |*args| { :conditions => ["key_sub_type = ? AND key_name = ?", args.first, args.second] } }
 

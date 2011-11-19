@@ -1,4 +1,5 @@
 class Metadata::ViewObjectSetting < Metadata
+  metadata_keys :view_object_name, :klass_name, :kommands
 
   scope :key_sub_type_name, lambda { |*args| { :conditions => ["key_sub_type = ? AND key_name = ?", args.first, args.second] } }
 
@@ -7,9 +8,6 @@ class Metadata::ViewObjectSetting < Metadata
   # HACK:: emulate validate_presence_of
   # these are dynamicly created attributes to they don't exist for the model
   validate :validate_kommands
-  attr_accessible :data
-
-  #before_save :build_view_object
 
   def after_initialize
     init_data
@@ -73,18 +71,6 @@ class Metadata::ViewObjectSetting < Metadata
     	self.kommands << kommand
     else
     	self.kommands = [kommand]
-    end
-  end
-
-  def method_missing(name, *args)
-    return self.send(name, *args) if self.respond_to? name, true
-    init_data
-    name = key_from_assign name
-    if data[name].present?
-      data[name] = args.first if args.present?
-      return data[name]
-    else
-    	data[name] = args.empty? ? nil : args.first
     end
   end
 

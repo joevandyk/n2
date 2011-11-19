@@ -1,11 +1,8 @@
 class Metadata::AdLayout < Metadata
+  metadata_keys :ad_layout_sub_type_name, :ad_layout_name, :ad_layout_layout, :ad_layout_hint
 
   scope :key_sub_type_name, lambda { |*args| { :conditions => ["key_sub_type = ? AND key_name = ?", args.first, args.second] } }
-
-  # HACK:: emulate validate_presence_of
-  # these are dynamicly created attributes so they don't exist for the model
-  validates_format_of :ad_layout_name, :with => /^.+$/, :message => "Layout can't be blank"
-  validates_format_of :ad_layout_layout, :with => /^.+$/, :message => "Layout can't be blank"
+  validates :ad_layout_name, :ad_layout_layout, :presence => true
 
   def self.get name, sub_type = nil
     self.find_ad_layout(name, sub_type)

@@ -216,7 +216,7 @@ ads.each do |ad|
   next if Metadata::Ad.find_slot(ad[:key_sub_type], ad[:key_name])
   puts "Creating ad slot #{ad[:key_name]} -- #{ad[:key_sub_type]}" if debug
 
-  Metadata::Ad.create!({
+  options = {
     :meta_type => 'config',
     :key_type => 'ads',
     :key_sub_type => ad[:key_sub_type],
@@ -226,7 +226,8 @@ ads.each do |ad|
       :height => ad[:height],
       :background => ad[:background]
     }
-  })
+  }
+  Metadata::Ad.create!(options)
 end
 
 custom_widgets = [

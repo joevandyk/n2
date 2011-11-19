@@ -1,4 +1,5 @@
 class Metadata::ActivityScore < Metadata
+  metadata_keys :activity_score_sub_type_name, :activity_score_name, :activity_score_value, :activity_score_hint
 
   scope :key_sub_type_name, lambda { |*args| { :conditions => ["key_sub_type = ? AND key_name = ?", args.first, args.second] } }
 
