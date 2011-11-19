@@ -1288,8 +1288,6 @@ view_objects.each do |view_object_hash|
   end
 end
 
-=begin
-# TODO RAILS 3
 home_view_object = ViewObject.find_or_create_by_name("home--index")
 unless home_view_object.edge_children.any?
   ["Newest Univeral Items Double Column List", "Welcome Panel", "Recent Users", "Newest Story Double Column Item", "Newest Gallery Double Column Small Strip", "Recent Users", "Newswire","Default Ad Medium Rectangle"].each do |name|
@@ -1297,4 +1295,3 @@ unless home_view_object.edge_children.any?
     home_view_object.add_child! ViewObject.find_by_name(name)
   end
 end
-=end
