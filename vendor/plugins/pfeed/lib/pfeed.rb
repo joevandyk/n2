@@ -65,8 +65,8 @@ module ParolkarInnovationLab
         has_many :pfeed_deliveries , :as => :pfeed_receiver
         has_many :pfeed_inbox, :class_name => 'PfeedItem', :foreign_key => "pfeed_item_id" , :through => :pfeed_deliveries , :source => :pfeed_item
 
-	write_inheritable_attribute(:is_pfeed_receiver,true)
-        class_inheritable_reader :is_pfeed_receiver
+        write_inheritable_attribute(:is_pfeed_receiver,true)
+        class_attribute :is_pfeed_receiver
       end
 
       def register_pfeed_audience(method_name,audience_arr)
