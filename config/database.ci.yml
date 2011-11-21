@@ -1,13 +1,9 @@
 development:
   adapter: mysql
   encoding: utf8
-  reconnect: false
-  database: ntwo_development
-  host: 127.0.0.1
+  database: n2_development
 
 test:
   adapter: mysql
   encoding: utf8
   reconnect: false
-  database: ntwo_test
-  host: 127.0.0.1
