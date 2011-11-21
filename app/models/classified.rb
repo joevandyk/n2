@@ -233,20 +233,9 @@ class Classified < ActiveRecord::Base
     results.find(:all, :conditions => ["id IN (?)", $redis.sunion(*user_sets)])
   end
 
-=begin
-  def recipient_voices
-    users = self.voices
-    users << self.commentable.user
-    # get list of people who liked commentable item
-    users.concat self.commentable.votes.map(&:voter)
-    users.delete self.user
-    users.uniq
-  end
-=end
-
   def self.for_user user = nil
     sets = sets_for_user(user)
-    self.available.active.find(:all, :conditions => ["id IN (?)", $redis.sunion(*sets)], :order => "created_at desc")
+    self.available.active.where(["id IN (?)", $redis.sunion(*sets)]).order("created_at desc")
   end
 
   def self.sets_for_user user = nil

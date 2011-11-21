@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
 
-  acts_as_authorization_subject :join_table_name => 'user_roles'
+  acts_as_authorization_subject :join_table_name => 'roles_users'
   has_and_belongs_to_many :roles
 
   acts_as_voter
@@ -138,6 +138,8 @@ class User < ActiveRecord::Base
     self.update_attribute(:last_viewed_feed_item, last_delivered_feed_item)
   end
 
+=begin
+# TODO RAILS3
   emits_pfeeds :on => [:trigger_story], :for => [:friends], :identified_by => :name
   emits_pfeeds :on => [:trigger_article], :for => [:friends], :identified_by => :name
   #emits_pfeeds :on => [:trigger_topic], :for => [:friends], :identified_by => :name
@@ -153,6 +155,7 @@ class User < ActiveRecord::Base
   emits_pfeeds :on => [:trigger_chirp], :for => [:participant_recipient], :identified_by => :name
   #emits_pfeeds :on => [:trigger_accepted_prediction_question], :for => [:participant_recipient_voices, :friends], :identified_by => :name
   receives_pfeed
+=end
 
 
   # Authenticates a user by their login name and unencrypted password.  Returns the user or nil.

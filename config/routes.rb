@@ -144,8 +144,8 @@ N2::Application.routes.draw do
 
   resources :classifieds do
     collection do
-      :borrowed_items
-      :my_items
+      get :borrowed_items
+      get :my_items
     end
     resources :comments
     resources :fags
@@ -163,7 +163,7 @@ N2::Application.routes.draw do
   end
 
   # RAILS3 TODO
-  resources :contents
+  resources :contents, :controller => :stories, :as => :stories
 
   resources :events do
     collection do
