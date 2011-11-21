@@ -1,2 +1,2 @@
 before_script:
-  - "cp config/database.ci.yml config/database.yml"
+  - "./script/copy_configs.rb
