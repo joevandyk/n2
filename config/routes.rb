@@ -1,19 +1,23 @@
 N2::Application.routes.draw do
   resources :oauth_consumers do
-
     member do
       get :callback
     end
-
   end
 
+  # TODO RAILS3
   #match 'locale' => '#index', :as => :filter
   #match 'iframe' => '#index', :as => :filter
+
   resource :oauth
   match '/oauth/create' => 'oauth#create', :as => :oauth_callback
+
   match '/auth/:provider/callback' => 'sessions#create', :as => :auth_provider_callback
+
   match '/robots.txt' => 'home#robots', :as => :robots
+
   match '/test_design.:format' => 'home#test_design', :as => :test_design
+
   match '/block.:format' => 'flags#block', :as => :toggle_blocked
   match '/feature.:format' => 'flags#feature', :as => :toggle_featured
   match '/like.:format' => 'votes#like', :as => :like_item
@@ -96,23 +100,25 @@ N2::Application.routes.draw do
   match '/classifieds/:id/set_status/:status.:format' => 'classifieds#set_status', :as => :set_status_classified
   match '/classifieds/category/:category.:format' => 'classifieds#categories', :as => :categorized_classifieds
   match '/classifieds/category/:category/page/:page.:format' => 'classifieds#categories', :as => :categorized_classifieds_with_page
+
+
   resources :amazon_products do
     collection do
       get :search
       post :search
     end
-
-
   end
 
   resource :session
-  resources :answers do
 
+  resources :answers do
     member do
       get :like
       post :like
     end
-
+    resources :comments
+    resources :answers
+    resources :flags
   end
 
   resources :articles do
@@ -121,8 +127,6 @@ N2::Application.routes.draw do
       post :index
       get :drafts
     end
-
-
   end
 
   resources :cards do
@@ -136,7 +140,6 @@ N2::Application.routes.draw do
       get :get_card_form
       post :get_card_form
     end
-
   end
 
   resources :classifieds do
@@ -144,22 +147,24 @@ N2::Application.routes.draw do
       :borrowed_items
       :my_items
     end
-
-
+    resources :comments
+    resources :fags
+    resources :related_items
   end
 
   resources :comments do
-
     member do
       get :like
       post :like
       get :dislike
       post :dislike
     end
-
+    resources :flags
   end
 
+  # RAILS3 TODO
   resources :contents
+
   resources :events do
     collection do
       get :index
@@ -176,17 +181,20 @@ N2::Application.routes.draw do
 
   end
 
-  resources :forums
-  resources :galleries do
+  resources :forums do
+    resources :topics
+  end
 
+  resources :galleries do
     member do
       get :add_gallery_item
       post :add_gallery_item
     end
-
+    resources :comments, :flags, :related_items
   end
 
   resources :go, :only => :show
+
   resources :home do
     collection do
       get :about
