@@ -1,2 +1,2 @@
-before_script:
-  - "./script/copy_configs.rb
+script:
+  - "echo $PWD; ruby ./script/copy_configs.rb; bundle install; bundle exec rake"
