@@ -2,4 +2,4 @@ before_script:
   - "mysql -e 'create database n2_test; create database n2_development'"
 
 script:
-  - "echo $PWD; cp config/application_settings.yml.sample config/application_settings.yml; cp config/database.ci.yml config/database.yml; bundle install; bundle exec rake"
+  - "echo $PWD; cp config/application_settings.yml.sample config/application_settings.yml; cp config/resque.yml.sample config/resque.yml; cp config/database.ci.yml config/database.yml; bundle exec rake"
