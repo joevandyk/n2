@@ -80,13 +80,12 @@ class ViewTree
 	#
 	# Class Methods
 	#
-  def self.render target, controller = nil
-    if target.class.name =~ /Controller$/
-    	view_object_name = "#{target.controller_name}--#{target.action_name}"
-    	controller = target
-    else
-    	view_object_name = target
-    end
+  def self.render_controller controller
+    view_object_name = "#{controller.controller_name}--#{controller.action_name}"
+    render(view_object_name, controller)
+  end
+
+  def self.render view_object_name, controller=nil
     self.fetch view_object_name, controller
   end
 
