@@ -1,3 +1,5 @@
+require 'factory_girl'
+
 Factory.define :user do |f|
   f.login                   { Faker::Internet.user_name + rand(5124123).to_s }
   f.name                    { Faker::Name.name }
