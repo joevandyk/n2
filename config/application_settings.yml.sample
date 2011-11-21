@@ -1,5 +1,10 @@
 defaults: &defaults
   base_site_url: 'http://localhost:3000'
+  omniauth:
+    providers:
+      facebook:
+        key: 'fb-key-here'
+  
   # Select timezone from $ rake time:zones:all
   time_zone: 'Pacific Time (US & Canada)'
 

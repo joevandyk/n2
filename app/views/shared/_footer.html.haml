@@ -29,8 +29,8 @@
             - else
               .admin-links
                 %p
-                  = link_to t('footer.setup_twitter', :setup_twitter_path => admin_twitter_settings_path, :learn_more_path => "http://support.newscloud.com/kb/configuring-your-application/how-to-configure-twitter-anywhere" ).html_safe            
-        - else
+                  = link_to t('footer.setup_twitter', :setup_twitter_path => admin_twitter_settings_path, :learn_more_path => "http://support.newscloud.com/kb/configuring-your-application/how-to-configure-twitter-anywhere" ).html_safe
+        - elsif account_setting.try(:value).present?
           %span.twt_ft_wrap
             %a.twitter-follow-button{:href => base_twitter_url(account_setting.value), "data-width" => "200px", "data-align" => "center" }= t('footer.twitter_follow', :twitter_account => base_twitter_url(account_setting.value))
       .panel-third
@@ -51,13 +51,13 @@
           %li
             = link_to t('.developers'), "http://opensource.newscloud.com", :target => "_cts"
           - rackspace_hosting_credit = get_setting('rackspace_hosting_credit').try(:value)
-          - if rackspace_hosting_credit == true           
+          - if rackspace_hosting_credit == true
             %li
               %i= link_to t('footer.rackspace_hosting_credit'), "http://www.rackspacestartups.com/", :target => "_cts"
           - if current_user.present?
             %li
               %span.admin-links
-                = link_to t('.admin'), admin_path 
+                = link_to t('.admin'), admin_path
   - extended_footer_content = get_setting('extended_footer_content')
   - if extended_footer_content.present? and extended_footer_content.value
     = raw extended_footer_content.value
@@ -84,13 +84,13 @@
 
       			// load the page specified in the trigger
       			wrap.load(this.getTrigger().attr("link"));
-  			
+
       		}
 
       	});
       });
     }
-           
+
   -#    = pipe_spacer
   -#    %span= t('.locale')
   -#    = link_to "EN", root_path(:locale => :en)

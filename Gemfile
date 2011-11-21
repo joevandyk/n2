@@ -61,8 +61,8 @@ end
 
 group :test, :cucumber do
 	gem "faker"
-	gem "database_cleaner", :git => "git://github.com/bmabey/database_cleaner.git"
-	gem "capybara", :git => "git://github.com/jnicklas/capybara.git"
+	gem "database_cleaner", '0.7.0'
+	gem "capybara", '1.1.2'
 	gem "cucumber"
 	gem "cucumber-rails"
 	gem "factory_girl"
