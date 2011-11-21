@@ -6,4 +6,4 @@ development:
 test:
   adapter: mysql
   encoding: utf8
-  reconnect: false
+  database: n2_test
