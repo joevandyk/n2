@@ -1284,7 +1284,7 @@ view_objects.each do |view_object_hash|
     view_object.save!
     view_object.setting.save!
   else
-    raise (view_object.errors.full_messages | view_object.setting.errors.full_messages).inspect
+    raise(view_object.errors.full_messages | view_object.setting.errors.full_messages).inspect
   end
 end
 

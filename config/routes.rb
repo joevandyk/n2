@@ -7,6 +7,23 @@ N2::Application.routes.draw do
     end
   end
 
+  resources :resource_sections do
+    member do
+      get :like
+      post :like
+    end
+    collection do
+      get :index
+      post :index
+    end
+  end
+
+  namespace :admin do
+    namespace :metadata do
+      resources :settings
+    end
+  end
+
   # TODO RAILS3
   #match 'locale' => '#index', :as => :filter
   #match 'iframe' => '#index', :as => :filter
@@ -102,6 +119,16 @@ N2::Application.routes.draw do
   match '/classifieds/:id/set_status/:status.:format' => 'classifieds#set_status', :as => :set_status_classified
   match '/classifieds/category/:category.:format' => 'classifieds#categories', :as => :categorized_classifieds
   match '/classifieds/category/:category/page/:page.:format' => 'classifieds#categories', :as => :categorized_classifieds_with_page
+
+  resources :users do
+    collection do
+      get :link_user_accounts
+      %w( feed invite current update_bio dont_ask_me_invite_friends dont_ask_me_for_email ).each do |action|
+        get action
+        post action
+      end
+    end
+  end
 
 
   resources :amazon_products do
