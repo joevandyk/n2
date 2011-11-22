@@ -13,8 +13,8 @@ class Metadata::Setting < Metadata
     self.find_setting(name, sub_type)
   end
 
-  def self.get_setting name, sub_type = nil
-    self.find_setting(name, sub_type)
+  def self.get_setting *args
+    get(*args)
   end
 
   def self.find_setting name, sub_type = nil

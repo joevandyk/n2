@@ -168,7 +168,7 @@
           %li
             %a{:href => "#links"} Your Site
             %ul
-              %li= link_to 'Facebook Connect', home_index_path, :target => "_fbc"
+              %li= link_to 'Facebook Connect', root_url, :target => "_fbc"
               %li= link_to 'Facebook Application', "http://apps.facebook.com/#{ENV['FACEBOOKER_RELATIVE_URL_ROOT']}", :target => "_fbapp"
               %li= link_to 'Facebook Directory Page', "http://www.facebook.com/apps/application.php?id=#{APP_CONFIG['facebook_application_id']}", :target => "_facebook"
               %li= link_to 'Facebook Statistics', "http://www.facebook.com/business/insights/app.php?id=#{APP_CONFIG['facebook_application_id']}", :target => "_facebook"

@@ -9,7 +9,7 @@ class AdminController < ApplicationController
     # TODO::
     #   - finish methods
     #   - add associations to edit/new forms
-    #   - dynamically find associations 
+    #   - dynamically find associations
     #   - add association lists to show page
     #   - add mixin logic
     #   - add action links
@@ -162,8 +162,8 @@ class AdminController < ApplicationController
         username == get_setting('default_admin_user').try(:value) and password == get_setting('default_admin_password').try(:value)
       end
 =end
-    else 
-      redirect_to home_index_path and return false
+    else
+      redirect_to root_url and return false
     end
   end
 
@@ -185,7 +185,7 @@ class AdminController < ApplicationController
     	redirect_to admin_path and return false
     end
   end
-  
+
   def check_dashboard_settings
     @enabled_configs = {}
     @enabled_configs[:automated_feeds] = Feed.count == 0

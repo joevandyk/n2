@@ -35,7 +35,7 @@ class ArticlesController < ApplicationController
   end
 
   def user_index
-    @user = User.active.find(params[:user_id])    
+    @user = User.active.find(params[:user_id])
     @page = false
     @current_sub_tab = 'Browse Articles'
     @articles = @user.articles.active.paginate :page => params[:page], :per_page => Content.per_page, :order => "created_at desc"
@@ -49,7 +49,7 @@ class ArticlesController < ApplicationController
     @current_sub_tab = 'New Article'
     @article = Article.active.find(params[:id])
   end
-  
+
   def update
     @article = Article.active.find(params[:id])
     @article.content.caption = @article.body = params[:article][:body]
@@ -63,7 +63,7 @@ class ArticlesController < ApplicationController
       unless @article.is_draft
         if @article.post_wall?
           session[:post_wall] = @article.content
-        end            
+        end
         flash[:success] = "Successfully posted your article!"
         redirect_to story_path(@article.content)
       else
@@ -75,11 +75,11 @@ class ArticlesController < ApplicationController
     	render :new
     end
   end
-    
+
   def new
     if get_setting('limit_daily_member_posts').present? and get_setting('limit_daily_member_posts').value.to_i <= current_user.count_daily_posts
       flash[:error] = t('error_daily_post_limit')
-      redirect_to home_index_path
+      redirect_to root_url
     end
     @current_sub_tab = 'New Article'
     @article = Article.new
@@ -105,7 +105,7 @@ class ArticlesController < ApplicationController
           if current_user.present? and current_user.is_moderator?
             @article.content.tweet
           end
-        end                    
+        end
         flash[:success] = "Successfully posted your article!"
         redirect_to story_path(@article.content)
       else
@@ -143,7 +143,7 @@ class ArticlesController < ApplicationController
   def find_article
     @article ||= Article.active.find(params[:id])
   end
-  
+
   def set_meta_klass
     set_current_meta_klass Article
   end

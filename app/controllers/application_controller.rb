@@ -356,9 +356,8 @@ class ApplicationController < ActionController::Base
     if canvas?
       link_user_accounts_users_path(:only_path => false, :iframe => 'iframe')
     else
-    	home_index_path(:only_path => false)
+      root_url
     end
-    #root_url(:only_path => false, :canvas => true)
   end
 
   def get_canvas_preference force = false
@@ -373,7 +372,7 @@ class ApplicationController < ActionController::Base
   end
 
   def get_setting name, sub_type = nil
-    Metadata::Setting.get name, sub_type
+    Metadata::Setting.get(name, sub_type)
   end
 
   def get_setting_value name, sub_type = nil
@@ -485,7 +484,7 @@ class ApplicationController < ActionController::Base
     store_location
     if current_user
       flash[:notice] = I18n.translate('sessions.invalid_permissions')
-      redirect_to home_index_path
+      redirect_to root_url
     else
       flash[:notice] = I18n.translate('sessions.access_denied')
       redirect_to new_session_path

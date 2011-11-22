@@ -19,9 +19,9 @@ module FacebookHelper
   def fb_share_app_button
     stream_post = Facebooker::StreamPost.new
     attachment = Facebooker::Attachment.new
-	  attachment.add_image(image_path('default/icon-fan-app.gif'), home_index_path(:only_path => false, :canvas => true))
+	  attachment.add_image(image_path('default/icon-fan-app.gif'), root_url(:canvas => true))
     stream_post.message = t('header.share_description')
-    stream_post.action_links = [{:text => t('facebook_learn_more'), :href => home_index_path(:only_path => false, :canvas => true)}]
+    stream_post.action_links = [{:text => t('facebook_learn_more'), :href => root_url(:canvas => true)}]
     stream_post.attachment = attachment
 
     render :partial => 'shared/misc/share_app_button', :locals => {:stream_post => stream_post}
@@ -66,12 +66,12 @@ module FacebookHelper
     # todo - is this not being used
     stream_post = Facebooker::StreamPost.new
     stream_post.message = ''
-    stream_post.action_links = [{:text => t('facebook_learn_more'), :href => home_index_path(:only_path => false, :canvas => true)}]
+    stream_post.action_links = [{:text => t('facebook_learn_more'), :href => root_url(:canvas => true)}]
     attachment = Facebooker::Attachment.new
     attachment.name = Metadata::Setting.find_setting('site_title').try(:value)
     attachment.description = t('header.share_description')
-    attachment.href = home_index_path(:only_path => false, :canvas => true)
-	  attachment.add_image(image_path('default/icon-fan-app.gif'), home_index_path(:only_path => false, :canvas => true))
+    attachment.href = root_url(:canvas => true)
+	  attachment.add_image(image_path('default/icon-fan-app.gif'), root_url(:canvas => true))
     stream_post.attachment = attachment
     stream_post
   end

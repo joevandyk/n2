@@ -2,7 +2,7 @@
   .sponsor
     %a
   .headerTitle
-    %a{:title => "Front Page - #{get_setting('site_title').try(:value)}", :href => "#{home_index_path(:only_path => false)}"}
+    %a{:title => "Front Page - #{get_setting('site_title').try(:value)}", :href => root_url}
       %h1= get_setting('site_title').try(:value)
   .meta-links
     - cache :google_search_header_html, :expires_in => 180.minute do
