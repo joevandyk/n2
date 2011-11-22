@@ -15,6 +15,7 @@ class HomeController < ApplicationController
   end
 
   def index
+    raise 'oops fail'
     if APP_CONFIG["use_view_objects"]
       render 'index_with_view_objects', :layout => 'application'
     else
