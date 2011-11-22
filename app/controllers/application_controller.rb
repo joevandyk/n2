@@ -541,7 +541,9 @@ class ApplicationController < ActionController::Base
     else
       title = site_title
     end
-    @template.text_page_title title
+    # RAILS3 TODO
+    # @template doesn't exist anymore
+    # @template.text_page_title title
   end
 
 end

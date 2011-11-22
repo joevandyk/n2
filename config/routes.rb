@@ -193,6 +193,7 @@ N2::Application.routes.draw do
 
   # RAILS3 TODO
   resources :contents, :controller => :stories, :as => :stories
+  resources :contents
 
   resources :events do
     collection do
