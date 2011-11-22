@@ -14,12 +14,14 @@ RSpec.configure do |config|
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
   config.use_transactional_fixtures = true
   config.infer_base_class_for_anonymous_controllers = false
+  config.before(:all) do
+    require 'db/seeds'
+  end
 end
 
 def valid_url_regex
   /\Ahttp(s?):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/i
 end
-
 
 
 # Makes capybara show exceptions during acceptance tests

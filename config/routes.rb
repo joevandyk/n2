@@ -1,5 +1,6 @@
 N2::Application.routes.draw do
   match '/' => "home#index", :as => :root
+
   resources :oauth_consumers do
     member do
       get :callback
@@ -196,7 +197,7 @@ N2::Application.routes.draw do
 
   resources :go, :only => :show
 
-  resources :home do
+  resource :home do
     collection do
       get :about
       get :index
@@ -211,7 +212,7 @@ N2::Application.routes.draw do
       get :preview_widgets
       get :faq
       get :helios_alt3_ads
-      get :default_ads, :as => 'default_ads_home'
+      get :default_ads
       get :terms
       get :helios_alt4_ads
       get :google_ads

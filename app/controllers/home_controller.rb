@@ -16,7 +16,7 @@ class HomeController < ApplicationController
 
   def index
     if APP_CONFIG["use_view_objects"]
-      render(:text => %{<div id="home_container">#{ViewTree.render_controller(self)}</div>}.html_safe, :layout => 'application')
+      render 'index_with_view_objects', :layout => 'application'
     else
       @page = "page_1_"
       @no_paginate = true
