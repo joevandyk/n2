@@ -2,7 +2,7 @@ source :gemcutter
 
 gem "rails", "3.1.3"
 gem "rack", "1.3.5"
-
+gem "acts_as_tree"
 gem 'haml'
 gem "sass-rails"
 gem 'compass', :git => 'git://github.com/chriseppstein/compass.git'
