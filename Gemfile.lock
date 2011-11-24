@@ -1,4 +1,13 @@
 GIT
+  remote: git://github.com/chriseppstein/compass.git
+  revision: 79d94647f9a00b06c4a83db02e86f5d404569baf
+  specs:
+    compass (0.12.alpha.1.79d9464)
+      chunky_png (~> 1.2)
+      fssm (>= 0.2.7)
+      sass (~> 3.1)
+
+GIT
   remote: git://github.com/defunkt/resque.git
   revision: af5a9a8e501c3732100b4ec768f7b2a4ec2aec2e
   specs:
@@ -98,10 +107,6 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.1.3)
-    compass (0.11.5)
-      chunky_png (~> 1.2)
-      fssm (>= 0.2.7)
-      sass (~> 3.1)
     compass-960-plugin (0.10.4)
       compass (>= 0.10.0)
     crack (0.3.1)
@@ -214,6 +219,8 @@ GEM
       activesupport (= 3.1.3)
       bundler (~> 1.0)
       railties (= 3.1.3)
+    rails-dev-tweaks (0.5.1)
+      rails (~> 3.1.0)
     railties (3.1.3)
       actionpack (= 3.1.3)
       activesupport (= 3.1.3)
@@ -254,6 +261,12 @@ GEM
     rufus-scheduler (2.0.13)
       tzinfo (>= 0.3.23)
     sass (3.1.10)
+    sass-rails (3.1.4)
+      actionpack (~> 3.1.0)
+      railties (~> 3.1.0)
+      sass (>= 3.1.4)
+      sprockets (~> 2.0.0)
+      tilt (~> 1.3.2)
     selenium-webdriver (2.13.0)
       childprocess (>= 0.2.1)
       ffi (~> 1.0.9)
@@ -313,7 +326,7 @@ DEPENDENCIES
   capistrano-ext
   capybara (= 1.1.2)
   coffee-script (= 2.2.0)
-  compass
+  compass!
   compass-960-plugin
   cucumber
   cucumber-rails
@@ -338,6 +351,7 @@ DEPENDENCIES
   pickle
   rack (= 1.3.5)
   rails (= 3.1.3)
+  rails-dev-tweaks
   rcov
   redis
   redis-namespace
@@ -347,6 +361,7 @@ DEPENDENCIES
   rr
   rspec
   rspec-rails
+  sass-rails
   sax-machine!
   sitemap_generator
   twitter

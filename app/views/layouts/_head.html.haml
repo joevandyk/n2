@@ -15,11 +15,11 @@
 %link{:rel  => "icon", :href => image_path('default/icon-fan-app.gif')}
 
 - if iframe_facebook_request?
-  = stylesheet_link_tag 'compiled/fb_grid.css', :media => 'screen, projection'
+  = stylesheet_link_tag 'fb_grid.css', :media => 'screen, projection'
 - else
-  = stylesheet_link_tag 'compiled/grid.css', :media => 'screen, projection'
-= stylesheet_link_tag 'compiled/text.css', :media => 'print'
-= raw stylesheet_link_merged :base
+  = stylesheet_link_tag 'grid.css', :media => 'screen, projection'
+= stylesheet_link_tag 'text.css', :media => 'print'
+= stylesheet_link_tag :base
 
 - if get_setting('typekit').present?
   - typekit = get_setting('typekit').value
@@ -41,7 +41,7 @@
 - else
   = javascript_include_tag 'http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js', 'http://cdn.jquerytools.org/1.2.2/all/jquery.tools.min.js',"http://s7.addthis.com/js/250/addthis_widget.js", "http://platform.twitter.com/widgets.js"
 
-= raw javascript_include_merged :base
+= javascript_include_tag :base
 
 = javascript_include_tag 'jquery.ellipsis'
 - if iframe_facebook_request?

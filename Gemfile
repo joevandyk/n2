@@ -4,7 +4,8 @@ gem "rails", "3.1.3"
 gem "rack", "1.3.5"
 
 gem 'haml'
-gem 'compass'
+gem "sass-rails"
+gem 'compass', :git => 'git://github.com/chriseppstein/compass.git'
 gem 'compass-960-plugin'
 gem 'json'
 gem 'mogli'
@@ -47,6 +48,7 @@ gem 'sax-machine', :git => 'git://github.com/pauldix/sax-machine.git'
 gem "omniauth"
 
 group :development do
+  gem "rails-dev-tweaks"
   gem "wirble"
   gem "awesome_print"
 	gem "faker"

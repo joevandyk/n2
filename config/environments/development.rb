@@ -9,4 +9,14 @@ N2::Application.configure do
   config.assets.compress = false
   config.assets.compile = true
   config.assets.debug = true
+
+  config.dev_tweaks.autoload_rules do
+    keep :all
+
+    skip '/favicon.ico'
+    skip :assets
+    skip :xhr
+    keep :forced
+  end
+
 end

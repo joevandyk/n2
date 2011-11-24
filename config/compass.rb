@@ -1,13 +1,20 @@
 require 'ninesixty'
-
+# This configuration file works with both the Compass command line tool and within Rails.
+# Require any additional compass plugins here.
 project_type = :rails
-project_path = Rails.root if defined?(Rails.root)
 
-http_path = "/"
-css_dir = "public/stylesheets/compiled"
-sass_dir = "app/assets/stylesheets"
-images_dir = "app/assets/images"
-javascripts_dir = "app/assets/javascripts"
+# Set this to the root of your project when deployed:
+http_path = '/'
+http_images_path = '/assets/'
 
-http_stylesheets_path = "/assets"
-http_javascripts_path = "/assets"
+# You can select your preferred output style here (can be overridden via the command line):
+output_style = :compressed
+
+# To enable relative paths to assets via compass helper functions. Uncomment:
+# relative_assets = true
+
+# To disable debugging comments that display the original location of your selectors. Uncomment:
+# line_comments = false
+
+preferred_syntax = :sass
+
