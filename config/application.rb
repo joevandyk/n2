@@ -13,5 +13,6 @@ module N2
     config.filter_parameters += [:password]
     config.assets.enabled = true
     config.assets.version = '1.0'
+    config.active_record.schema_format = :sql
   end
 end

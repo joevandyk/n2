@@ -500,8 +500,9 @@ class ApplicationController < ActionController::Base
     if cache_id =~ /^([a-zA-Z_]+):([0-9]+)$/
       begin
         $1.classify.constantize.send(:find_by_id, $2)
-      rescue Exception => e
-        nil
+      # Should rescue only the necessary exceptions
+      #rescue Exception => e
+        #nil
       end
     else
       nil
