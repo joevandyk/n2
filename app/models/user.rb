@@ -469,25 +469,24 @@ class User < ActiveRecord::Base
     User.active.find_by_id(host_id) || User.active.find_by_fb_user_id(host_id) || UserProfile.active.find_by_facebook_user_id(host_id).try(:user) || nil
   end
 
-  def self.build_from_omniauth(omniauth)
-    user = self.new
-    user.name = omniauth['user_info']['name']
+  def self.build_from_omniauth(omniauth_auth_hash)
+    user = User.new
+    user.name = omniauth_auth_hash.info.name
     user.twitter_user = true
-
     user.build_profile
-    user.profile.profile_image = omniauth['user_info']['image']
-    user.build_authentication_from_omniauth(omniauth)
+    user.profile.profile_image = omniauth_auth_hash.info.image
+    user.build_authentication_from_omniauth(omniauth_auth_hash)
     user
   end
 
   def build_authentication_from_omniauth(omniauth)
     self.authentications.build({
-                                 :provider           => omniauth['provider'],
-                                 :uid                => omniauth['uid'],
-                                 :credentials_token  => omniauth['credentials']['token'],
-                                 :credentials_secret => omniauth['credentials']['secret'],
-                                 :nickname           => omniauth['user_info']['nickname'],
-                                 :description        => omniauth['user_info']['description'],
+                                 :provider           => omniauth.provider,
+                                 :uid                => omniauth.uid,
+                                 :credentials_token  => omniauth.credentials.token,
+                                 :credentials_secret => omniauth.credentials.secret,
+                                 :nickname           => omniauth.info.nickname,
+                                 :description        => omniauth.info.description,
                                  :raw_output         => omniauth.except('extra').to_json
                                })
   end

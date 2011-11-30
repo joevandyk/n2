@@ -1,8 +1,7 @@
 N2::Application.routes.draw do
   match '/' => "home#index", :as => :root
 
-  #match '/auth/:provider/callback', to: 'authentications#create'
-
+  match '/auth/:provider/callback' => "sessions#create"
 
   resources :oauth_consumers do
     member do
@@ -26,6 +25,8 @@ N2::Application.routes.draw do
       resources :settings
     end
   end
+
+  match 'admin' => "admin#index"
 
   # TODO RAILS3
   #match 'locale' => '#index', :as => :filter
