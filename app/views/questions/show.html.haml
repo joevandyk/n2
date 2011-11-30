@@ -45,9 +45,9 @@
         %p== #{t 'questions.logged_in_error'} #{link_to 'Login now', login_path}
       - else
         - semantic_form_for @answer, :url => create_answer_question_path(@question) do |form|
-          - form.inputs do
+          = form.inputs do
             = form.input :answer, :label => false
-          - form.buttons do
+          = form.buttons do
             = form.commit_button :class => 'float_right', :button_html => { :class => "btn" }
   - if @outbrain_item
     = render :partial => 'shared/external/outbrain_wrapper'
