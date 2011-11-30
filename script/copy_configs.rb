@@ -5,6 +5,7 @@ files = {
   "resque.yml.sample"          => "resque.yml",
   "database.ci.yml"            => "database.yml",
   "application_settings.yml.sample" => "application_settings.yml"
+  "providers.yml.sample" => "providers.yml"
 }
 
 files.each do |orig, dest|
