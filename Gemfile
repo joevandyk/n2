@@ -45,7 +45,9 @@ gem 'loofah'
 gem 'curb', :git => 'git://github.com/taf2/curb.git'
 gem 'sax-machine', :git => 'git://github.com/pauldix/sax-machine.git'
 
-gem "omniauth"
+gem "omniauth", '1.0.1'
+gem "omniauth-facebook", :git => "git://github.com/mkdynamic/omniauth-facebook.git"
+
 
 group :development do
   gem "rails-dev-tweaks"

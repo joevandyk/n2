@@ -9,6 +9,10 @@ ActionMailer::Base.default_url_options[:host] = 'http://test.com' # APP_CONFIG['
 
 Time.zone = APP_CONFIG['time_zone'] || 'Pacific Time (US & Canada)'
 
+config_file = File.join(Rails.root, "config", "providers.yml")
+config = File.exists?(config_file) ? YAML::load_file(config_file) : nil
+APP_CONFIG['omniauth'] = config
+
 # Use Bit.ly version 3 API
 if defined?(Bitly)
   Bitly.use_api_version_3

@@ -1,6 +1,9 @@
 N2::Application.routes.draw do
   match '/' => "home#index", :as => :root
 
+  #match '/auth/:provider/callback', to: 'authentications#create'
+
+
   resources :oauth_consumers do
     member do
       get :callback

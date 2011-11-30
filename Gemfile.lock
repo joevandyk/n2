@@ -18,6 +18,13 @@ GIT
       vegas (~> 0.1.2)
 
 GIT
+  remote: git://github.com/mkdynamic/omniauth-facebook.git
+  revision: ae23a8768c7db6bf2a0a21d404c034d29deef028
+  specs:
+    omniauth-facebook (1.0.0)
+      omniauth-oauth2 (~> 1.0.0)
+
+GIT
   remote: git://github.com/pauldix/sax-machine.git
   revision: 41cae0195263b97da3029147d7214bfe3d24d0e4
   specs:
@@ -189,9 +196,12 @@ GEM
     oauth2 (0.5.1)
       faraday (~> 0.7.4)
       multi_json (~> 1.0.3)
-    omniauth (1.0.0)
+    omniauth (1.0.1)
       hashie (~> 1.2)
       rack
+    omniauth-oauth2 (1.0.0)
+      oauth2 (~> 0.5.0)
+      omniauth (~> 1.0)
     paperclip (2.4.5)
       activerecord (>= 2.3.0)
       activesupport (>= 2.3.2)
@@ -348,7 +358,8 @@ DEPENDENCIES
   newrelic_rpm
   nokogiri
   oauth-plugin (>= 0.4.0.pre1)
-  omniauth
+  omniauth (= 1.0.1)
+  omniauth-facebook!
   paperclip
   pickle
   rack (= 1.3.5)
