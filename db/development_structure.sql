@@ -83,7 +83,7 @@ CREATE TABLE `authentications` (
   KEY `index_authentications_on_uid` (`uid`),
   KEY `index_authentications_on_user_id_and_provider` (`user_id`,`provider`),
   KEY `index_authentications_on_user_id` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `cards` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -254,7 +254,7 @@ CREATE TABLE `contents` (
   KEY `index_contents_on_story_type` (`story_type`),
   KEY `relatedItems` (`title`),
   KEY `relatedText` (`title`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `dashboard_messages` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -852,7 +852,7 @@ CREATE TABLE `slugs` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `index_slugs_on_n_s_s_and_s` (`name`,`sluggable_type`,`scope`,`sequence`),
   KEY `index_slugs_on_sluggable_id` (`sluggable_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `sources` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -868,7 +868,7 @@ CREATE TABLE `sources` (
   UNIQUE KEY `index_sources_on_url` (`url`),
   KEY `index_sources_on_black_list` (`black_list`),
   KEY `index_sources_on_white_list` (`white_list`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `taggings` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1049,7 +1049,7 @@ CREATE TABLE `user_profiles` (
   `profile_image` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `index_user_infos_on_user_id` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -1107,7 +1107,7 @@ CREATE TABLE `users` (
   KEY `index_users_on_posts_count` (`posts_count`),
   KEY `index_users_on_system_user` (`system_user`),
   KEY `index_users_on_twitter_user` (`twitter_user`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `videos` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
