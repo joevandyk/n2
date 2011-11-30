@@ -15,7 +15,7 @@ gem "formtastic"
 gem "friendly_id"
 gem 'will_paginate'
 gem "oauth-plugin", ">= 0.4.0.pre1"
-gem "twitter"
+gem "twitter", :git => "https://github.com/jnunemaker/twitter.git"
 gem "mysql"
 gem "bitly"
 gem "redis"

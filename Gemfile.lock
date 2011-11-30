@@ -37,6 +37,16 @@ GIT
   specs:
     curb (0.7.16)
 
+GIT
+  remote: https://github.com/jnunemaker/twitter.git
+  revision: 9645fde056353a4fe85a64632ed58f043cfe8871
+  specs:
+    twitter (2.0.0)
+      activesupport (>= 2.3.9, < 4)
+      faraday (~> 0.7)
+      multi_json (~> 1.0)
+      simple_oauth (~> 0.1)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -299,14 +309,6 @@ GEM
     treetop (1.4.10)
       polyglot
       polyglot (>= 0.3.1)
-    twitter (2.0.0)
-      activesupport (~> 3.0)
-      faraday (~> 0.7)
-      multi_json (~> 1.0)
-      simple_oauth (~> 0.1)
-      twitter-text (~> 1.4)
-    twitter-text (1.4.13)
-      activesupport
     tzinfo (0.3.31)
     unicorn (4.1.1)
       kgio (~> 2.4)
@@ -377,7 +379,7 @@ DEPENDENCIES
   sass-rails
   sax-machine!
   sitemap_generator
-  twitter
+  twitter!
   unicorn
   will_paginate
   wirble
