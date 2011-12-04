@@ -20,9 +20,76 @@ N2::Application.routes.draw do
     end
   end
 
+  match '/overlays/tweet' => 'overlays#tweet', :as => :overlay_tweet
+
   namespace :admin do
+    match '/block.:format' => 'misc#block', :as => :block
+    match '/flag_item.:format' => 'misc#flag', :as => :flag_item
+    match '/feature.:format' => 'misc#feature', :as => :feature
+    match '/featured_items/:id/load_items/page/:page' => 'featured_items#load_items', :as => :feature
+    match '/translations.:format' => 'translations#translations', :as => :translations
+    match '/asset_translations.:format' => 'translations#asset_translations', :as => :asset_translations
+
+    resources :activity_scores
+    resources :ad_layouts
+    resources :ads
+    resources :announcements
+    resources :answers
+    resources :cards
+    resources :classifieds
+    resources :comments
+    resources :content_dashboard, :collection => { :news_topics => [:get, :post, :put] }
+    resources :content_images
+    resources :contents
+    resources :dashboard_messages, :member => { :send_global => [:get, :post], :clear_global => [:get, :post] }, :collection => { :clear_global => [:get, :post] }
+    resources :events, :collection => { :import_zvents => [:get, :post]}
+    resources :featured_items, :member => { :load_template => [:get, :post], :load_new_template => [:get, :post], :load_items => [:get, :post] }, :collection => { :save => :post, :new_featured_widgets => :get, :save_featured_widgets => :post }
+    resources :feeds, :member => { :fetch_new => :get }
+    resources :flags
+    resources :forums, :collection => { :reorder => [:get, :post] }
+    resources :galleries
+    resources :gos
+    resources :idea_boards
+    resources :ideas
+    resources :images
+    resources :locales, :collection => { :refresh => [:get] }, :has_many => :translations
+    resources :newswires
+    resources :prediction_groups, :member => { :approve => [:get, :post] }
+    resources :prediction_guesses
+    resources :prediction_questions, :member => { :approve => [:get, :post] }
+    resources :prediction_results, :member => { :accept => [:get, :post] }
+    resources :prediction_scores, :collection => { :refresh_all => [:get, :post ] }
+    resources :questions
+    resources :related_items
+    resources :resource_sections
+    resources :resources
+    resources :settings
+    resources :setting_groups
+    resources :skip_images
+    resources :sources
+    resources :sponsor_zones
+    resources :title_filters
+    resources :topics
+    resources :tweet_streams, :member => { :fetch_new_tweets => :get }
+    resources :tweets
+    resources :tweet_accounts
+    resources :twitter_settings, :collection => { :update_keys => :post, :update_auth => :post, :reset_keys => :get }
+    resources :user_profiles,      :active_scaffold => true
+    resources :users,           :active_scaffold => true
+    resources :view_objects
+    resources :view_object_templates
+    resources :votes,           :active_scaffold => true
+    resources :widgets, :collection => { :save => :post, :new_widgets => :get, :newer_widgets => :get, :save_newer_widgets => :post }
+
     namespace :metadata do
+      resources :activity_scores
+      resources :ad_layouts
+      resources :ads
+      resources :custom_widgets
       resources :settings
+      resources :skip_images
+      resources :sponsor_zones
+      resources :title_filters
     end
   end
 
@@ -57,6 +124,7 @@ N2::Application.routes.draw do
   match '/contact_us.:format' => 'home#contact_us', :as => :contact_us
   match '/app_tab.:format' => 'home#app_tab', :as => :app_tab
   match '/external_page.:format' => 'home#external_page', :as => :external_page
+
   match '/newswires/feed/:feed_id.:format' => 'newswires#feed_index', :as => :feed_newswires
   match '/articles/page/:page.:format' => 'articles#index', :as => :paged_articles
   match '/articles/user/:user_id.:format' => 'articles#user_index', :as => :user_articles
@@ -85,6 +153,8 @@ N2::Application.routes.draw do
   match '/articles/user/:user_id/page/:page.:format' => 'articles#user_index', :as => :paged_user_articles
   match '/users/:id/page/:page.:format' => 'users#show', :as => :paged_users
   match '/users/:id/page/:page.:format' => 'users#show', :as => :paged_users_with_format
+
+
   match '/articles/tag/:tag.:format' => 'articles#tags', :as => :tagged_articles
   match '/articles/tag/:tag/page/:page.:format' => 'articles#tags', :as => :tagged_articles_with_page
   match '/classifieds/tag/:tag.:format' => 'classifieds#tags', :as => :tagged_classifieds
@@ -109,6 +179,7 @@ N2::Application.routes.draw do
   match '/resources/tag/:tag/page/:page.:format' => 'resources#tags', :as => :tagged_resources_with_page
   match '/stories/tag/:tag.:format' => 'stories#tags', :as => :tagged_stories
   match '/stories/tag/:tag/page/:page.:format' => 'stories#tags', :as => :tagged_stories_with_page
+
   match '/ideas/tag/:tag/page/:page.:format' => 'ideas#tags', :as => :idea_tag_with_page
   match '/ideas/tag/:tag.:format' => 'ideas#tags', :as => :idea_tag
   match '/resources/tag/:tag/page/:page.:format' => 'resources#tags', :as => :resource_tag_with_page
@@ -120,6 +191,7 @@ N2::Application.routes.draw do
   match '/prediction_questions/tag/:tag/page/:page.:format' => 'prediction_questions#tags', :as => :prediction_question_tag_with_page
   match '/prediction_questions/tag/:tag.:format' => 'prediction_questions#tags', :as => :prediction_question_tag
   match '/users/top/:top.:format' => 'users#index', :as => :top_users
+
   match '/classifieds/:id/set_status/:status.:format' => 'classifieds#set_status', :as => :set_status_classified
   match '/classifieds/category/:category.:format' => 'classifieds#categories', :as => :categorized_classifieds
   match '/classifieds/category/:category/page/:page.:format' => 'classifieds#categories', :as => :categorized_classifieds_with_page
@@ -134,6 +206,31 @@ N2::Application.routes.draw do
     end
   end
 
+
+  resources :view_objects do
+    collection do
+      get :test
+    end
+  end
+
+  resources :widgets do
+    collection do
+      get :newswires
+      get :questions
+      get :forum_roll
+      get :topics
+      get :blog_roll
+      get :blogger_profiles
+      get :fan_applications
+      get :add_bookmark
+      get :user_articles
+      get :articles
+      get :stories
+      get :activities
+    end
+  end
+
+  match '/cards/received/:card_id/from/:user_id.:format' => 'cards#received', :as => :received_cards
 
   resources :amazon_products do
     collection do
