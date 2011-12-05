@@ -47,6 +47,7 @@ gem 'sax-machine', :git => 'git://github.com/pauldix/sax-machine.git'
 
 gem "omniauth", '1.0.1'
 gem "omniauth-facebook", :git => "git://github.com/mkdynamic/omniauth-facebook.git"
+gem "omniauth-twitter"
 
 
 group :development do

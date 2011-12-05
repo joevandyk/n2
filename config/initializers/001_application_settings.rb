@@ -16,14 +16,17 @@ APP_CONFIG[:omniauth] = config
 if APP_CONFIG[:omniauth].present?
   APP_CONFIG[:omniauth][:providers].each do |provider_name, settings|
     N2::Application.config.middleware.use(OmniAuth::Builder) do
-      provider(provider_name.to_sym,
-               settings[:key],
-               settings[:secret],
-               settings[:options])
+      provider_arguments = [provider_name.to_sym, settings[:key], settings[:secret]]
 
+      if settings[:options].present?
+        provider_arguments << settings[:options]
+      end
+
+      provider(*provider_arguments)
     end
   end
 end
+
 
 # Use Bit.ly version 3 API
 if defined?(Bitly)
