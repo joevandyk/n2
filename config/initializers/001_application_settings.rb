@@ -13,6 +13,13 @@ config_file = File.join(Rails.root, "config", "providers.yml")
 config = File.exists?(config_file) ? YAML::load_file(config_file) : nil
 APP_CONFIG['omniauth'] = config
 
+N2::Application.config.middleware.use OmniAuth::Builder do
+  provider(:facebook,
+           APP_CONFIG['omniauth']['providers']['facebook']['key'],
+           APP_CONFIG['omniauth']['providers']['facebook']['secret'])
+
+end
+
 # Use Bit.ly version 3 API
 if defined?(Bitly)
   Bitly.use_api_version_3
