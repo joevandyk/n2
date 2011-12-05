@@ -3,7 +3,7 @@
 
 app_settings_file = "#{Rails.root}/config/application_settings.yml"
 
-APP_CONFIG = YAML.load_file(app_settings_file)[Rails.env]
+APP_CONFIG = ActiveSupport::HashWithIndifferentAccess.new(YAML.load_file(app_settings_file)[Rails.env])
 APP_CONFIG['use_view_objects'] = true unless APP_CONFIG.keys.include? "use_view_objects"
 ActionMailer::Base.default_url_options[:host] = 'http://test.com' # APP_CONFIG['base_site_url'].sub(/^https?:\/\//,'')
 
@@ -11,13 +11,18 @@ Time.zone = APP_CONFIG['time_zone'] || 'Pacific Time (US & Canada)'
 
 config_file = File.join(Rails.root, "config", "providers.yml")
 config = File.exists?(config_file) ? YAML::load_file(config_file) : nil
-APP_CONFIG['omniauth'] = config
+APP_CONFIG[:omniauth] = config
 
-N2::Application.config.middleware.use OmniAuth::Builder do
-  provider(:facebook,
-           APP_CONFIG['omniauth']['providers']['facebook']['key'],
-           APP_CONFIG['omniauth']['providers']['facebook']['secret'])
+if APP_CONFIG[:omniauth].present?
+  APP_CONFIG[:omniauth][:providers].each do |provider_name, settings|
+    N2::Application.config.middleware.use(OmniAuth::Builder) do
+      provider(provider_name.to_sym,
+               settings[:key],
+               settings[:secret],
+               settings[:options])
 
+    end
+  end
 end
 
 # Use Bit.ly version 3 API
