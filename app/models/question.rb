@@ -29,7 +29,7 @@ class Question < ActiveRecord::Base
     self.tally({
     	:at_least => 1,
     	:limit    => 10,
-    	:order    => "votes.count desc"
+    	:order    => "vote_count desc"
     })
   end
 

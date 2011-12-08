@@ -115,7 +115,7 @@ class ApplicationController < ActionController::Base
     @top_stories ||= Content.active.tally({
     	:at_least => 1,
     	:limit    => 5,
-    	:order    => "votes.count desc"
+    	:order    => "vote_count desc"
     })
   end
 
@@ -143,7 +143,7 @@ class ApplicationController < ActionController::Base
     @top_ideas ||= Idea.active.tally({
     	:at_least => 1,
     	:limit    => 5,
-    	:order    => "votes.count desc"
+    	:order    => "vote_count desc"
     })
   end
 
@@ -200,7 +200,7 @@ class ApplicationController < ActionController::Base
     @top_resources ||= Resource.active.tally({
     	:at_least => 1,
     	:limit    => 5,
-    	:order    => "votes.count desc"
+    	:order    => "vote_count desc"
     })
   end
 
@@ -216,7 +216,7 @@ class ApplicationController < ActionController::Base
     @top_events ||= Event.active.upcoming.tally({
     	:at_least => 1,
     	:limit    => 5,
-    	:order    => "votes.count desc"
+    	:order    => "vote_count desc"
     })
   end
 

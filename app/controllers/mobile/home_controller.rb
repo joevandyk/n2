@@ -6,7 +6,7 @@ class Mobile::HomeController < ApplicationController
     @top_stories = Content.active.tally({
     	:at_least => 1,
     	:limit    => 10,
-    	:order    => "votes.count desc"
+    	:order    => "vote_count desc"
     })
     @comments = Comment.newest(10)
     @likes = Vote.newest(10)
