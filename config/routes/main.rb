@@ -157,6 +157,10 @@ N2::Application.routes.draw do
     end
   end
 
+  resources :topics do
+    resources :comments
+  end
+
   match '/cards/received/:card_id/from/:user_id.:format' => 'cards#received', :as => :received_cards
 
   resources :amazon_products do
