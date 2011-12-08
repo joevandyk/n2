@@ -10,6 +10,7 @@ gem 'compass-960-plugin'
 gem 'json'
 gem 'mogli'
 gem 'coffee-script', '2.2.0'
+gem "thumbs_up"
 
 gem "formtastic"
 gem "friendly_id"

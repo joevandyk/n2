@@ -10,6 +10,7 @@ N2::Application.routes.draw do
   end
 
   resources :resource_sections do
+    resources :resources
     member do
       get :like
       post :like
@@ -368,4 +369,8 @@ N2::Application.routes.draw do
       post :index
     end
   end
+
+  # This will redirect /images/something.jpg to /assets/something.jpg
+  # Should be removed once all the code uses the Rails asset pipeline
+  match "/images/*path.:format" => redirect { |params| "/assets/#{ params[:path] }.#{ params[:format]}" }
 end
