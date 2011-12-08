@@ -15,27 +15,106 @@ N2::Application.routes.draw do
     resources :cards
     resources :classifieds
     resources :comments
-    resources :content_dashboard, :collection => { :news_topics => [:get, :post, :put] }
+    resources :content_dashboard do
+      collection do
+        get :news_topics
+        post :news_topics
+        put :news_topics
+      end
+    end
+
     resources :content_images
     resources :contents
-    resources :dashboard_messages, :member => { :send_global => [:get, :post], :clear_global => [:get, :post] }, :collection => { :clear_global => [:get, :post] }
-    resources :events, :collection => { :import_zvents => [:get, :post]}
-    resources :featured_items, :member => { :load_template => [:get, :post], :load_new_template => [:get, :post], :load_items => [:get, :post] }, :collection => { :save => :post, :new_featured_widgets => :get, :save_featured_widgets => :post }
-    resources :feeds, :member => { :fetch_new => :get }
+
+    resources :dashboard_messages do
+      member do
+        post :send_global
+        get :send_global
+        get :clear_global
+        post :clear_global
+      end
+      collection do
+        get :clear_global
+        post :clear_global
+      end
+    end
+
+
+    resources :events do
+      collection do
+        get :import_zvents
+        post :import_zvents
+      end
+    end
+
+
+    resources :featured_items do
+      member do
+        get :load_template
+        post :load_template
+        get :load_new_template
+        post :load_new_template
+        get :load_items
+        post :load_items
+      end
+      collection do
+        post :save
+        get :new_featured_widgets
+        post :save_featured_widgets
+      end
+    end
+
+    resources :feeds do
+      member do
+        get :fetch_new
+      end
+    end
     resources :flags
-    resources :forums, :collection => { :reorder => [:get, :post] }
+    resources :forums do
+      collection do
+        get :reorder
+        post :reorder
+      end
+    end
     resources :galleries
     resources :gos
     resources :idea_boards
     resources :ideas
     resources :images
-    resources :locales, :collection => { :refresh => [:get] }, :has_many => :translations
+    resources :locales do
+      collection do
+        get :refresh
+      end
+      resources :translations
+    end
+
     resources :newswires
-    resources :prediction_groups, :member => { :approve => [:get, :post] }
+    resources :prediction_groups do
+      member do
+        get :approve
+        post :approve
+      end
+    end
     resources :prediction_guesses
-    resources :prediction_questions, :member => { :approve => [:get, :post] }
-    resources :prediction_results, :member => { :accept => [:get, :post] }
-    resources :prediction_scores, :collection => { :refresh_all => [:get, :post ] }
+    resources :prediction_questions do
+      member do
+        get :approve
+        post :approve
+      end
+    end
+
+    resources :prediction_results do
+      member do
+        get :accept
+        post :accept
+      end
+    end
+    resources :prediction_scores do
+      collection do
+        get :refresh_all
+        post :refresh_all
+      end
+    end
     resources :questions
     resources :related_items
     resources :resource_sections
@@ -47,16 +126,35 @@ N2::Application.routes.draw do
     resources :sponsor_zones
     resources :title_filters
     resources :topics
-    resources :tweet_streams, :member => { :fetch_new_tweets => :get }
+    resources :tweet_streams do
+      member do
+        get :fetch_new_tweets
+      end
+    end
+
     resources :tweets
     resources :tweet_accounts
-    resources :twitter_settings, :collection => { :update_keys => :post, :update_auth => :post, :reset_keys => :get }
+    resources :twitter_settings do
+      collection do
+        post :update_keys
+        post :update_auth
+        get :reset_keys
+      end
+    end
     resources :user_profiles,      :active_scaffold => true
     resources :users,           :active_scaffold => true
     resources :view_objects
     resources :view_object_templates
     resources :votes,           :active_scaffold => true
-    resources :widgets, :collection => { :save => :post, :new_widgets => :get, :newer_widgets => :get, :save_newer_widgets => :post }
+
+    resources :widgets do
+      collection do
+        post :save
+        get :new_widgets
+        get :newer_widgets
+        post :save_newer_widgets
+      end
+    end
 
     namespace :metadata do
       resources :activity_scores

@@ -156,15 +156,14 @@
                   %li= link_to 'Ad layouts', admin_metadata_ad_layouts_path
                   %li= link_to 'Ad banners', admin_metadata_ads_path
                   %li= link_to 'Sponsor zones', admin_metadata_sponsor_zones_path
-              - # RAILS3 TODO
-                %li
-                  %a{:href => "#modules-settings-locales"} Text
-                  %ul
-                    %li= link_to 'Default text', admin_locale_translations_path(:locale_id => 'en')
-                    %li= link_to 'Default pages', admin_locale_translations_path(:locale_id => 'en',:type => 'static_pages')
-                    %li= link_to 'Locales', admin_locales_path
-                    %li= link_to 'Translations', admin_translations_path
-                    %li= link_to 'Refresh changes', refresh_admin_locales_path
+              %li
+                %a{:href => "#modules-settings-locales"} Text
+                %ul
+                  %li= link_to 'Default text', admin_locale_translations_path(:locale_id => 'en')
+                  %li= link_to 'Default pages', admin_locale_translations_path(:locale_id => 'en',:type => 'static_pages')
+                  %li= link_to 'Locales', admin_locales_path
+                  %li= link_to 'Translations', admin_translations_path
+                  %li= link_to 'Refresh changes', refresh_admin_locales_path
           %li
             %a{:href => "#links"} Your Site
             %ul
