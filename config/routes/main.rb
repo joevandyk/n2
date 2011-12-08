@@ -262,7 +262,7 @@ N2::Application.routes.draw do
 
   resources :go, :only => :show
 
-  resource :home do
+  resource :home, :controller => "home" do
     collection do
       get :about
       get :index
