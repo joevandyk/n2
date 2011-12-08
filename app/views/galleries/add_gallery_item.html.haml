@@ -8,7 +8,7 @@
       - unless current_user.present?
         %p== #{t 'galleries.logged_in_error'} #{link_to 'Login now', login_path}
       - else
-        - semantic_form_for @gallery_item, :url => add_gallery_item_gallery_path(@gallery), :html => { :multipart => true } do |form|
+        = semantic_form_for @gallery_item, :url => add_gallery_item_gallery_path(@gallery), :html => { :multipart => true } do |form|
           = form.inputs do
             = form.input :item_url, :hint => t('galleries.item_url_hint')
             - if @enable_file_uploads

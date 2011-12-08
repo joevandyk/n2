@@ -2,7 +2,7 @@
   #contactBox.clearfix
     %h1= t('.contact_title')
     %p= t('.contact_intro')
-    - semantic_form_for @message, :url => contact_us_path do |form|
+    = semantic_form_for @message, :url => contact_us_path do |form|
       = form.inputs do
         = form.input :subject
         = form.input :email

@@ -1,7 +1,7 @@
 %h2== New #{item.class.name.titleize}
 - associations ||= {}
 - include_media_form ||= false
-- semantic_form_for [:admin, item], :html => { :multipart => (!! include_media_form) } do |form|
+= semantic_form_for [:admin, item], :html => { :multipart => (!! include_media_form) } do |form|
   = form.inputs do
     - fields.each do |field|
       - if field.is_a? Proc

@@ -3,7 +3,7 @@
     .panelBar
       %h2= t('galleries.edit', :gallery => @gallery.title)
     .formBox
-      - semantic_form_for @gallery, :html => { :multipart => true } do |form|
+      = semantic_form_for @gallery, :html => { :multipart => true } do |form|
         = form.inputs do
           = form.input :title
           = form.input :description, :input_html => { :rows => 5 }

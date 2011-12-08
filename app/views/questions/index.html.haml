@@ -10,7 +10,7 @@
       - unless current_user.present?
         %p== #{t 'questions.logged_in_error'} #{link_to 'Login now', login_path}
       - else
-        - semantic_form_for Question.new do |form|
+        = semantic_form_for Question.new do |form|
           = form.inputs do
             = form.input :question, :required => false, :label => false
           .fullQuestionForm.hide

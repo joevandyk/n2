@@ -35,7 +35,7 @@
       	$('textarea.embed-audio', $(this).parents('fieldset.inputs')).removeClass('hide').show();
       	$(this).remove();
       });
-    });      
+    });
 -# content_for :sub_nav do
   - if @classified_board.present?
     = render :partial => 'shared/subnav/classified_boards_subnav'
@@ -52,17 +52,17 @@
             %li
               %a{:href => "#"}= t('wizard.classified')
             %li
-              %a{:href => "#"}= t('wizard.images') 
+              %a{:href => "#"}= t('wizard.images')
             %li
-              %a{:href => "#"}= t('wizard.more') 
-          - semantic_form_for @classified, :html => { :multipart => true, :class => "post_classified" } do |form|
+              %a{:href => "#"}= t('wizard.more')
+          = semantic_form_for @classified, :html => { :multipart => true, :class => "post_classified" } do |form|
             .panes
               .panel1
                 %h1.title= t('classifieds.edit')
                 %fieldset
-                  = form.inputs do                
+                  = form.inputs do
                     = form.input :title, :label => t('classifieds.new.title'), :hint => t('.hint_classified_title')
-                    = form.input :details, :hint => t('classifieds.new.hint_classified_details'), :required => false 
+                    = form.input :details, :hint => t('classifieds.new.hint_classified_details'), :required => false
                     - if Classified.enable_sale_items?
                       = form.input :price, :hint => t('classifieds.new.hint_classified_details'), :required => false
                     = form.input :location_text, :label => 'Location', :hint => t('classifieds.new.hint_classified_location'), :required => false

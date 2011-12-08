@@ -39,12 +39,12 @@
       - if @question.answers.present?
         %h2= t('add_your_own_answer')
       - else
-        %h2= t('be_first_to_answer')          
+        %h2= t('be_first_to_answer')
     .formBox
       - unless current_user.present?
         %p== #{t 'questions.logged_in_error'} #{link_to 'Login now', login_path}
       - else
-        - semantic_form_for @answer, :url => create_answer_question_path(@question) do |form|
+        = semantic_form_for @answer, :url => create_answer_question_path(@question) do |form|
           = form.inputs do
             = form.input :answer, :label => false
           = form.buttons do

@@ -1,11 +1,11 @@
 -# content_for :sub_nav do
-  
+
 #col_left
   .panel_2
     .panelBar
       %h2= t('forums.topics.new_header')
     .formBox
-      - semantic_form_for [@forum, @topic], :html => { :multipart => true } do |form|
+      = semantic_form_for [@forum, @topic], :html => { :multipart => true } do |form|
         = render :partial => 'topic_form', :locals => { :form => form, :topic => @topic }
         = form.buttons do
           -# TODO:: switch this to locale

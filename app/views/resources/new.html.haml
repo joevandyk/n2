@@ -35,14 +35,14 @@
       	$('textarea.embed-audio', $(this).parents('fieldset.inputs')).removeClass('hide').show();
       	$(this).remove();
       });
-    });   
+    });
 - content_for :sub_nav do
   = render :partial => 'subnav'
 
 #col_full
   .panel_3
     .panelBar
-      %h2= t('resources.add_new')           
+      %h2= t('resources.add_new')
     .formBox
       #wizard
         #flowplayer-block
@@ -52,11 +52,11 @@
             %li
               %a{:href => "#"}= t('wizard.details')
             %li
-              %a{:href => "#"}= t('wizard.images') 
+              %a{:href => "#"}= t('wizard.images')
             %li
-              %a{:href => "#"}= t('wizard.more') 
+              %a{:href => "#"}= t('wizard.more')
 
-          - semantic_form_for @resource, :url => resources_path, :html => { :multipart => true, :class => "post_resource" } do |form|
+          = semantic_form_for @resource, :url => resources_path, :html => { :multipart => true, :class => "post_resource" } do |form|
             .panes
               .panel1
                 %fieldset

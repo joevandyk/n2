@@ -14,5 +14,9 @@ module N2
     config.assets.enabled = true
     config.assets.version = '1.0'
     config.active_record.schema_format = :sql
+
+    Dir[Rails.root.join('config/routes/*.rb')].each do |route_file|
+      config.paths["config/routes"] << route_file
+    end
   end
 end
