@@ -17,7 +17,7 @@ gem "friendly_id"
 gem 'will_paginate'
 gem "oauth-plugin", ">= 0.4.0.pre1"
 gem "twitter", :git => "https://github.com/jnunemaker/twitter.git"
-gem "mysql"
+gem "pg"
 gem "bitly"
 gem "redis"
 gem "redis-namespace"
@@ -35,7 +35,7 @@ gem 'amazon-ecs'
 # The gem tries to load the locales table before it exists.
 gem 'i18n_backend_database', :git => "git://github.com/joevandyk/i18n_backend_database.git"
 # JVD: Use this when developing, checkout the i18n_backend_database to ../
-# gem 'i18n_backend_database', :path => "../i18n_backend_database"
+#gem 'i18n_backend_database', :path => "../i18n_backend_database"
 
 gem "hoptoad_notifier"
 gem "acts-as-taggable-on"
