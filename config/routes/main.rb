@@ -364,9 +364,21 @@ N2::Application.routes.draw do
   end
 
   resources :questions do
+    resources :comments
+    resources :answers
+    resources :flags
+    member do
+      get :like
+      post :like
+      post :create_answer
+      get :my_questions
+      post :my_questions
+    end
+
     collection do
       get :index
       post :index
+
     end
   end
 
