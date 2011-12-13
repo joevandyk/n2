@@ -50,7 +50,7 @@
         <td><%=h translation.raw_key %></td>
         <td>
           <div style="display: inline">
-          <% form_for([:admin, @locale, translation]) do |f|%>
+          <%= form_for(admin_locale_translation_path(@locale, translation)) do |f|%>
             <%= f.text_field :value %>
             <%= f.submit "Update" %>
           <% end %>

@@ -18,6 +18,13 @@ GIT
       vegas (~> 0.1.2)
 
 GIT
+  remote: git://github.com/joevandyk/i18n_backend_database.git
+  revision: 74400da3fc90f792771bbdec5bd2f95ebde90e22
+  specs:
+    i18n_backend_database (0.0.1)
+      rails (>= 3)
+
+GIT
   remote: git://github.com/mkdynamic/omniauth-facebook.git
   revision: ae23a8768c7db6bf2a0a21d404c034d29deef028
   specs:
@@ -359,6 +366,7 @@ DEPENDENCIES
   friendly_id
   haml
   hoptoad_notifier
+  i18n_backend_database!
   json
   launchy
   loofah
