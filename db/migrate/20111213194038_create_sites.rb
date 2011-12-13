@@ -43,7 +43,7 @@ class CreateSites < ActiveRecord::Migration
         newswires
         pfeed_deliveries
         pfeed_items
-        predictions_groups
+        prediction_groups
         prediction_guesses
         prediction_results
         prediction_scores

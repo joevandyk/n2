@@ -1,3 +1,3 @@
 class Site < ActiveRecord::Base
-  validates :site, :name, :presence => true
+  validates :domain, :name, :presence => true
 end
