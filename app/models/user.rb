@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  include N2::CurrentSite
 
   acts_as_authorization_subject :join_table_name => 'roles_users'
   has_and_belongs_to_many :roles

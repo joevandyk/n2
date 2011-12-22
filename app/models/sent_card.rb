@@ -1,4 +1,5 @@
 class SentCard < ActiveRecord::Base
+  include N2::CurrentSite
   acts_as_moderatable
 
 

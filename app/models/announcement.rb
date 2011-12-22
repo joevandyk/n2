@@ -1,4 +1,5 @@
 class Announcement < ActiveRecord::Base
+  include N2::CurrentSite
   acts_as_moderatable
 
   validates_presence_of :title

@@ -1,4 +1,5 @@
 class FeaturedItem < ActiveRecord::Base
+  include N2::CurrentSite
   acts_as_tree
   belongs_to :featurable, :polymorphic => true
 

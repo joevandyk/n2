@@ -1,4 +1,5 @@
 class Site < ActiveRecord::Base
+  include N2::CurrentSite
   validates :domain, :name, :presence => true
 
   def self.current

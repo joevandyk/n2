@@ -1,4 +1,5 @@
 class Flag < ActiveRecord::Base
+  include N2::CurrentSite
   belongs_to :user
   belongs_to :flaggable, :polymorphic => true, :counter_cache => true, :touch => true
 

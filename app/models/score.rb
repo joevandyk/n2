@@ -1,4 +1,5 @@
 class Score < ActiveRecord::Base
+  include N2::CurrentSite
 
   belongs_to :user
   belongs_to :scorable, :polymorphic => true

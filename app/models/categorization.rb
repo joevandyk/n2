@@ -1,4 +1,5 @@
 class Categorization < ActiveRecord::Base
+  include N2::CurrentSite
   belongs_to :category
   belongs_to :categorizable, :polymorphic => true
 

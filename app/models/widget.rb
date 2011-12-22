@@ -1,4 +1,5 @@
 class Widget < ActiveRecord::Base
+  include N2::CurrentSite
 
   has_many :metadatas, :as => :metadatable
 

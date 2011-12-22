@@ -1,4 +1,5 @@
 class Message < ActiveRecord::Base
+  include N2::CurrentSite
   belongs_to :user
 
   validates_presence_of :subject, :body, :email

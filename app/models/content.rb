@@ -1,4 +1,5 @@
 class Content < ActiveRecord::Base
+  include N2::CurrentSite
 
   acts_as_featured_item
   acts_as_media_item

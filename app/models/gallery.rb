@@ -1,4 +1,5 @@
 class Gallery < ActiveRecord::Base
+  include N2::CurrentSite
 
   acts_as_media_item
   acts_as_voteable
