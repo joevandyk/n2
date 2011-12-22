@@ -8,6 +8,7 @@ class CreateSites < ActiveRecord::Migration
 
     site = Site.create! :name => "A Name", :domain => "localhost"
 
+    tables =
     %w( announcements
         answers
         articles
@@ -74,8 +75,14 @@ class CreateSites < ActiveRecord::Migration
         view_objects
         view_tree_edges
         votes
-        widget_pages).each do |table|
-          add_column table, :site_id, :integer
-        end
+        widget_pages)
+    tables.each { |table| add_column table, :site_id, :integer  }
+
+    tables.each do |table|
+      execute "update #{ table } set site_id = #{ Site.first.id }"
+      # TODO  setup primary keys of (site_id, id), drop other primary key?
+    end
+
+    raise 'stop early'
   end
 end
