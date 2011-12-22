@@ -25,7 +25,6 @@ class CreateSites < ActiveRecord::Migration
         contents
         dashboard_messages
         events
-        fbSessions
         featured_items
         feeds
         flags
@@ -83,6 +82,6 @@ class CreateSites < ActiveRecord::Migration
       # TODO  setup primary keys of (site_id, id), drop other primary key?
     end
 
-    raise 'stop early'
+    # raise 'stop early'
   end
 end

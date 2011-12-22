@@ -14,6 +14,7 @@ module N2
     config.assets.enabled = true
     config.assets.version = '1.0'
     config.active_record.schema_format = :sql
+    config.middleware.use "Rack::N2::SiteSwitcher"
 
     Dir[Rails.root.join('config/routes/*.rb')].each do |route_file|
       config.paths["config/routes"] << route_file
