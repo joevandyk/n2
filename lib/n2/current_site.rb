@@ -2,6 +2,8 @@ module N2
   module CurrentSite
     def self.included klass
       klass.class_eval do
+        belongs_to :site
+
         default_scope do
           if Site.current.blank?
             raise "No site currently selected!"

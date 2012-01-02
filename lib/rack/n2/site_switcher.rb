@@ -6,8 +6,9 @@ module Rack
       end
 
       def call env
-        @domain = env['HTTP_HOST'].split(':').first # Grab the domain, ignore the port
-        Site.current_domain = @domain
+        domain = env['HTTP_HOST'].split(':').first # Grab the domain, ignore the port
+        env["n2.domain"] = domain
+        Site.current_domain = domain
         @app.call(env)
       end
     end
