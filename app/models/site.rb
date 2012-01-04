@@ -1,6 +1,8 @@
 class Site < ActiveRecord::Base
   validates :domain, :name, :presence => true
 
+  belongs_to :site_group
+
   def self.current
     @current_site || Site.default
   end
