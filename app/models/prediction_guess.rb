@@ -1,4 +1,5 @@
 class PredictionGuess < ActiveRecord::Base
+  include N2::CurrentSite
   belongs_to :user
   belongs_to :prediction_question, :counter_cache => true, :touch => true
   acts_as_moderatable
@@ -10,7 +11,7 @@ class PredictionGuess < ActiveRecord::Base
   def user_guessed? user
     prediction_question.user_guessed? user
   end
-  
+
   def expire
     self.class.sweeper.expire_prediction_guess_all self
   end
@@ -24,5 +25,5 @@ class PredictionGuess < ActiveRecord::Base
   def validate_user_guess
     errors.add(:guess, "Invalid guess, please try again.") unless self.prediction_question.valid_guess? self.guess
   end
-  
+
 end

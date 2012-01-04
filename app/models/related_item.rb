@@ -1,6 +1,7 @@
 class RelatedItem < ActiveRecord::Base
+  include N2::CurrentSite
   acts_as_moderatable
-  
+
   belongs_to :user
   belongs_to :relatable, :polymorphic => true
 

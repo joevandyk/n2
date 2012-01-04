@@ -1,4 +1,5 @@
 class Audio < ActiveRecord::Base
+  include N2::CurrentSite
 
   acts_as_moderatable
   acts_as_voteable
@@ -23,7 +24,7 @@ class Audio < ActiveRecord::Base
   end
 
   private
-    
+
     def validate_url_or_embed
       unless url.present? or embed_code.present?
         errors.add(:url, "URL or Embed Code must be present")

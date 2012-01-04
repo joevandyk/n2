@@ -11,8 +11,11 @@
 # From:
 #   http://coderrr.wordpress.com/2009/01/08/activerecord-threading-issues-and-resolutions/
 
+# TODO RAILS3 fix
+
+=begin
 module ActiveRecord::ConnectionAdapters
-  class MysqlAdapter
+  class PostgresqlAdapter
     alias_method :execute_without_retry, :execute
 
     def execute(*args)
@@ -28,3 +31,4 @@ module ActiveRecord::ConnectionAdapters
     end
   end
 end
+=end

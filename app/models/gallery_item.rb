@@ -1,4 +1,5 @@
 class GalleryItem < ActiveRecord::Base
+  include N2::CurrentSite
 
   belongs_to :gallery
   belongs_to :user

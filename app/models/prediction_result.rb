@@ -1,4 +1,5 @@
 class PredictionResult < ActiveRecord::Base
+  include N2::CurrentSite
   belongs_to  :user
   belongs_to  :accepted_by, :class_name => 'User', :foreign_key => :accepted_by_user_id
   belongs_to  :prediction_question

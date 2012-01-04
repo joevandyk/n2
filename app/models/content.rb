@@ -1,4 +1,5 @@
 class Content < ActiveRecord::Base
+  include N2::CurrentSite
 
   acts_as_featured_item
   acts_as_media_item
@@ -25,15 +26,15 @@ class Content < ActiveRecord::Base
 
   has_friendly_id :title, :use_slug => true
 
-  scope :published, { :joins => "LEFT JOIN articles on contents.article_id = articles.id", :conditions => ["contents.is_blocked =0 and (article_id is NULL OR (article_id IS NOT NULL and articles.is_draft = 0))"] }
-  scope :unpublished, { :joins => "LEFT JOIN articles on contents.article_id = articles.id", :conditions => ["contents.is_blocked =0 and (article_id is NULL OR (article_id IS NOT NULL and articles.is_draft = 1))"] }
+  scope :published, { :joins => "LEFT JOIN articles on contents.article_id = articles.id", :conditions => ["contents.is_blocked is false and (article_id is NULL OR (article_id IS NOT NULL and articles.is_draft is false))"] }
+  scope :unpublished, { :joins => "LEFT JOIN articles on contents.article_id = articles.id", :conditions => ["contents.is_blocked is false and (article_id is NULL OR (article_id IS NOT NULL and articles.is_draft is true))"] }
   scope :newest, lambda { |*args| { :order => ["created_at desc"], :limit => (args.first || 10)} }
   scope :commented, :conditions => ["comments_count > 0"]
   scope :top, lambda { |*args| { :order => ["votes_tally desc, created_at desc"], :limit => (args.first || 10)} }
   scope :newest_stories, lambda { |*args| { :conditions => ["article_id IS NULL"], :order => ["created_at desc"], :limit => (args.first || 5)} }
   scope :articles, { :conditions => ["article_id is not null"] }
   scope :stories, { :conditions => ["article_id IS NULL"], :order => ["created_at desc"]}
-  scope :featured, lambda { |*args| { :conditions => ["contents.is_featured = 1"], :limit  => (args.first || 5) } }
+  scope :featured, lambda { |*args| { :conditions => ["contents.is_featured is true"], :limit  => (args.first || 5) } }
 
   attr_accessor :image_url, :tags_string, :is_draft
 
