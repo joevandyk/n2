@@ -1,11 +1,19 @@
 class CreateSites < ActiveRecord::Migration
   def change
 
-    # Create sites table
-    create_table :sites do |t|
-      t.string :name,   :null => false
-      t.string :domain, :null => false
-    end
+    execute "
+create table sites (
+  id serial primary key,
+  name text not null,
+  domain text not null,
+  parent_id integer references sites(id),
+  check (length(name) > 0),
+  check (length(domain) > 0)
+);
+
+create index on sites using btree(domain);
+create index on sites using btree(parent_id);
+    "
 
     # Create the first default site, all the existing data in this db will belong to this site
     site = Site.create! :name => "A Name", :domain => "localhost"
@@ -100,31 +108,15 @@ class CreateSites < ActiveRecord::Migration
       execute "create index on #{ table } using btree(id); create index on #{ table } using btree(site_id);"
     end
 
-    # Create site group table .
-    # Each site belongs to a group of other sites.
-    # Each site group has a 'primary' site.
-    execute "
-create table site_groups (
-  id serial primary key,
-  name text not null,
-  primary_site_id integer not null references sites(id)
-);
-   "
+    # Create site group view
+    #execute "
+#create view site_groups as (
+  #select parent_id
+#);
+    #"
 
-  # The join table of sites to site_groups
-  execute "
-  create table site_groups_sites (
-    site_id integer not null references sites(id),
-    site_group_id integer not null references site_groups(id),
-    primary key (site_id, site_group_id)
-  );
-  create index on site_groups_sites using btree(site_group_id);
-  "
-
-  # Each site can be in a maximum of one group.
-  execute "create unique index on site_groups_sites using btree(site_id);"
-
-  SiteGroup.create! :sites => Site.all, :name => "Default Site Group", :primary_site => Site.first
+    Site.create! :parent_site => Site.first, :name => "Other Site in Group", :domain => "othersiteingroup.com"
+    Site.create! :name => "A Parent Site", :domain => "parent-site.com"
 
   end
 end

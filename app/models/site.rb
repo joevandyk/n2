@@ -1,7 +1,11 @@
 class Site < ActiveRecord::Base
   validates :domain, :name, :presence => true
 
-  belongs_to :site_group
+  has_many :site_groups
+  belongs_to :parent_site, :class_name => "Site", :foreign_key => 'parent_id'
+  has_many   :all_sites,   :class_name => "Site", :through => :site_group
+  #has_many   :other_sites, :class_name => "Site"
+  #has_many   :child_sites, :class_name => "Site"
 
   def self.current
     @current_site || Site.default
