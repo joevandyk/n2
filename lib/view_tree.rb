@@ -10,9 +10,6 @@ class ViewTree
     @view_object = view_object
     @children = []
     @controller = controller
-    #@cache = true
-    #@cache = Rails.env.development? and (not key_name =~ /--/) and key_name != 'Welcome Panel'
-    #@cache = (not key_name.include?('--')) and key_name != 'Welcome Panel'
     @cache = (key_name.include?('--') or key_name == 'Welcome Panel') ? false : true
     @cache = false unless Rails.env.production?
     # Initialize new view tree
@@ -24,7 +21,7 @@ class ViewTree
   def each
     @children.each {|child| yield child }
   end
-  
+
   def cache_it output
     if @cache and @view_object
       @view_object.cache_deps
@@ -46,9 +43,10 @@ class ViewTree
   alias_method :t, :translate
 
   def load_view_object
-    @view_object = ViewObject.load(@key_name)
-    @children = @view_object.edge_children.map {|c| ViewTree.new c.name, @controller }
-    @view_object
+    if @view_object = ViewObject.load(@key_name)
+      @children = @view_object.edge_children.map {|c| ViewTree.new c.name, @controller }
+      @view_object
+    end
   end
 
   def load
@@ -82,13 +80,12 @@ class ViewTree
 	#
 	# Class Methods
 	#
-  def self.render target, controller = nil
-    if target.class.name =~ /Controller$/
-    	view_object_name = "#{target.controller_name}--#{target.action_name}"
-    	controller = target
-    else
-    	view_object_name = target
-    end
+  def self.render_controller controller
+    view_object_name = "#{controller.controller_name}--#{controller.action_name}"
+    render(view_object_name, controller)
+  end
+
+  def self.render view_object_name, controller=nil
     self.fetch view_object_name, controller
   end
 

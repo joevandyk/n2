@@ -1,5 +1,5 @@
-- form.inputs do
-  - form.semantic_fields_for :content do |content_form|
+= form.inputs do
+  = form.semantic_fields_for :content do |content_form|
     - content_form.inputs do
       = content_form.input :title
       %p= t('articles.label_body')

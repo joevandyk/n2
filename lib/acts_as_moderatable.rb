@@ -14,11 +14,11 @@ module Newscloud
           # HACK:: move this out to its own location
           has_many :item_actions, :as => :actionable
 
-          named_scope :active, { :conditions => ["#{self.name.tableize}.is_blocked = 0"] }
-          named_scope :inactive, { :conditions => ["#{self.name.tableize}.is_blocked = 1"] }
-          named_scope :user_items, { :conditions => 
+          scope :active, { :conditions => ["#{self.name.tableize}.is_blocked = 0"] }
+          scope :inactive, { :conditions => ["#{self.name.tableize}.is_blocked = 1"] }
+          scope :user_items, { :conditions =>
               "#{self.name.tableize}.user_id not in (select id from users where is_editor = true or is_moderator = true or is_admin = true)" }
-          named_scope :curator_items, { :conditions => 
+          scope :curator_items, { :conditions =>
               "#{self.name.tableize}.user_id in (select id from users where is_editor = true or is_moderator = true or is_admin = true)" }
 
           include Newscloud::Acts::Moderatable::InstanceMethods
@@ -97,7 +97,7 @@ module Newscloud
         end
 
         def cascade_block_pfeed_items blocked = nil
-          PfeedItem.find(:all, :conditions => ["participant_type = ? and participant_id = ?", self.class.name, self.id]).each do |pitem|
+          PfeedItem.where(["participant_type = ? and participant_id = ?", self.class.name, self.id]).each do |pitem|
             pitem.update_attribute(:is_blocked, blocked || false)
             pitem.expire
             pitem.participant.cascade_block blocked if pitem.participant.moderatable?

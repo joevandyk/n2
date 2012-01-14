@@ -9,8 +9,8 @@ class Video < ActiveRecord::Base
   belongs_to :videoable, :polymorphic => true
   belongs_to :source
 
-  named_scope :newest, lambda { |*args| { :order => ["created_at desc"], :limit => (args.first || 10)} }
-  named_scope :featured, lambda { |*args| { :conditions => ["is_featured=1"],:order => ["created_at desc"], :limit => (args.first || 3)} }
+  scope :newest, lambda { |*args| { :order => ["created_at desc"], :limit => (args.first || 10)} }
+  scope :featured, lambda { |*args| { :conditions => ["is_featured=1"],:order => ["created_at desc"], :limit => (args.first || 3)} }
 
   validates_format_of :remote_video_url, :with => /\Ahttp(s?):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/i, :message => "should look like a URL", :allow_blank => true
   validates_format_of :remote_video_url, :with => /(youtube|vimeo|boston).com/i, :message => "should be a youtube or vimeo url", :allow_blank => true
@@ -81,7 +81,7 @@ class Video < ActiveRecord::Base
         self.remote_video_id = self.parse_youtube_url remote_video_url
       elsif remote_video_url =~ /vimeo.com/i
         self.remote_video_type = 'vimeo'
-        self.remote_video_id = self.parse_vimeo_url remote_video_url       
+        self.remote_video_id = self.parse_vimeo_url remote_video_url
       elsif Metadata::Setting.find_setting("site_video_url").present?
         if remote_video_url =~ /#{Metadata::Setting.find_setting("site_video_url").value}/i
           self.remote_video_type = 'brightcove_a'
@@ -123,7 +123,7 @@ class Video < ActiveRecord::Base
     	return false
     end
   end
-  
+
   def parse_vimeo_embed src
     if src =~ /vimeo.com\/moogaloop.swf\?clip_id\=([^"&]+)/
     	self.remote_video_id = $1
@@ -176,7 +176,7 @@ class Video < ActiveRecord::Base
         },
         "large" => {
           "width" => 480,
-          "height" => 270          
+          "height" => 270
         }
       },
       "youtube"=> {
@@ -186,7 +186,7 @@ class Video < ActiveRecord::Base
         },
         "large" => {
           "width" => 480,
-          "height" => 385          
+          "height" => 385
         }
       },
       "boston"=> {
@@ -196,7 +196,7 @@ class Video < ActiveRecord::Base
         },
         "large" => {
           "width" => 420,
-          "height" => 376          
+          "height" => 376
         }
       },
       "default"=> {
@@ -206,9 +206,9 @@ class Video < ActiveRecord::Base
         },
         "large" => {
           "width" => 480,
-          "height" => 385          
+          "height" => 385
         }
-      }  
+      }
     }
   end
 
@@ -292,5 +292,5 @@ class Video < ActiveRecord::Base
   def self.vimeo_url? url
     url =~ %r{^https?://(?:www\.)?vimeo.com/([^"&/]+)}
   end
-  
+
 end

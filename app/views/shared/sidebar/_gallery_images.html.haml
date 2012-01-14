@@ -14,18 +14,18 @@
         .scrollable_list_media
           .items
             .list_media
-              %ul 
+              %ul
                 - newest_images.each_with_index do |image,index|
                   - unless index > 7
                     %li
                       = link_to(image_tag(image.url(:thumb)), image.imageable.item_link)
         -# .itemActions
-          %a{:href => home_index_path}= t('view_gallery')
+          %a{:href => root_url}= t('view_gallery')
     :javascript
       $(function() {
         $(".scrollable_list_media").scrollable();
         $(".list_media img").click(function(event) {
-          event.preventDefault();          
+          event.preventDefault();
         	// see if same thumb is being clicked
         	if ($(this).hasClass("active")) { return; }
         	// calclulate large image's URL based on the thumbnail URL (flickr specific)

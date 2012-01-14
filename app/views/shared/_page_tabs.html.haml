@@ -5,9 +5,9 @@
       %ul#toggle_tabs_unused.toggle_tabs
         - if MENU.key? 'home'
           - if @current_tab == 'home'
-            %li.first= link_to image_tag('default/home-icon-selected.png'), home_index_path, :class => "tab #{tab_selected?(@current_tab, 'home')}"
+            %li.first= link_to image_tag('default/home-icon-selected.png'), root_url, :class => "tab #{tab_selected?(@current_tab, 'home')}"
           - else
-            %li.first= link_to image_tag('default/home-icon-off.png'), home_index_path, :class => "tab"
+            %li.first= link_to image_tag('default/home-icon-off.png'), root_url, :class => "tab"
         - if MENU.key? 'stories'
           %li.menu_item
             = link_to t('.stories'), stories_path, :class => "tab #{tab_selected?(@current_tab, 'stories')}"
@@ -75,7 +75,7 @@
                     %li= link_to t('.new_resource'), new_resource_path
         - if MENU.key? 'events'
           %li.menu_item
-            = link_to t('.events'), events_path, :class =>"tab #{tab_selected?(@current_tab, 'events')}" 
+            = link_to t('.events'), events_path, :class =>"tab #{tab_selected?(@current_tab, 'events')}"
             - unless MENU['events'].nil?
               %ul.dropdown
                 - unless MENU['events']['events_list'].nil?

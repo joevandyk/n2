@@ -44,8 +44,8 @@ namespace :n2 do
 end
 
 def load_widgets
-  return false unless FileTest.exists?("#{RAILS_ROOT}/config/widgets.yml")
-  YAML.load_file("#{RAILS_ROOT}/config/widgets.yml")['widgets']
+  return false unless FileTest.exists?("#{Rails.root}/config/widgets.yml")
+  YAML.load_file("#{Rails.root}/config/widgets.yml")['widgets']
 end
 
 def widget_exists? widget_name

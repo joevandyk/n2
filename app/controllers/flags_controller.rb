@@ -34,7 +34,7 @@ class FlagsController < ApplicationController
       # todo - if block user, then use fb:ban api call too! or unban
     	flash[:success] = "Successfully #{@item.blocked? ? "Blocked" : "UnBlocked"} your item."
     	#redirect_to @item.item_link
-    	redirect_to home_index_path
+    	redirect_to root_url
     else
     	flash[:error] = "Could not block this item."
     	redirect_to @item.item_link

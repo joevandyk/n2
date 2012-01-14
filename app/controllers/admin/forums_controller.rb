@@ -15,7 +15,7 @@ class Admin::ForumsController < AdminController
         params[:forums].map {|f| f.sub(/^forum-([0-9]+)$/, '\1') }.reverse.each_with_index do |forum_id, position|
           Forum.find_by_id(forum_id).update_attribute(:position, position + 1)
         end
-        Forum.expire_all 
+        Forum.expire_all
         render :json => {:success => "Success!"}.to_json and return
       rescue
         render :json => {:success => "Could not save your new order!"}.to_json and return
@@ -77,7 +77,7 @@ class Admin::ForumsController < AdminController
   def render_new forum = nil
     forum ||= Forum.new
 
-    render :partial => 'shared/admin/new_page', :layout => 'new_admin', :locals => {
+    render 'shared/admin/_new_page', :layout => 'new_admin', :locals => {
     	:item => forum,
     	:model => Forum,
     	:fields => [:name, :description],
@@ -86,7 +86,7 @@ class Admin::ForumsController < AdminController
   end
 
   def render_edit forum
-    render :partial => 'shared/admin/edit_page', :layout => 'new_admin', :locals => {
+    render 'shared/admin/_edit_page', :layout => 'new_admin', :locals => {
     	:item => forum,
     	:model => Forum,
     	:fields => [:name, :description],

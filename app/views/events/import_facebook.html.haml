@@ -18,7 +18,7 @@
         %strong No Events to Import
       - else
 
-        - form_for @event, :html=>{:class=>"formtastic", :id=>'import-events'}, :url => import_facebook_events_path do |form|
+        = form_for @event, :html=>{:class=>"formtastic", :id=>'import-events'}, :url => import_facebook_events_path do |form|
           %fieldset{:class=>"inputs"}
             %ol
             - @fb_events.each do |event|

@@ -1,15 +1,13 @@
 class Metadata::ViewObjectSetting < Metadata
+  metadata_keys :view_object_name, :klass_name, :kommands
 
-  named_scope :key_sub_type_name, lambda { |*args| { :conditions => ["key_sub_type = ? AND key_name = ?", args.first, args.second] } }
+  scope :key_sub_type_name, lambda { |*args| { :conditions => ["key_sub_type = ? AND key_name = ?", args.first, args.second] } }
 
   validates_format_of :view_object_name, :with => /^[A-Za-z0-9 _-]+$/, :message => "View Object Name must be present and may only contain letters, numbers and spaces"
   validates_format_of :klass_name, :with => /^[A-Za-z _]+$/, :message => "Klass Name must be present and may only contain letters and spaces"
   # HACK:: emulate validate_presence_of
   # these are dynamicly created attributes to they don't exist for the model
   validate :validate_kommands
-  attr_accessible :data
-
-  #before_save :build_view_object
 
   def after_initialize
     init_data
@@ -76,18 +74,6 @@ class Metadata::ViewObjectSetting < Metadata
     end
   end
 
-  def method_missing(name, *args)
-    return self.send(name, *args) if self.respond_to? name, true
-    init_data
-    name = key_from_assign name
-    if data[name].present?
-      data[name] = args.first if args.present?
-      return data[name]
-    else
-    	data[name] = args.empty? ? nil : args.first
-    end
-  end
-
   def locale_title() self.data[:locale_title] end
   def locale_title=(val) self.data[:locale_title] = val end
   def use_post_button() self.data[:use_post_button] end
@@ -120,7 +106,7 @@ class Metadata::ViewObjectSetting < Metadata
     return true if super method
     return true if not internal and method.to_s =~ /=$/
     return false if internal
-    
+
     #init_data
     self.data[method].present?
     #return self.data

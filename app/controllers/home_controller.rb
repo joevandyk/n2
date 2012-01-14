@@ -1,6 +1,4 @@
 class HomeController < ApplicationController
-  #layout proc { |controller| controller.action_name == 'app_tab' ? 'app_tab' : 'application' }
-
   before_filter :set_current_tab
 
   def test_design
@@ -18,29 +16,8 @@ class HomeController < ApplicationController
 
   def index
     if APP_CONFIG["use_view_objects"]
-      render(:text => %{<div id="home_container">#{ViewTree.render(self)}</div>}.html_safe, :layout => 'application')
+      render 'index_with_view_objects', :layout => 'application'
     else
-=begin
-      @page = "page_1_"
-
-      if request.post?
-        respond_to do |format|
-          format.html
-          format.json { @stories = Content.refine(params) }
-        end
-      else
-        @no_paginate = true
-        @featured_items = FeaturedItem.find_root_by_item_name('featured_template')
-        controller = self
-        @page = WidgetPage.find_root_by_page_name('home')
-        if @page.present? and @page.children.present?
-          @main = @page.children.first.children
-          @sidebar = @page.children.second.children
-          @main.each {|w| controller.send(w.widget.load_functions) if w.widget.load_functions.present? }
-          @sidebar.each {|w| controller.send(w.widget.load_functions) if w.widget.load_functions.present? }
-        end
-      end
-=end
       @page = "page_1_"
       @no_paginate = true
       @featured_items = FeaturedItem.find_root_by_item_name('featured_template')
@@ -158,7 +135,7 @@ class HomeController < ApplicationController
   def robots
     render :partial => "shared/robots.txt", :layout => false and return
   end
-  
+
   private
   def set_current_tab
     @current_tab = 'home'

@@ -42,14 +42,14 @@ class StoriesController < ApplicationController
       redirect_to stories_path and return unless @story
     else
       # allow only authors and moderators to preview draft articles
-      redirect_to home_index_path and return if @story.is_article? and @story.article.is_draft? and (!current_user.present? or current_user != @story.article.author or !current_user.is_moderator? ) 
+      redirect_to root_url and return if @story.is_article? and @story.article.is_draft? and (!current_user.present? or current_user != @story.article.author or !current_user.is_moderator? )
       redirect_to stories_path and return if @story.is_blocked?
     end
 
     tag_cloud (@story.is_article? ? @story.article : @story)
     if MENU.key? 'articles'
       if @story.is_article?
-        @current_tab = 'articles' 
+        @current_tab = 'articles'
         set_sponsor_zone('articles', @story.article.item_title.underscore)
       end
     end
@@ -57,10 +57,10 @@ class StoriesController < ApplicationController
     set_current_meta_item @story
   end
 
-  def new 
+  def new
    if current_user.present? and !current_user.is_moderator? and get_setting('limit_daily_member_posts').present? and get_setting('limit_daily_member_posts').value.to_i <= current_user.count_daily_posts
       flash[:error] = t('error_daily_post_limit')
-      redirect_to home_index_path
+      redirect_to root_url
    end
    @current_sub_tab = 'New Story'
    @title_filters = Metadata::TitleFilter.all.map(&:keyword)
@@ -92,7 +92,7 @@ class StoriesController < ApplicationController
   def create
     @story = Content.new(params[:content])
     @story.tag_list = params[:content][:tags_string]
-    @story.caption = @template.sanitize_user_content @story.caption
+    @story.caption = view_context.sanitize_user_content @story.caption
     @story.user = current_user
     if @story.valid? and current_user.contents.push @story
       if @story.post_wall?
@@ -137,7 +137,7 @@ class StoriesController < ApplicationController
   end
 
   private
-  
+
   def set_current_tab
     @current_tab = 'stories'
   end

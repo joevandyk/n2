@@ -2,10 +2,10 @@ class ItemAction < ActiveRecord::Base
   belongs_to :user
   belongs_to :actionable, :polymorphic => true
 
-  named_scope :for_item, lambda {|item| { :conditions => ["actionable_type = ? and actionable_id = ?", item.class.name, item.id] } }
-  named_scope :for_class, lambda {|item| { :conditions => ["actionable_type = ?", item.name] } }
-  named_scope :within, lambda {|timeframe| { :conditions => ["created_at > ?", timeframe] } }
-  named_scope :active, { :conditions => {:is_blocked => false} }
+  scope :for_item, lambda {|item| { :conditions => ["actionable_type = ? and actionable_id = ?", item.class.name, item.id] } }
+  scope :for_class, lambda {|item| { :conditions => ["actionable_type = ?", item.name] } }
+  scope :within, lambda {|timeframe| { :conditions => ["created_at > ?", timeframe] } }
+  scope :active, { :conditions => {:is_blocked => false} }
 
   def self.top_items_for_class klass, opts = {}
     self.fetch_items opts.merge({:klass => klass})
@@ -20,7 +20,7 @@ class ItemAction < ActiveRecord::Base
   def self.top_items opts = {}
     self.fetch_items opts
   end
-  
+
   def self.fetch_items opts = {}
     options = {
       :limit      => 10,
@@ -52,7 +52,7 @@ class ItemAction < ActiveRecord::Base
       chains.pop # remove :within
       results = self.get_chain_results chains, amount, options # try again
     end
-    
+
     if item
       return results
     else
