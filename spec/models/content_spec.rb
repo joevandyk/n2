@@ -9,7 +9,7 @@ describe Content do
     content = Factory.build(:content, :title => nil)
     content.should_not be_valid
     content.errors[:title].should be_present
-    content.title = Faker::Company.catch_phrase
+    content.title = random_string
     content.should be_valid
   end
 
@@ -17,7 +17,7 @@ describe Content do
     content = Factory.build(:content, :url => nil)
     content.should_not be_valid
     content.errors[:url].should be_present
-    content.url = "http://#{Faker::Internet.domain_name}/foo.jpg"
+    content.url = "http://#{random_string}/foo.jpg"
     content.should be_valid
   end
 
@@ -33,7 +33,7 @@ describe Content do
     content = Factory.build(:content, :caption => nil)
     content.should_not be_valid
     content.errors[:caption].should be_present
-    content.caption = Faker::Lorem.paragraph
+    content.caption = random_string
     content.should be_valid
   end
 

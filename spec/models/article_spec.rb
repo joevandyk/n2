@@ -9,7 +9,7 @@ describe Article do
     article = Factory.build(:article, :body => nil)
     article.should_not be_valid
     article.errors[:body].should be_present
-    article.body = Faker::Company.catch_phrase
+    article.body = random_string
     article.should be_valid
   end
 

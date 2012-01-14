@@ -1,22 +1,26 @@
 require 'factory_girl'
 
+def random_string
+  "random-#{rand(1000000000)}"
+end
+
 Factory.define :user do |f|
-  f.login                   { Faker::Internet.user_name + rand(5124123).to_s }
-  f.name                    { Faker::Name.name }
-  f.email                   { Faker::Internet.email }
+  f.login                   { random_string }
+  f.name                    { random_string }
+  f.email                   { random_string + "@gmail.com" }
   f.password                { "asdfasdf" }
   f.password_confirmation   { "asdfasdf" }
 end
 
 Factory.define :content do |f|
-  f.title     Faker::Company.catch_phrase
-  f.url       "http://#{Faker::Internet.domain_name}"
-  f.caption   Faker::Lorem.paragraph
+  f.title     { random_string }
+  f.url       { "http://#{random_string}.com" }
+  f.caption   { random_string }
   f.association :user, :factory => :user
 end
 
 Factory.define :article do |f|
-  f.body   Faker::Lorem.paragraph
+  f.body   random_string
   # TODO:: ADD VALIDATION FOR USER
   f.association :author, :factory => :user
   #f.association :content, :factory => :content
@@ -24,8 +28,8 @@ Factory.define :article do |f|
 end
 
 Factory.define :gallery do |f|
-  f.title       Faker::Company.catch_phrase
-  f.description Faker::Lorem.paragraph
+  f.title       { random_string }
+  f.description { random_string }
   f.association :user, :factory => :user
 end
 
@@ -39,19 +43,19 @@ Factory.define :video do |f|
 end
 
 Factory.define :forum do |f|
-  f.name        Faker::Company.catch_phrase
-  f.description Faker::Lorem.paragraph
+  f.name        { random_string }
+  f.description { random_string }
 end
 
 Factory.define :topic do |f|
-  f.title       Faker::Company.catch_phrase
-  f.body        Faker::Lorem.paragraph
+  f.title       { random_string }
+  f.body        { random_string }
   f.association :user, :factory => :user
   f.association :forum, :factory => :forum
 end
 
 Factory.define :comment do |f|
-  f.comments    Faker::Lorem.paragraph
+  f.comments    { random_string }
   f.association :user, :factory => :user
   f.commentable {|a| a.association :content, :user => a.user }
 end
@@ -63,72 +67,72 @@ Factory.define :flag do |f|
 end
 
 Factory.define :question do |f|
-  f.question    Faker::Lorem.paragraph
+  f.question    { random_string }
   f.association :user, :factory => :user
 end
 
 Factory.define :answer do |f|
-  f.answer      Faker::Lorem.paragraph
+  f.answer      { random_string }
   f.association :user, :factory => :user
   f.association :question, :factory => :question
 end
 
 Factory.define :feed do |f|
   f.association :user, :factory => :user
-  f.url       "http://#{Faker::Internet.domain_name}"
-  f.rss       "http://#{Faker::Internet.domain_name}/feed.rss"
-  f.title       Faker::Company.catch_phrase
+  f.url       "http://#{random_string}"
+  f.rss       "http://#{random_string}/feed.rss"
+  f.title       { random_string }
 end
 
 Factory.define :newswire do |f|
   f.association :feed, :factory => :feed
   f.association :user, :factory => :user
-  f.url         "http://#{Faker::Internet.domain_name}"
-  f.title       Faker::Company.catch_phrase
-  f.caption     Faker::Lorem.paragraph
+  f.url         "http://#{random_string}"
+  f.title       random_string
+  f.caption     random_string
 end
 
 Factory.define :event do |f|
   f.association :user, :factory => :user
-  f.url         "http://#{Faker::Internet.domain_name}"
-  f.name        Faker::Company.catch_phrase
+  f.url         "http://#{random_string}"
+  f.name        random_string
 end
 
 Factory.define :idea_board do |f|
-  f.name        Faker::Company.catch_phrase
-  f.section     Faker::Company.catch_phrase
-  f.description Faker::Lorem.paragraph
+  f.name        random_string
+  f.section     random_string
+  f.description random_string
 end
 
 Factory.define :idea do |f|
   f.association :user, :factory => :user
   f.association :idea_board, :factory => :idea_board
-  f.title       Faker::Company.catch_phrase
+  f.title       random_string
 end
 
 Factory.define :resource_section do |f|
-  f.name        Faker::Company.catch_phrase
-  f.section     Faker::Company.catch_phrase
-  f.description Faker::Lorem.paragraph
+  f.name        random_string
+  f.section     random_string
+  f.description random_string
 end
 
 Factory.define :resource do |f|
   f.association :user, :factory => :user
   f.association :resource_section, :factory => :resource_section
-  f.title       Faker::Company.catch_phrase
-  f.url         "http://#{Faker::Internet.domain_name}"
+  f.title       random_string
+  f.url         "http://#{random_string}"
 end
 
 Factory.define :related_item do |f|
   f.association :user, :factory => :user
   f.association :relatable, :factory => :event
-  f.title       Faker::Company.catch_phrase
-  f.url         "http://#{Faker::Internet.domain_name}"
+  f.title       random_string
+  f.url         "http://#{random_string}"
 end
 
 Factory.define :classified do |f|
-  f.title       Faker::Company.catch_phrase
-  f.details     Faker::Lorem.paragraph
+  f.title       random_string
+  f.details     random_string
   f.allow       "all"
   f.association :user, :factory => :user
   f.listing_type  "sale"
@@ -151,10 +155,10 @@ Factory.define :loan_classified, :parent => :available_classified do |f|
 end
 
 Factory.define :category do |f|
-  f.name Faker::Company.bs
+  f.name random_string
 end
 
 Factory.define :subcategory, :parent => :category do |f|
-  f.name Faker::Company.bs
+  f.name random_string
   f.association :parent, :factory => :category
 end

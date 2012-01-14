@@ -33,7 +33,7 @@ describe GalleryItem do
     gallery_item = Factory.build(:gallery_item, :caption => nil)
     gallery_item.should be_valid
     gallery_item.errors[:caption].should be_blank
-    gallery_item.caption = Faker::Lorem.paragraph
+    gallery_item.caption = random_string
     gallery_item.should be_valid
   end
 

@@ -9,7 +9,7 @@ describe Gallery do
     gallery = Factory.build(:gallery, :title => nil)
     gallery.should_not be_valid
     gallery.errors[:title].should be_present
-    gallery.title = Faker::Company.catch_phrase
+    gallery.title = random_string
     gallery.should be_valid
   end
 
@@ -17,7 +17,7 @@ describe Gallery do
     gallery = Factory.build(:gallery, :description => nil)
     gallery.should_not be_valid
     gallery.errors[:description].should be_present
-    gallery.description = Faker::Lorem.paragraph
+    gallery.description = random_string
     gallery.should be_valid
   end
 

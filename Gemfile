@@ -57,7 +57,6 @@ group :development do
   gem "rails-dev-tweaks"
   gem "wirble"
   gem "awesome_print"
-	gem "faker"
 	gem "capistrano"
 	gem "capistrano-ext"
 end
@@ -68,14 +67,12 @@ group :development, :test do
 end
 
 group :test, :cucumber do
-	gem "faker"
 	gem "database_cleaner", '0.7.0'
 	gem "capybara", '1.1.2'
 	gem "cucumber"
 	gem "cucumber-rails"
 	gem "factory_girl"
 	gem "rcov"
-	gem "faker"
 	gem "pickle"
 	gem "launchy"
 	gem "ZenTest", "4.5.0"
