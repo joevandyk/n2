@@ -34,7 +34,7 @@ ActiveAdmin.setup do |config|
   #   config.default_namespace = false
   #
   # Default:
-  # config.default_namespace = :admin
+  config.default_namespace = :activeadmin
   #
   # You can customize the settings for each namespace by using
   # a namespace block. For example, to change the site title
@@ -55,7 +55,8 @@ ActiveAdmin.setup do |config|
   #
   # This setting changes the method which Active Admin calls
   # within the controller.
-  config.authentication_method = :authenticate_admin_user!
+  #config.authentication_method = :authenticate_admin_user!
+  config.authentication_method = :check_admin_or_default_status
 
 
   # == Current User
@@ -65,7 +66,8 @@ ActiveAdmin.setup do |config|
   #
   # This setting changes the method which Active Admin calls
   # to return the currently logged in user.
-  config.current_user_method = :current_admin_user
+  #config.current_user_method = :current_admin_user
+  config.current_user_method = :current_user
 
 
   # == Logging Out
