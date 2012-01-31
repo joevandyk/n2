@@ -7,6 +7,8 @@ N2::Application.routes.draw do
     match '/translations.:format' => 'translations#translations', :as => :translations
     match '/asset_translations.:format' => 'translations#asset_translations', :as => :asset_translations
 
+    resources :favicon, :only => [:index, :create, :destroy]
+
     resources :activity_scores
     resources :ad_layouts
     resources :ads
