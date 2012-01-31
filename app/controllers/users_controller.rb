@@ -9,12 +9,12 @@ class UsersController < ApplicationController
   before_filter :set_meta_klass, :only => [:index]
 
   access_control do
-    allow all, :to => [:index, :show, :feed, :account_menu, :current]
+    allow all, :to => [:index, :show, :feed, :account_menu, :current, :new, :create]
     # HACK:: use current_user.is_admin? rather than current_user.has_role?(:admin)
     # FIXME:: get admins switched over to using :admin role
     allow :admin, :of => :current_user
     allow :admin
-    allow logged_in, :to => [:new, :create, :update_bio, :dont_ask_me_for_email, :dont_ask_me_invite_friends, :invite]
+    allow logged_in, :to => [:update_bio, :dont_ask_me_for_email, :dont_ask_me_invite_friends, :invite]
     allow :identity_user, :of => :page_user, :to => [:edit, :update]
   end
 
@@ -113,7 +113,7 @@ class UsersController < ApplicationController
 
   def show
     @user = User.active.find(params[:id])
-    @activities = @user.activities.active.find(:all, :limit => 7, :order => "created_at desc")
+    @activities = ItemAction.newest_for_user(@user, 10)
     @articles = @user.articles.active.published.paginate :page => params[:page], :per_page => 10, :order => "created_at desc"
     @paginate = true
     @is_owner = current_user && (@user.id == current_user.id)
@@ -162,7 +162,7 @@ class UsersController < ApplicationController
   def update_bio
     if request.post?
       @profile = current_user_profile
-      @profile.bio = @template.linkify @template.sanitize_user_bio params['bio']
+      @profile.bio = view_context.linkify view_context.sanitize_user_bio params['bio']
       if @profile.save
         flash[:success] = "Successfully edited your bio."
         redirect_to user_path(@profile.user)

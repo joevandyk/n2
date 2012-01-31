@@ -86,6 +86,7 @@ The primary(required) config files are:
 
   * database.yml
   * facebooker.yml -- remember to set callback_url to your base site, ie http://my.site.com
+  * locales.yml -- select the languagues you will be using
 
 The optional config files for advanced settings are:
 
@@ -96,7 +97,6 @@ The optional config files for advanced settings are:
   * menu.yml -- configure what menu items you want to appear in your application
   * application.god for use with the [God monitoring system](http://god.rubyforge.org/)
   * unicorn.conf.rb
-  * locales.yml -- select the languagues you will be using
   * There are a number of other advanced files in the config directory
 
 We provide .sample files for the majority of these config files to facilitate easy setup.
@@ -112,8 +112,14 @@ Now that we got the hard part out of the way, there are just a few commands left
         sudo gem install bundler
         # Install the required gems
         bundle install
+        # Temporary workaround for locales bootstrap issue
+        # This is strictly to initialize the database so there is at least a locales table in existence to
+        # prevent i18n_backend_database from exploding while bootstrapping itself.
+        mysql -u mydbuser -p my_n2_db < db/development_structure.sql
         # Run the newscloud setup process, this will create your database along with configuring your application
-        rake n2:setup
+        bundle exec rake n2:setup
+        # Load the default locales
+        bundle exec rake i18n:populate:update_from_rails
 
 Post Installation
 -----------------
