@@ -73,7 +73,36 @@
     =# link_to 'Return to View Objects index', admin_view_objects_path, :class=>"admin-btn"
     %button#save-button.admin-btn.float-right{:type => "button"} Update Template Settings
 
-  = semantic_form_for @view_object_setting, :url => admin_view_objects_path(@view_object) do |form|
-    = form.inputs do
-      = form.input :key_name
-      = form.input :klass_name
+  - item_count = 0
+  - case @view_object_template.name
+    - when "v2_double_col_triple_item", "v2_triple_col_large_2"
+      - item_count = 3
+    - when "v2_double_col_feature_triple_item"
+      - item_count = 4
+    - else
+      - item_count = 3
+
+  %h2== Template Builder #{@view_object_template.pretty_name}
+  .template-builder-column
+
+    .template-builder
+      .drop-zone
+        - item_count.times do |index|
+          - index += 1
+          .drop-item
+            .primary-drop{:id => "item-#{index}"}
+              %p== Drop #{index.ordinalize} Item
+            .drop-item-title{:id => "item-#{index}-title"}
+          .clear
+
+  .template-item-selector-column
+    %h2 Items
+    = select_tag 'featured-items-select', options_for_select(@featurables)
+    #items
+
+-#.clearfix
+  %h2 Existing Layout
+  - if @view_object.setting.dataset
+    .view-object= ViewTree.render(@view_object.name, @controller).html_safe
+  - else
+    %h4 You have not yet configured this View Object
