@@ -1,7 +1,6 @@
 source :gemcutter
 
 gem "rails", "3.1.3"
-gem 'activeadmin', '0.4.0'
 gem "acts_as_tree"
 gem 'haml'
 gem "sass-rails"
@@ -11,6 +10,7 @@ gem 'json'
 gem 'mogli'
 gem "thumbs_up"
 gem "prototype-rails"
+gem "inherited_resources"
 
 gem "formtastic", :git => "git://github.com/joevandyk/formtastic.git", :ref => "90e58f7"
 gem "friendly_id", '3.3.1'
