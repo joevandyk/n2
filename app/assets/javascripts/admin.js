@@ -39,6 +39,11 @@ $(function() {
    * Admin menu_items functionality
    */
 
+  $(document).ready(function() {
+    $('.sorted.asc').after(' asc');
+    $('.sorted.desc').after(' desc');
+  });
+
   setTimeout(function() {
     $('ul.menu-items').nestedSortable({
       disableNesting: 'no-nest',
@@ -95,7 +100,7 @@ $(function() {
     });
 
   }, 1000);
-  
+
 
 })(jQuery);
 

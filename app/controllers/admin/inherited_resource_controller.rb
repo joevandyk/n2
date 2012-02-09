@@ -38,20 +38,22 @@ class Admin::InheritedResourceController < AdminController
   end
 
   def collection
-    return @collection if defined?(@collection)
+    return @_collection if defined?(@_collection)
     relation = super
 
     @search = relation.search(params[:q])
     relation = @search.result
 
-    if options[:paginate] == true
-      relation = relation.paginate(:page => params[:page], :per_page => 20, :order => 'id desc')
-    end
-
     if params[:sort]
+      params[:sort] = params[:sort].split("!").first # Only sort by the first one
       relation = relation.except(:order).sorted(params[:sort])
     end
 
-    @collection = relation
+    if options[:paginate] == true
+      relation = relation.paginate(:page => params[:page] || 1, :per_page => 20, :order => 'id desc')
+    end
+
+
+    @_collection = relation
   end
 end

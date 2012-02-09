@@ -18,6 +18,7 @@ class Admin::CommentsController < Admin::InheritedResourceController
     options[:fields] = [:comments, :user_id, :created_at]
     options[:associations] = { :belongs_to => { :user => :user_id } }
     options[:paginate] = true
+    options[:config].search_terms = [:comments]
     super
   end
 
