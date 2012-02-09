@@ -24,7 +24,13 @@ class Admin::InheritedResourceController < AdminController
   private
 
   def options
-    @options ||= { :model => resource_class, :fields => {}}
+    @options ||= {
+      :model => resource_class,
+      :fields => {},
+      :config => OpenStruct.new,
+      :associations => {},
+      :pagination => false
+    }
   end
 
   def redirect_url
@@ -32,10 +38,12 @@ class Admin::InheritedResourceController < AdminController
   end
 
   def collection
+    relation = super
     if options[:paginate] == true
-      resource_class.paginate(:page => params[:page], :per_page => 20, :order => 'id desc')
-    else
-      super
+      relation = resource_class.paginate(:page => params[:page], :per_page => 20, :order => 'id desc')
     end
+
+    @search = relation.search(params[:q])
+    @search.result
   end
 end

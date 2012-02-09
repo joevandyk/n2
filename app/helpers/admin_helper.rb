@@ -2,7 +2,7 @@
 module AdminHelper
 
   def gen_index_page(collection, model, fields, options = {})
-    config = options[:config] || OpenStruct.new
+    config = options[:config]
 
     set_model_vars model
 
@@ -15,6 +15,10 @@ module AdminHelper
       config.index_links.each do |lambda_link|
         html << "<h2>" + self.instance_exec(&lambda_link) + "</h2>"
       end
+    end
+
+    if config.search_terms
+      html << render(:template => 'shared/admin/search', :locals => { :search_terms => config.search_terms })
     end
 
     html << gen_table(collection, model, fields, options)

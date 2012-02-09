@@ -1,0 +1,5 @@
+= search_form_for @search, :url => request.fullpath do |f|
+  - search_terms.each do |term|
+    = f.label term
+    = f.text_field "#{term}_cont"
+  = f.submit

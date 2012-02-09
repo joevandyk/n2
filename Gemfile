@@ -11,6 +11,7 @@ gem 'mogli'
 gem "thumbs_up"
 gem "prototype-rails"
 gem "inherited_resources"
+gem "ransack"
 
 gem "formtastic", :git => "git://github.com/joevandyk/formtastic.git", :ref => "90e58f7"
 gem "friendly_id", '3.3.1'

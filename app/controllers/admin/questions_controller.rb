@@ -5,6 +5,7 @@ class Admin::QuestionsController < Admin::InheritedResourceController
     options[:fields] = [:question, :details, :user_id, :votes_tally, :comments_count, :created_at]
     options[:associations] = { :belongs_to => { :user => :user_id } }
     options[:paginate] = true
+    options[:config].search_terms = [:question, :details]
     super
   end
 
