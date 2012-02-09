@@ -1,50 +1,20 @@
-class Admin::QuestionsController < AdminController
+class Admin::QuestionsController < Admin::InheritedResourceController
   skip_before_filter :admin_user_required
 
   def index
-    @questions = Question.paginate :page => params[:page], :per_page => 20, :order => "created_at desc"
+    options[:fields] = [:question, :details, :user_id, :votes_tally, :comments_count, :created_at]
+    options[:associations] = { :belongs_to => { :user => :user_id } }
+    options[:paginate] = true
+    super
   end
 
-  def new
-    @question = Question.new
-  end
-
-  def edit
-    @question = Question.find(params[:id])
-  end
-
-  def update
-    @question = Question.find(params[:id])
-    if @question.update_attributes(params[:question])
-      @question.expire
-      flash[:success] = "Successfully updated your Question ."
-      redirect_to [:admin, @question]
-    else
-      flash[:error] = "Could not update your Question  as requested. Please try again."
-      render :edit
-    end
-  end
-
-  def show
-    @question = Question.find(params[:id])
-  end
-
-  def create
-    @question = Question.new(params[:question])
-    @question.user = current_user
-    if @question.save
-      flash[:success] = "Successfully created your new Question !"
-      redirect_to [:admin, @question]
-    else
-      flash[:error] = "Could not create your Question , please try again"
-      render :new
-    end
-  end
+  # Use the views, not the scaffold
+  def new;   new!;   end
+  def edit;  edit!;  end
 
   private
 
   def set_current_tab
-    @current_tab = 'questions';
+    @current_tab = 'questions'
   end
-
 end
