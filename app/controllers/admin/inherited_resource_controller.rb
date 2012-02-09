@@ -48,6 +48,10 @@ class Admin::InheritedResourceController < AdminController
       relation = relation.paginate(:page => params[:page], :per_page => 20, :order => 'id desc')
     end
 
+    if params[:sort]
+      relation = relation.except(:order).sorted(params[:sort])
+    end
+
     @collection = relation
   end
 end
