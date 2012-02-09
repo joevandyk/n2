@@ -2,9 +2,10 @@ class Admin::ContentsController < Admin::InheritedResourceController
   cache_sweeper :story_sweeper, :only => [:create, :update, :destroy]
 
   def show
-    options
+    options[:paginate] = true
     options[:fields] = [:title, :user_id, :url, :caption, :content_image, :source, :score, :comments_count, :is_blocked, :created_at]
     options[:associations] = { :belongs_to => { :user => :user_id , :source => :source}, :has_one => { :content_image => :content_image}}
+    options[:config].search_terms = [:title, :url, :caption]
     super
   end
 
@@ -16,6 +17,7 @@ class Admin::ContentsController < Admin::InheritedResourceController
     options[:fields] = [:title, :user_id, :score, :comments_count, :is_blocked, :created_at]
     options[:associations] = { :belongs_to => { :user => :user_id, :source => :source } }
     options[:paginate] = true
+    options[:config].search_terms = [:title, :caption]
     super
   end
 

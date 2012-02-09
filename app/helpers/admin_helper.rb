@@ -58,7 +58,7 @@ module AdminHelper
     if collection.empty?
       html << "<p>No items found</p>"
     else
-      html << will_paginate(collection) if options[:paginate]
+      html << will_paginate(collection) if collection.respond_to?(:total_pages)
       html << "<table id='#{model_id}-table' class='admin-table'>"
       html << "<thead>"
       html << "<tr>"
@@ -78,7 +78,7 @@ module AdminHelper
       end
       html << "</tbody>"
       html << "</table>"
-      html << will_paginate(collection) if options[:paginate]
+      html << will_paginate(collection) if collection.respond_to?(:total_pages)
     end
 
     html.join.html_safe

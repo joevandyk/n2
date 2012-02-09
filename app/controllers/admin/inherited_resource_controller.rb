@@ -29,7 +29,7 @@ class Admin::InheritedResourceController < AdminController
       :fields => {},
       :config => OpenStruct.new,
       :associations => {},
-      :pagination => false
+      :paginate => false
     }
   end
 
@@ -38,12 +38,16 @@ class Admin::InheritedResourceController < AdminController
   end
 
   def collection
+    return @collection if defined?(@collection)
     relation = super
-    if options[:paginate] == true
-      relation = resource_class.paginate(:page => params[:page], :per_page => 20, :order => 'id desc')
-    end
 
     @search = relation.search(params[:q])
-    @search.result
+    relation = @search.result
+
+    if options[:paginate] == true
+      relation = relation.paginate(:page => params[:page], :per_page => 5, :order => 'id desc')
+    end
+
+    @collection = relation
   end
 end
