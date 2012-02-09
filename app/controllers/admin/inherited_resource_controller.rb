@@ -45,7 +45,7 @@ class Admin::InheritedResourceController < AdminController
     relation = @search.result
 
     if options[:paginate] == true
-      relation = relation.paginate(:page => params[:page], :per_page => 5, :order => 'id desc')
+      relation = relation.paginate(:page => params[:page], :per_page => 20, :order => 'id desc')
     end
 
     @collection = relation
