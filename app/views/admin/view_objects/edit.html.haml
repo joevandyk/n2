@@ -76,4 +76,48 @@
   = semantic_form_for @view_object_setting, :url => admin_view_objects_path(@view_object) do |form|
     = form.inputs do
       = form.input :key_name
-      = form.input :klass_name
+      = form.input :locale_title
+      = form.input :use_post_button, :as => :boolean
+      = form.input :klass_name, :as => :select, :collection => @view_object_setting.class.rankable_classes.map {|c| [c.name.titleize, c.name] }
+      %ul
+        - @view_object_setting.kommands.each do |kommand|
+          %li= kommand.inspect
+
+  %h2 Update View Object
+  = form_tag(admin_view_object_path(@view_object), :method => :put, :class => "formtastic") do
+    = field_set_tag nil, :class => 'inputs' do
+      %ol
+        %li.input.string
+          = label_tag 'key_name', 'View Object Name', :class => "label"
+          = text_field_tag 'key_name', @view_object.name
+        %li.input.string
+          = label_tag 'locale_title', 'Locale Title', :class => "label"
+          = text_field_tag 'locale_title', @view_object_setting.locale_title
+        %li.input.string
+          = label_tag 'locale_subtitle', 'Locale Subtitle', :class => "label"
+          = text_field_tag 'locale_subtitle', @view_object_setting.locale_subtitle
+        %li.input.string
+          = label_tag 'klass_name', 'Model Resource', :class => "label"
+          = select_tag 'klass_name', options_for_select(@view_object_setting.class.rankable_classes.map {|c| [c.name.titleize, c.name] }, @view_object_setting.klass_name)
+        - kommand = @view_object_setting.kommands.first
+        %li.input.string
+          = label_tag 'kommand_name', 'Method', :class => "label"
+          = select_tag 'kommand_name', options_for_select([kommand[:method_name], "asdf"], kommand[:method_name])
+        %li.input.string
+          = label_tag 'kommand_limit', 'Number of Items', :class => "label"
+          = select_tag 'kommand_limit', options_for_select(limit_options, kommand[:args].first)
+        %li.input.boolean
+          = label_tag 'use_post_button', nil, :class => "label" do
+            = check_box_tag 'use_post_button', 1, @view_object_setting.use_post_button
+            Use Post Button
+        %li.input.boolean
+          = label_tag 'cache_enabled', 'Enable Caching', :class => "label" do
+            = check_box_tag 'cache_enabled', 1, @view_object_setting.cache_enabled
+            Enable Caching
+
+
+
+    = field_set_tag nil, :class => 'buttons' do
+      %ol
+        %li
+          = submit_tag "Update View Object"

@@ -13,6 +13,10 @@ class Admin::ViewObjectsController < AdminController
     @view_object_setting = @view_object.setting
   end
 
+  def update
+    raise params.inspect
+  end
+
   def create
     raise params.inspect
   end
