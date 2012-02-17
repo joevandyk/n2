@@ -1,4 +1,5 @@
 class Audio < ActiveRecord::Base
+  include N2::CurrentSite
 
   acts_as_moderatable
   acts_as_voteable

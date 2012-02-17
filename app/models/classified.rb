@@ -1,4 +1,5 @@
 class Classified < ActiveRecord::Base
+  include N2::CurrentSite
   include AASM
 
   acts_as_authorization_object

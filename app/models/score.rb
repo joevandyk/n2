@@ -1,4 +1,5 @@
 class Score < ActiveRecord::Base
+  include N2::CurrentSite
 
   belongs_to :user
   belongs_to :scorable, :polymorphic => true
@@ -40,6 +41,9 @@ class Score < ActiveRecord::Base
 
   def self.calc_scores time = nil, limit = 10
     limit ||= 10
+    # TODO RAILS3
+    return self.limit(10).select('0 as karma_score, 0 as activity_score, 0 as total_score, user_id')
+
     if time.nil?
       self.find(:all, :select => "SUM(IF(score_type = 'karma', value, 0)) AS karma_score, SUM(IF(score_type = 'participation', value, 0)) AS activity_score, SUM(value) AS total_score, user_id", :conditions => ["user_id NOT IN (SELECT id FROM users WHERE is_admin is true or is_moderator is true or is_blocked is true)"], :group => "user_id", :having => "total_score > 0", :limit => limit, :include => :user, :order => "total_score desc")
     else

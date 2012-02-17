@@ -23,7 +23,9 @@ module Newscloud
       def top_article_items limit = 100
         table = self.name.tableize
         now = Time.now.utc.strftime("%Y-%m-%d %H:%M:%S")
-        self.find_by_sql %{SELECT ((1 + (votes_tally * 2)) / (((UNIX_TIMESTAMP("#{now}") - UNIX_TIMESTAMP(created_at)) / 3600) + 5)) AS item_score, #{table}.* FROM #{table} JOIN (SELECT ID FROM #{table} WHERE (is_blocked = 0 AND article_id is NOT NULL) ORDER BY created_at DESC LIMIT 100) AS sub_#{table} ON #{table}.id = sub_#{table}.id ORDER BY item_score DESC LIMIT #{limit};}
+        # TODO we can do this better in pg, do it later
+        return self.limit(limit)
+        # self.find_by_sql %{SELECT ((1 + (votes_tally * 2)) / (((UNIX_TIMESTAMP("#{now}") - UNIX_TIMESTAMP(created_at)) / 3600) + 5)) AS item_score, #{table}.* FROM #{table} JOIN (SELECT ID FROM #{table} WHERE (is_blocked is false AND article_id is NOT NULL) ORDER BY created_at DESC LIMIT 100) AS sub_#{table} ON #{table}.id = sub_#{table}.id ORDER BY item_score DESC LIMIT #{limit};}
       end
 
       def top_story_items(limit = 100, within_last_week = false)
@@ -32,11 +34,14 @@ module Newscloud
         # RAILS3 TODO
         return self.order('created_at desc').limit(limit)
         table = self.name.tableize
+        # TODO we can do this better in pg, do it later
+        return self.limit(limit)
+
         now = Time.now.utc.strftime("%Y-%m-%d %H:%M:%S")
         if !within_last_week
-          self.find_by_sql %{SELECT ((1 + (votes_tally * 2)) / (((UNIX_TIMESTAMP("#{now}") - UNIX_TIMESTAMP(created_at)) / 3600) + 5)) AS item_score, #{table}.* FROM #{table} JOIN (SELECT ID FROM #{table} WHERE (is_blocked = 0 AND article_id is NULL) ORDER BY created_at DESC LIMIT 100) AS sub_#{table} ON #{table}.id = sub_#{table}.id ORDER BY item_score DESC LIMIT #{limit};}
+          self.find_by_sql %{SELECT ((1 + (votes_tally * 2)) / (((UNIX_TIMESTAMP('#{now}') - UNIX_TIMESTAMP(created_at)) / 3600) + 5)) AS item_score, #{table}.* FROM #{table} JOIN (SELECT ID FROM #{table} WHERE (is_blocked is false AND article_id is NULL) ORDER BY created_at DESC LIMIT 100) AS sub_#{table} ON #{table}.id = sub_#{table}.id ORDER BY item_score DESC LIMIT #{limit};}
         else
-          self.find_by_sql %{SELECT ((1 + (votes_tally * 2)) / (((UNIX_TIMESTAMP("#{now}") - UNIX_TIMESTAMP(created_at)) / 3600) + 5)) AS item_score, #{table}.* FROM #{table} JOIN (SELECT ID FROM #{table} WHERE (is_blocked = 0 AND article_id is NULL AND created_at > date_sub("#{now}", INTERVAL 7 DAY) ) ORDER BY created_at DESC LIMIT 100) AS sub_#{table} ON #{table}.id = sub_#{table}.id ORDER BY item_score DESC LIMIT #{limit};}
+          self.find_by_sql %{SELECT ((1 + (votes_tally * 2)) / (((UNIX_TIMESTAMP('#{now}') - UNIX_TIMESTAMP(created_at)) / 3600) + 5)) AS item_score, #{table}.* FROM #{table} JOIN (SELECT ID FROM #{table} WHERE (is_blocked is false AND article_id is NULL AND created_at > date_sub("#{now}", INTERVAL 7 DAY) ) ORDER BY created_at DESC LIMIT 100) AS sub_#{table} ON #{table}.id = sub_#{table}.id ORDER BY item_score DESC LIMIT #{limit};}
         end
       end
 

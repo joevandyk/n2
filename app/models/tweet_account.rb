@@ -1,4 +1,5 @@
 class TweetAccount < ActiveRecord::Base
+  include N2::CurrentSite
   has_many :tweets
   belongs_to :user
   acts_as_taggable_on :tags, :sections

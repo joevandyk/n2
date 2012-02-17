@@ -1,4 +1,5 @@
 class Authentication < ActiveRecord::Base
+  include N2::CurrentSite
   belongs_to :user
   #validates_presence_of :user, :provider, :uid
 

@@ -1,4 +1,5 @@
 class Metadata < ActiveRecord::Base
+  include N2::CurrentSite
   set_table_name :metadatas
   serialize :data, Hash
 
