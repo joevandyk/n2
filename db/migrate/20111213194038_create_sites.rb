@@ -85,13 +85,7 @@ class CreateSites < ActiveRecord::Migration
       execute "alter table #{ table } drop constraint #{ table }_pkey;"
 
       #  Add site_id to each table, make (id, site_id) a primary key, add indexes
-      execute "alter table #{ table } add column site_id integer references sites(id)"
-
-      # Update the site_id of each table to the first site's id
-      execute "update #{ table } set site_id = #{ Site.first.id };"
-
-      # site_id column shouldn't be null anymore
-      execute "alter table #{ table } alter column site_id set not null;"
+      execute "alter table #{ table } add column site_id integer references sites(id) not null"
 
       # Add (site_id, id) primary key
       execute "alter table #{ table } add primary key (id, site_id);"
@@ -123,8 +117,6 @@ create table site_groups (
 
   # Each site can be in a maximum of one group.
   execute "create unique index on site_groups_sites using btree(site_id);"
-
-  SiteGroup.create! :sites => Site.all, :name => "Default Site Group", :primary_site => Site.first
 
   end
 end
