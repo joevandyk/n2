@@ -1,5 +1,5 @@
 class Metadata::ViewObjectSetting < Metadata
-  metadata_keys :view_object_name, :klass_name, :kommands, :use_post_button, :locale_title, :cache_enabled
+  metadata_keys :view_object_name, :klass_name, :kommands, :use_post_button, :locale_title, :cache_disabled, :item_descriptions, :profiles_disabled
 
   scope :key_sub_type_name, lambda { |*args| { :conditions => ["key_sub_type = ? AND key_name = ?", args.first, args.second] } }
 
@@ -110,6 +110,10 @@ class Metadata::ViewObjectSetting < Metadata
     #init_data
     self.data[method].present?
     #return self.data
+  end
+
+  def get_klass
+    klass_name.present? and klass_name.constantize
   end
 
   private

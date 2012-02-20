@@ -99,6 +99,10 @@ module Newscloud
         "#{self.name.downcase}:view_object_namespace_deps"
       end
 
+      def view_object_scope_methods
+        ["newest", "top"].select {|m| self.respond_to?(m) }
+      end
+
     end
 
     module InstanceMethods

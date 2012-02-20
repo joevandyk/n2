@@ -100,9 +100,10 @@
           = label_tag 'klass_name', 'Model Resource', :class => "label"
           = select_tag 'klass_name', options_for_select(@view_object_setting.class.rankable_classes.map {|c| [c.name.titleize, c.name] }, @view_object_setting.klass_name)
         - kommand = @view_object_setting.kommands.first
+        - klass = @view_object_setting.get_klass
         %li.input.string
           = label_tag 'kommand_name', 'Method', :class => "label"
-          = select_tag 'kommand_name', options_for_select([kommand[:method_name], "asdf"], kommand[:method_name])
+          = select_tag 'kommand_name', options_for_select(klass.view_object_scope_methods, kommand[:method_name])
         %li.input.string
           = label_tag 'kommand_limit', 'Number of Items', :class => "label"
           = select_tag 'kommand_limit', options_for_select(limit_options, kommand[:args].first)
@@ -111,11 +112,9 @@
             = check_box_tag 'use_post_button', 1, @view_object_setting.use_post_button
             Use Post Button
         %li.input.boolean
-          = label_tag 'cache_enabled', 'Enable Caching', :class => "label" do
-            = check_box_tag 'cache_enabled', 1, @view_object_setting.cache_enabled
-            Enable Caching
-
-
+          = label_tag 'cache_disabled', 'Disable Caching', :class => "label" do
+            = check_box_tag 'cache_disabled', 1, @view_object_setting.cache_disabled
+            Disable Caching
 
     = field_set_tag nil, :class => 'buttons' do
       %ol
