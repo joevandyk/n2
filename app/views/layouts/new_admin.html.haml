@@ -3,7 +3,7 @@
 %html
   %head
     %meta{'http-equiv' => 'Content-Type', :content => 'application/xhtml+xml; charset=UTF-8'}/
-    %title== N2 -- #{get_setting('site_title').try(:value)} Admin Interface
+    %title== #{get_setting('site_title').try(:value)} Admin Interface
 
     = csrf_meta_tag
 
@@ -125,12 +125,12 @@
               %li= link_to 'Members', admin_users_path
               - if not APP_CONFIG['use_view_objects']
                 %li= link_to 'Announcements', admin_announcements_path
-              %li
-                %a{:href => "#community-notifications"} Notifications
-                %ul
-                  -#%li= link_to 'Notifications', admin_dashboard_messages_path
-                  -#%li= link_to 'Reset dashboard', clear_global_admin_dashboard_messages_path
-                  %li= link_to 'FAQ', 'http://support.newscloud.com/faqs/managing-your-application/where-do-dashboard-messages-that-i-send-appear-to-the-reader'
+              -# %li
+                -# %a{:href => "#community-notifications"} Notifications
+                -# %ul
+                  -# %li= link_to 'Notifications', admin_dashboard_messages_path
+                  -# %li= link_to 'Reset dashboard', clear_global_admin_dashboard_messages_path
+                  -# %li= link_to 'FAQ', 'http://support.newscloud.com/faqs/managing-your-application/where-do-dashboard-messages-that-i-send-appear-to-the-reader'
           %li
             %a{:href => "#module-settings"} Settings
             %ul

@@ -225,6 +225,11 @@ N2::Application.routes.draw do
   # RAILS3 TODO
   resources :contents, :controller => :stories, :as => :stories
   match '/stories/parse_page' => 'stories#parse_page'
+  match '/stories.:format' => 'stories#index'
+
+  # adding this to fix the old story posting bookmarklet
+  # which was broken by the new routes
+  match '/stories/new' => 'stories#new'
 
   resources :contents do
     resources :flags, :comments, :related_items

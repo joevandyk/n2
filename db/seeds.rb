@@ -366,6 +366,7 @@ settings = [
  { :key_sub_type => 'twitter_standard_list', :key_name => 'list_widget_caption', :value =>"Tweets about #{(APP_CONFIG['site_topic'] || "Default Topic" )}", :hint => 'The caption for the widget' },
  { :key_sub_type => 'options', :key_name => 'rackspace_hosting_credit',  :value => "false" , :hint => 'If you are using credited Rackspace hosting, please activate this setting.' },
  { :key_sub_type => 'options', :key_name => 'native_voting',  :value => "false" , :hint => 'False turns on Add This toolbar with Facebook Likes. True turns on native likes and Twitter Connect.' },
+ { :key_sub_type => 'options', :key_name => 'framed_item_content',  :value => "false" , :hint => 'True makes links to destination item urls appear in a frameset.' },
  { :key_sub_type => 'options', :key_name => 'extended_footer_content',  :value => "false" , :hint => 'Advanced users only - place additional javascript for the footer here.' },
 ]
 
@@ -500,6 +501,11 @@ view_object_templates =
      :name        => "v2_single_col_list",
      :pretty_name => "Version 2 Single Column List",
      :template    => "shared/templates/single_col_list"
+   },
+   {
+     :name        => "v2_single_col_list_with_profile",
+     :pretty_name => "Version 2 Single Column List With Profile",
+     :template    => "shared/templates/single_col_list_with_profile"
    },
    {
      :name        => "v2_single_facebook_widget",
@@ -691,7 +697,9 @@ view_objects = [
   	:name          => "Welcome Panel",
   	:template_name => "v2_welcome_panel",
   	:settings      => {
-  		:klass_name      => "User",
+                    :klass_name      => "User",
+                    :cache_disabled => true,
+                    :version => 2,
   		:locale_title    => nil,
   		:locale_subtitle => nil,
   		:use_post_button => false,
@@ -773,7 +781,9 @@ view_objects = [
   		:klass_name      => "User",
   		:locale_title    => "recent_users_without_count",
   		:locale_subtitle => nil,
-  		:use_post_button => false,
+                    :use_post_button => false,
+                    :cache_disabled => true,
+                    :version => 2,
   		:kommands        => [
   		  {
           :method_name => "active"
@@ -1044,14 +1054,14 @@ view_objects = [
   },
   {
   	:name          => "Newest Universal Items",
-  	:template_name => "v2_single_col_list",
+  	:template_name => "v2_single_col_list_with_profile",
   	:settings      => {
   		:klass_name      => "ItemAction",
   		:locale_title    => "generic.newest_items.title",
   		:locale_subtitle => nil,
   		:use_post_button => false,
                     :css_class       => "active",
-                    :version => 2,
+                    :version => 3,
   		:kommands        => [
   		  {
   		    :method_name => "newest_items",
@@ -1158,7 +1168,8 @@ view_objects = [
   		:locale_title    => nil,
   		:locale_subtitle => nil,
   		:use_post_button => false,
-  		:cache_enabled   => false,
+                    :cache_disabled   => true,
+                    :version => 2,
       :old_widget      => true,
   		:kommands        => [
   		]
@@ -1171,7 +1182,9 @@ view_objects = [
   		:klass_name      => "Metadata",
   		:locale_title    => nil,
   		:locale_subtitle => nil,
-  		:use_post_button => false,
+                    :use_post_button => false,
+                    :cache_disabled => true,
+                    :version => 2,
   		:kommands        => [
   		  {
           :method_name => "get_ad_slot",
@@ -1187,7 +1200,9 @@ view_objects = [
   		:klass_name      => "Metadata",
   		:locale_title    => nil,
   		:locale_subtitle => nil,
-  		:use_post_button => false,
+                    :use_post_button => false,
+                    :cache_disabled => true,
+                    :version => 2,
   		:kommands        => [
   		  {
           :method_name => "get_ad_slot",
@@ -1203,7 +1218,9 @@ view_objects = [
   		:klass_name      => "Metadata",
   		:locale_title    => nil,
   		:locale_subtitle => nil,
-  		:use_post_button => false,
+                    :use_post_button => false,
+                    :cache_disabled => true,
+                    :version => 2,
   		:kommands        => [
   		  {
           :method_name => "get_ad_slot",
@@ -1219,7 +1236,9 @@ view_objects = [
   		:klass_name      => "Metadata",
   		:locale_title    => nil,
   		:locale_subtitle => nil,
-  		:use_post_button => false,
+                    :use_post_button => false,
+                    :cache_disabled => true,
+                    :version => 2,
   		:kommands        => [
   		  {
           :method_name => "get_ad_slot",
@@ -1376,7 +1395,7 @@ view_objects.each do |view_object_hash|
   view_object.setting.klass_name       = view_object_hash[:settings][:klass_name]
   view_object.setting.use_post_button  = view_object_hash[:settings][:use_post_button]
   view_object.setting.locale_title     = view_object_hash[:settings][:locale_title] if view_object_hash[:settings][:locale_title]
-  view_object.setting.cache_enabled    = view_object_hash[:settings][:cache_enabled] if view_object_hash[:settings][:cache_enabled]
+  view_object.setting.cache_disabled    = view_object_hash[:settings][:cache_disabled] if view_object_hash[:settings][:cache_disabled]
   view_object.setting.old_widget       = view_object_hash[:settings][:old_widget] if view_object_hash[:settings][:old_widget]
   view_object.setting.css_class        = view_object_hash[:settings][:css_class] if view_object_hash[:settings][:css_class]
   view_object.setting.locale_subtitle  = view_object_hash[:settings][:locale_subtitle] if view_object_hash[:settings][:locale_subtitle]
