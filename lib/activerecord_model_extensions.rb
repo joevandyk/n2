@@ -20,6 +20,10 @@ module Newscloud
         ["PredictionGuess", "Question",  "Idea", "Event", "PredictionGroup", "Gallery", "Resource", "Classified", "PredictionQuestion", "Content", "Article", "Topic", "Answer"].map(&:constantize)
       end
 
+      def view_object_classes
+        ["ItemScore", "ItemAction", "PredictionGuess", "Question",  "Idea", "Event", "PredictionGroup", "Gallery", "Resource", "Classified", "PredictionQuestion", "Content", "Article", "Topic", "Answer"].map(&:constantize)
+      end
+
       def top_article_items limit = 100
         table = self.name.tableize
         now = Time.now.utc.strftime("%Y-%m-%d %H:%M:%S")

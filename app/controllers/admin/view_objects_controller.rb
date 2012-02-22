@@ -11,10 +11,34 @@ class Admin::ViewObjectsController < AdminController
   def edit
     @view_object = ViewObject.find(params[:id])
     @view_object_setting = @view_object.setting
+    raise @view_object_setting.inspect if @view_object_setting.kommands.size > 1
   end
 
   def update
-    raise params.inspect
+    vo_params = params[:view_object]
+    vos_params = params[:view_object_setting]
+    @view_object = ViewObject.find(params[:id])
+    @view_object_setting = @view_object.setting
+    #@view_object.name = vo_params["key_name"] # TODO: add this to setting, not view object
+    @view_object_setting.locale_title = vos_params["locale_title"] # TODO: switch helpers to use find locale or use this default value
+    @view_object_setting.locale_subtitle = vos_params["locale_subtitle"]
+    @view_object_setting.use_post_button = !! vos_params["use_post_button"]
+    @view_object_setting.cache_disabled = !! vos_params["cache_disabled"]
+    @view_object_setting.klass_name = vos_params["klass_name"]
+    #@view_object_setting.version += 1
+    kommand = {
+      :method_name => vos_params[:kommand_name],
+      :args => [vos_params[:kommand_limit].to_i]
+    }
+    @view_object_setting.kommands = [kommand]
+    if @view_object.valid? and @view_object_setting.valid? and @view_object.save and @view_object_setting.save
+      @view_object.expire
+      flash[:success] = "Successfully updated your view object"
+      redirect_to [:admin, @view_object]
+    else
+      flash[:error] = "Could not update your view object. Please fix any errors and try again."
+      render :edit
+    end
   end
 
   def create

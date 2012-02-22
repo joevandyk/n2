@@ -42,7 +42,11 @@ class ViewTree
   end
 
   def translate locale_key, options = {}
-    I18n.translate(locale_key, options)
+    # HACK: I18n.translate when passed a symbol will return nil if it
+    # doesn't exist, rather than creating it.
+    # We Take advantage of this to allow users providing custom in
+    # place titles in the view objects edit page.
+    I18n.translate(locale_key.to_sym, options) || locale_key
   end
   alias_method :t, :translate
 
