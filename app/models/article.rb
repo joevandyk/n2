@@ -1,4 +1,5 @@
 class Article < ActiveRecord::Base
+  include N2::CurrentSite
 
   acts_as_voteable
   acts_as_taggable_on :tags, :sections
@@ -13,10 +14,10 @@ class Article < ActiveRecord::Base
   has_one :content
   belongs_to :author, :class_name => "User"
 
-  scope :published, { :conditions => ["is_draft = 0"] }
-  scope :draft, { :conditions => ["is_draft = 1"] }
+  scope :published, { :conditions => ["is_draft = false"] }
+  scope :draft, { :conditions => ["is_draft = is true"] }
   scope :newest, lambda { |*args| { :order => ["created_at desc"], :limit => (args.first || 10)} }
-  scope :featured, lambda { |*args| { :conditions => ["is_featured=1"],:order => ["featured_at desc"], :limit => (args.first || 1)} }
+  scope :featured, lambda { |*args| { :conditions => ["is_featured is true"],:order => ["featured_at desc"], :limit => (args.first || 1)} }
   scope :blog_roll, lambda { |*args| {  :select => "count(author_id) as author_article_count, author_id", :group => "author_id", :order => "author_article_count desc", :limit => (args.first || 30)} }
 
   accepts_nested_attributes_for :content

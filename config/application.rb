@@ -14,6 +14,7 @@ module N2
     config.assets.enabled = true
     config.assets.version = '1.0'
     config.active_record.schema_format = :sql
+    config.middleware.use "Rack::N2::SiteSwitcher"
 
     # These should be included in the application.sass or application.js file, instead
     # of each page requesting them.  Then the below would go away.

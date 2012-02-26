@@ -2,6 +2,8 @@ require 'open-uri'
 require 'timeout'
 
 class Image < ActiveRecord::Base
+  include N2::CurrentSite
+  include N2::CurrentSite
 
   if File.exist?(File.join(Rails.root, "config", "s3.yml"))
     PAPERCLIP_STORAGE_OPTIONS = {
@@ -25,7 +27,7 @@ class Image < ActiveRecord::Base
   belongs_to :source
 
   scope :newest, lambda { |*args| { :order => ["created_at desc"], :limit => (args.first || 8)} }
-  scope :featured, lambda { |*args| { :conditions => ["is_featured=1"],:order => ["created_at desc"], :limit => (args.first || 3)} }
+  scope :featured, lambda { |*args| { :conditions => ["is_featured is true"],:order => ["created_at desc"], :limit => (args.first || 3)} }
 
 =begin
   has_attached_file :image,

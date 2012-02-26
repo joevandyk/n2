@@ -36,7 +36,7 @@ SitemapGenerator::Sitemap.create do
   add prediction_groups_path(:format => 'html'), :priority => 0.5, :changefreq => 'daily'
   add classifieds_path(:format => 'html'), :priority => 0.7, :changefreq => 'daily'
   add cards_path(:format => 'html'), :priority => 0.5, :changefreq => 'daily'
-  
+
   Content.active.all.each do |a|
     add story_path(a, :format => 'html'), :lastmod => a.updated_at, :priority => 0.6
   end
@@ -76,7 +76,7 @@ SitemapGenerator::Sitemap.create do
   PredictionQuestion.active.all.each do |a|
     add prediction_question_path(a, :format => 'html'), :lastmod => a.updated_at, :priority => 0.4
   end
-  
+
   Classified.active.all.each do |a|
     add classified_path(a, :format => 'html'), :lastmod => a.updated_at, :priority => 0.4
   end
@@ -122,21 +122,21 @@ end
 =begin
 if File.exist?(File.join(Rails.root, "config", "s3.yml"))
   require 'aws/s3'
-  
+
   # Load credentials
   s3_options = YAML.load_file(File.join(Rails.root, "config", "s3.yml"))[Rails.env].symbolize_keys
   bucket = s3_options[:bucket]
   s3_options.delete(:bucket)
-  
+
   # Establish S3 connection
   AWS::S3::Base.establish_connection!(s3_options)
-  
+
   ["sitemap1.xml.gz", "sitemap_index.xml.gz"].each do |file_name|
     path = "/sitemaps/#{file_name}"
     file = File.new(File.join(Rails.root, "public", "system", "sitemaps", file_name))
     begin
       AWS::S3::S3Object.store(path, file, bucket, :access => :public_read)
-      
+
     rescue AWS::S3::NoSuchBucket => e
       AWS::S3::Bucket.create(bucket)
       retry

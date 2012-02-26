@@ -1,4 +1,5 @@
 class Url < ActiveRecord::Base
+  include N2::CurrentSite
   has_many :tweet_urls
   has_many :urls, :through => :tweet_urls
   belongs_to :source

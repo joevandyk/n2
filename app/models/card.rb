@@ -1,4 +1,5 @@
 class Card < ActiveRecord::Base
+  include N2::CurrentSite
 
   if File.exist?(File.join(Rails.root, "config", "s3.yml"))
     PAPERCLIP_STORAGE_OPTIONS = {

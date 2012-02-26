@@ -1,4 +1,5 @@
 class Video < ActiveRecord::Base
+  include N2::CurrentSite
 
   acts_as_moderatable
   acts_as_voteable
@@ -10,7 +11,7 @@ class Video < ActiveRecord::Base
   belongs_to :source
 
   scope :newest, lambda { |*args| { :order => ["created_at desc"], :limit => (args.first || 10)} }
-  scope :featured, lambda { |*args| { :conditions => ["is_featured=1"],:order => ["created_at desc"], :limit => (args.first || 3)} }
+  scope :featured, lambda { |*args| { :conditions => ["is_featured is true"],:order => ["created_at desc"], :limit => (args.first || 3)} }
 
   validates_format_of :remote_video_url, :with => /\Ahttp(s?):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/i, :message => "should look like a URL", :allow_blank => true
   validates_format_of :remote_video_url, :with => /(youtube|vimeo|boston).com/i, :message => "should be a youtube or vimeo url", :allow_blank => true

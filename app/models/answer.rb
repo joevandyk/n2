@@ -1,4 +1,5 @@
 class Answer < ActiveRecord::Base
+  include N2::CurrentSite
 
   acts_as_voteable
   acts_as_taggable_on :tags, :sections
@@ -15,7 +16,7 @@ class Answer < ActiveRecord::Base
 
   scope :top, lambda { |*args| { :order => ["votes_tally desc, created_at desc"], :limit => (args.first || 10)} }
   scope :newest, lambda { |*args| { :order => ["created_at desc"], :limit => (args.first || 10)} }
-  scope :featured, lambda { |*args| { :conditions => ["is_featured=1"],:order => ["created_at desc"], :limit => (args.first || 3)} }
+  scope :featured, lambda { |*args| { :conditions => ["is_featured is true "],:order => ["created_at desc"], :limit => (args.first || 3)} }
 
   def voices
     Answer.find(:all, :include => :user, :group => :user_id, :conditions => {:question_id => self.question_id}).map(&:user)

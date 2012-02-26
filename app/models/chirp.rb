@@ -1,4 +1,5 @@
 class Chirp < ActiveRecord::Base
+  include N2::CurrentSite
   acts_as_moderatable
 
   belongs_to :chirper, :class_name => "User", :foreign_key => :user_id

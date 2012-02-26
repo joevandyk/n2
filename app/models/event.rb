@@ -1,4 +1,5 @@
 class Event < ActiveRecord::Base
+  include N2::CurrentSite
   acts_as_voteable
   acts_as_taggable_on :tags, :sections
   acts_as_featured_item
@@ -10,7 +11,7 @@ class Event < ActiveRecord::Base
   acts_as_tweetable
 
   scope :newest, lambda { |*args| { :conditions => ["start_time > now()"], :order => ["created_at desc"], :limit => (args.first || 10)} }
-  scope :featured, lambda { |*args| { :conditions => ["is_featured=1 AND start_time > now()"],:order => ["created_at desc"], :limit => (args.first || 3)} }
+  scope :featured, lambda { |*args| { :conditions => ["is_featured is true AND start_time > now()"],:order => ["created_at desc"], :limit => (args.first || 3)} }
   scope :upcoming, lambda { |*args| { :conditions => ["start_time > now()"], :order => ["start_time asc"], :limit => (args.first || 10)} }
 
   belongs_to :user

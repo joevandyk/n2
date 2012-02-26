@@ -16,8 +16,8 @@ module Newscloud
 
           after_save :rescore_item
 
-          scope :active, { :conditions => ["#{self.name.tableize}.is_blocked = 0"] }
-          scope :inactive, { :conditions => ["#{self.name.tableize}.is_blocked = 1"] }
+          scope :active, { :conditions => ["#{self.name.tableize}.is_blocked = false"] }
+          scope :inactive, { :conditions => ["#{self.name.tableize}.is_blocked = true"] }
           scope :user_items, { :conditions =>
               "#{self.name.tableize}.user_id not in (select id from users where is_editor = true or is_moderator = true or is_admin = true)" }
           scope :curator_items, { :conditions =>

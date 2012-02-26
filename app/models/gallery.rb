@@ -1,4 +1,5 @@
 class Gallery < ActiveRecord::Base
+  include N2::CurrentSite
 
   acts_as_media_item
   acts_as_voteable
@@ -17,7 +18,7 @@ class Gallery < ActiveRecord::Base
 
   scope :newest, lambda { |*args| { :order => ["created_at desc"], :limit => (args.first || 10)} }
   scope :top, lambda { |*args| { :order => ["votes_tally desc, created_at desc"], :limit => (args.first || 10)} }
-  scope :featured, lambda { |*args| { :conditions => ["is_featured=1"],:order => ["featured_at desc"], :limit => (args.first || 3)} }
+  scope :featured, lambda { |*args| { :conditions => ["is_featured is true"],:order => ["featured_at desc"], :limit => (args.first || 3)} }
 
   validates_presence_of :user
   validates_presence_of :title, :description

@@ -1,4 +1,5 @@
 class ViewObject < ActiveRecord::Base
+  include N2::CurrentSite
 
   belongs_to :view_object_template
   belongs_to :parent, :class_name => "ViewObject", :foreign_key => :parent_id

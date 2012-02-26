@@ -1,4 +1,5 @@
 class ItemAction < ActiveRecord::Base
+  include N2::CurrentSite
   belongs_to :user
   belongs_to :actionable, :polymorphic => true
 

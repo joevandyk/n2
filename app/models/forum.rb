@@ -1,4 +1,5 @@
 class Forum < ActiveRecord::Base
+  include N2::CurrentSite
 
   acts_as_voteable
   acts_as_taggable_on :tags, :sections
@@ -16,7 +17,7 @@ class Forum < ActiveRecord::Base
 
   scope :positioned, :order => ["position desc, name asc"]
   scope :alpha, :order => ["name asc"]
-  scope :featured, lambda { |*args| { :conditions => ["is_featured=1"],:order => ["featured_at desc"], :limit => (args.first || 3)} }
+  scope :featured, lambda { |*args| { :conditions => ["is_featured is true"],:order => ["featured_at desc"], :limit => (args.first || 3)} }
 
   validates_presence_of :name, :description
 

@@ -1,4 +1,5 @@
 class Comment < ActiveRecord::Base
+  include N2::CurrentSite
 
   acts_as_moderatable
   acts_as_voteable
@@ -10,7 +11,7 @@ class Comment < ActiveRecord::Base
 
   scope :newest, lambda { |*args| { :order => ["created_at desc"], :limit => (args.first || 5)} }
   scope :top, lambda { |*args| { :order => ["likes_count desc"], :limit => (args.first || 10)} }
-  scope :featured, lambda { |*args| { :conditions => ["is_featured=1"],:order => ["featured_at desc"], :limit => (args.first || 1)} }
+  scope :featured, lambda { |*args| { :conditions => ["is_featured is true"],:order => ["featured_at desc"], :limit => (args.first || 1)} }
 #  scope :controversial, lambda { |*args| { :order => ["??? desc"], :limit => (args.first || 10)} }
 
   validates_presence_of :comments

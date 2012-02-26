@@ -1,4 +1,5 @@
 class Resource < ActiveRecord::Base
+  include N2::CurrentSite
   acts_as_voteable
   acts_as_taggable_on :tags, :sections
   acts_as_featured_item
@@ -10,7 +11,7 @@ class Resource < ActiveRecord::Base
   acts_as_relatable
 
   scope :newest, lambda { |*args| { :order => ["created_at desc"], :limit => (args.first || 10)} }
-  scope :featured, lambda { |*args| { :conditions => ["is_featured=1"],:order => ["created_at desc"], :limit => (args.first || 3)} }
+  scope :featured, lambda { |*args| { :conditions => ["is_featured is true"],:order => ["created_at desc"], :limit => (args.first || 3)} }
   scope :top, lambda { |*args| { :order => ["votes_tally desc, created_at desc"], :limit => (args.first || 10)} }
 
   belongs_to :user

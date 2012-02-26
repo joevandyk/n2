@@ -1,4 +1,5 @@
 class Topic < ActiveRecord::Base
+  include N2::CurrentSite
 
   acts_as_voteable
   acts_as_taggable_on :tags, :sections

@@ -1,4 +1,5 @@
 class Question < ActiveRecord::Base
+  include N2::CurrentSite
 
   acts_as_voteable
   acts_as_taggable_on :tags, :sections
@@ -21,7 +22,7 @@ class Question < ActiveRecord::Base
   scope :top, lambda { |*args| { :order => ["(2*answers_count+votes_tally) desc, created_at desc"], :limit => (args.first || 10)} }
   scope :newest, lambda { |*args| { :order => ["created_at desc"], :limit => (args.first || 10)} }
   scope :unanswered, lambda { |*args| { :conditions => ["answers_count = 0"], :order => ["created_at asc"], :limit => (args.first || 10) } }
-  scope :featured, lambda { |*args| { :conditions => ["is_featured=1"],:order => ["created_at desc"], :limit => (args.first || 3)} }
+  scope :featured, lambda { |*args| { :conditions => ["is_featured is true"],:order => ["created_at desc"], :limit => (args.first || 3)} }
 
   def self.per_page; 20; end
 

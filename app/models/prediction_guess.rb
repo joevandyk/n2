@@ -1,4 +1,5 @@
 class PredictionGuess < ActiveRecord::Base
+  include N2::CurrentSite
   belongs_to :user
   belongs_to :prediction_question, :counter_cache => true, :touch => true
   acts_as_moderatable
