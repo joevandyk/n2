@@ -58,6 +58,7 @@ tables =
         ideas
         images
         item_actions
+        item_scores
         item_tweets
         locales
         menu_items
