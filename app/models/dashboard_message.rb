@@ -2,7 +2,6 @@ class DashboardMessage < ActiveRecord::Base
   include N2::CurrentSite
   acts_as_moderatable
 
-
   belongs_to :user
 
   scope :sent, {:conditions => ["status = ?", 'sent'] }
@@ -45,5 +44,4 @@ class DashboardMessage < ActiveRecord::Base
   def recipient_voices
     User.all
   end
-
 end

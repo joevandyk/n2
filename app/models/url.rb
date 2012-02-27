@@ -11,8 +11,7 @@ class Url < ActiveRecord::Base
 
   private
 
-    def set_source
-      self.source = Source.find_or_create_from_url url
-    end
-
+  def set_source
+    self.source = Source.find_or_create_from_url url
+  end
 end

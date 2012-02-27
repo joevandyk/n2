@@ -15,5 +15,4 @@ class UserProfile < ActiveRecord::Base
   def self.sweeper
     UserSweeper
   end
-
 end

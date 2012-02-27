@@ -5,5 +5,4 @@ class ContentImage < ActiveRecord::Base
   def to_s
     self.url
   end
-
 end

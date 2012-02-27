@@ -3,6 +3,7 @@
 # Algorithm: http://amix.dk/uploads/reddit_cf_algorithm.png
 
 class ItemScore < ActiveRecord::Base
+  include N2::CurrentSite
 
   IMAGE_SCALING_FACTOR = 1.1
 
