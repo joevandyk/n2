@@ -70,6 +70,7 @@ tables =
         prediction_groups
         prediction_guesses
         prediction_results
+        prediction_questions
         prediction_scores
         questions
         related_items

@@ -760,7 +760,7 @@ CREATE TABLE forums (
     description character varying(255),
     topics_count integer DEFAULT 0,
     comments_count integer DEFAULT 0,
-    "position" integer DEFAULT 0,
+    position integer DEFAULT 0,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     is_blocked boolean DEFAULT false,
@@ -830,7 +830,7 @@ CREATE TABLE gallery_items (
     cached_slug character varying(255),
     caption text,
     item_url character varying(255),
-    "position" integer DEFAULT 0,
+    position integer DEFAULT 0,
     votes_tally integer DEFAULT 0,
     comments_count integer DEFAULT 0,
     is_featured boolean DEFAULT false,
@@ -1112,7 +1112,7 @@ CREATE TABLE menu_items (
     menuitemable_id integer,
     parent_id integer,
     enabled boolean DEFAULT true,
-    "position" integer DEFAULT 0,
+    position integer DEFAULT 0,
     resource_path character varying(255),
     url character varying(255),
     name character varying(255),
@@ -1384,7 +1384,8 @@ CREATE TABLE prediction_questions (
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     prediction_guesses_count integer DEFAULT 0,
-    guesses_count integer DEFAULT 0
+    guesses_count integer DEFAULT 0,
+    site_id integer not null
 );
 
 
@@ -2408,7 +2409,7 @@ CREATE TABLE view_tree_edges (
     id integer DEFAULT nextval('view_tree_edges_id_seq'::regclass) NOT NULL,
     parent_id integer,
     child_id integer,
-    "position" integer DEFAULT 0,
+    position integer DEFAULT 0,
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
     site_id integer NOT NULL
@@ -2469,7 +2470,7 @@ CREATE TABLE widget_pages (
     name character varying(255),
     created_at timestamp without time zone,
     updated_at timestamp without time zone,
-    "position" character varying(255),
+    position character varying(255),
     site_id integer NOT NULL
 );
 
@@ -2858,7 +2859,7 @@ ALTER TABLE ONLY prediction_guesses
 --
 
 ALTER TABLE ONLY prediction_questions
-    ADD CONSTRAINT prediction_questions_pkey PRIMARY KEY (id);
+    ADD CONSTRAINT prediction_questions_pkey PRIMARY KEY (id, site_id);
 
 
 --
@@ -4542,6 +4543,7 @@ CREATE INDEX prediction_results_id_idx ON prediction_results USING btree (id);
 --
 
 CREATE INDEX prediction_results_site_id_idx ON prediction_results USING btree (site_id);
+CREATE INDEX prediction_questions_site_id_idx ON prediction_questions USING btree (site_id);
 
 
 --
