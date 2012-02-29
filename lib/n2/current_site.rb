@@ -35,3 +35,7 @@ end
 class I18n::Backend::Locale
   include N2::CurrentSite
 end
+
+class Slug
+  include N2::CurrentSite
+end
