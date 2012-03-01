@@ -149,7 +149,11 @@ N2::Application.routes.draw do
     end
     resources :user_profiles,      :active_scaffold => true
     resources :users,           :active_scaffold => true
-    resources :view_objects
+    resources :view_objects do
+      member do
+        get :clone
+      end
+    end
     resources :view_object_templates
     resources :votes,           :active_scaffold => true
 

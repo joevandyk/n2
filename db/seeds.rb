@@ -1079,10 +1079,11 @@ view_objects = [
   		:locale_subtitle => nil,
   		:use_post_button => false,
                     :css_class       => "active",
-                    :version => 6,
+                    :version => 7,
   		:kommands        => [
   		  {
-  		    :method_name => "top_items"
+                                       :method_name => "top_items",
+                                       :args => [5]
   		  }
   		]
   	}

@@ -3,11 +3,34 @@ class Admin::ViewObjectsController < AdminController
 
   admin_scaffold :view_object do |config|
     config.index_fields = [:name, :view_object_template_id]
-    config.show_fields = [:name, :view_object_template_id]
-    config.actions = [:index, :show]
+    #config.show_fields = [:name, :view_object_template_id]
+    config.actions = [:index]
     config.associations = { :belongs_to => { :view_object_template => :view_object_template_id } }
   end
 
+  def new
+    @view_object = ViewObject.new
+    @view_object_setting = Metadata::ViewObjectSetting.new
+    @view_object_setting.metadatable = @view_object
+  end
+
+  def create
+    raise params.inspect
+  end
+  
+  def show
+    @view_object = ViewObject.find(params[:id])
+    @view_object_setting = @view_object.setting
+  end
+
+  def clone
+    @parent_view_object = ViewObject.find(params[:id])
+    @view_object = @parent_view_object.dup
+    @view_object_setting = @parent_view_object.setting.dup
+    @view_object_setting.metadatable = @view_object
+    render :new
+  end
+  
   def edit
     @view_object = ViewObject.find(params[:id])
     @view_object_setting = @view_object.setting
