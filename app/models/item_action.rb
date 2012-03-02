@@ -46,6 +46,19 @@ class ItemAction < ActiveRecord::Base
       :within => 1.week.ago,
       :minimum => 0
     }
+
+    # TODO Russell to fix?
+    options = {
+      :limit      => 10,
+      :conditions => ["action_type != ?", 'facebook_unlike'],
+      :select     => '*, 1 AS item_count',
+      :order      => 'item_count desc',
+      :item       => nil,
+      :klass      => nil,
+      :item_count => false,
+      :within => 1.week.ago,
+      :minimum => 0
+    }
     options.merge! opts
     item = options.delete :item
     klass = options.delete :klass

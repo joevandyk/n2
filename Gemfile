@@ -1,6 +1,7 @@
 source :gemcutter
 
 gem "rails", "3.1.3"
+gem "composite_primary_keys"
 gem "acts_as_tree"
 gem "sprockets"
 gem 'haml'

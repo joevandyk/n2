@@ -160,6 +160,8 @@ GEM
     cocaine (0.2.1)
     compass-960-plugin (0.10.4)
       compass (>= 0.10.0)
+    composite_primary_keys (4.1.2)
+      activerecord (~> 3.1)
     crack (0.3.1)
     cucumber (1.1.9)
       builder (>= 2.1.2)
@@ -388,6 +390,7 @@ DEPENDENCIES
   capybara (= 1.1.2)
   compass!
   compass-960-plugin
+  composite_primary_keys
   cucumber
   cucumber-rails
   database_cleaner (= 0.7.0)
