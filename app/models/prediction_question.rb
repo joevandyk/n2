@@ -146,7 +146,7 @@ class PredictionQuestion < ActiveRecord::Base
       {
         :guess    => g.guess,
         :percent  => (100.0 * g.count.to_f / get_guess_totals),
-        :users => self.prediction_guesses.find(:all, :conditions => [ "guess = ?",g.guess], :include => :user,:order => 'rand()', :limit => 10 )
+        :users => self.prediction_guesses.find(:all, :conditions => [ "guess = ?",g.guess], :include => :user,:order => 'random()', :limit => 10 )
       }
     end
   end

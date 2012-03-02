@@ -49,6 +49,10 @@ class Vote < ActiveRecord::Base
     end
   end
 
+  def self.item_voices item
+    for_voteable(item).select('distinct voter_id').map {|vid| User.active.find(vid.voter_id) }
+  end
+
   private
 
   def update_voteable_count

@@ -48,7 +48,7 @@ class PredictionGroupsController < ApplicationController
     if params[:id].nil?
       # to do - get first open
       @prediction_group = PredictionGroup.approved.currently_open.first
-      #:all, :order => "rand()"
+      #:all, :order => "random()"
     else
       @prediction_group = PredictionGroup.find(params[:id])
     end
