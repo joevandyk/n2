@@ -4,11 +4,16 @@
       %h2 Sign In
     .formBox
       .login
-        %p Choose a service to login with
+        - if ExternalAuthKeys.all.present?
+          %p Choose a service to login with
 
-        .provider-links
-          - ['facebook', 'twitter'].each do |provider|
-            = provider_image_link provider
+          .provider-links
+            - ExternalAuthKeys.all.each do |external_auth_key|
+              = provider_image_link external_auth_key.external_site_type
+        - else
+          %p
+            No external sign-in configured for this site.
+            = link_to "Configure it now!", new_admin_external_auth_key_path
 
         -# TODO: complete form
         .clear

@@ -23,10 +23,6 @@ N2::Application.routes.draw do
 
   match '/overlays/tweet' => 'overlays#tweet', :as => :overlay_tweet
 
-  # TODO RAILS3
-  #match 'locale' => '#index', :as => :filter
-  #match 'iframe' => '#index', :as => :filter
-
   resource :oauth
   match '/oauth/create' => 'oauth#create', :as => :oauth_callback
 

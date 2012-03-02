@@ -193,7 +193,12 @@ namespace :n2 do
     desc "Default N2 setup task"
     task :default do
       puts "Setting up your N2 framework"
-      Rake::Task['db:setup'].invoke
+      db = YAML.load(File.read("config/database.yml"))["development"]["database"]
+      system "dropdb #{ db }; createdb #{ db }"
+      sh "psql -f db/development_structure.seed.sql #{ db }"
+      sh "psql -f db/data.sql #{ db }"
+      Rake::Task['db:migrate'].invoke
+      Rake::Task['db:seed'].invoke
       Rake::Task['n2:data:load_locale_data'].invoke
       Rake::Task['n2:data:generate_widgets'].invoke
       Rake::Task['n2:util:compass:compile_css'].invoke

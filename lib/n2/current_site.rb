@@ -26,8 +26,7 @@ module N2
 end
 
 
-# Translations / Locale stuff also needs to be scoped by site.
-# TODO Should probably go somewhere else
+# Translations / Locale / Slugs also needs to be scoped by site.
 class Translation
   include N2::CurrentSite
 end
@@ -37,5 +36,13 @@ class I18n::Backend::Locale
 end
 
 class Slug
+  include N2::CurrentSite
+end
+
+class ActsAsTaggableOn::Tag
+  include N2::CurrentSite
+end
+
+class ActsAsTaggableOn::Tagging
   include N2::CurrentSite
 end
