@@ -1,4 +1,4 @@
 before_script:
 
 script:
-  - "echo $PWD; ruby script/copy_configs.rb; bundle exec rake db:migrate db:setup db:test:clone_structure spec"
+  - "echo $PWD; ruby script/copy_configs.rb; bundle exec rake n2:setup db:test:clone_structure spec"
