@@ -12,7 +12,7 @@ class PredictionQuestion < ActiveRecord::Base
   belongs_to  :user
   belongs_to  :prediction_group, :counter_cache => true, :touch => true
   has_many    :prediction_guesses
-  has_many  :correct_prediction_guesses, :class_name => "PredictionGuess", :conditions => [ "is_correct = 1"]
+  has_many  :correct_prediction_guesses, :class_name => "PredictionGuess", :conditions => [ "is_correct is true"]
   has_many  :prediction_results
 
   attr_accessor :tags_string
@@ -216,6 +216,6 @@ class PredictionQuestion < ActiveRecord::Base
   end
 
   def get_accepted_result
-    self.prediction_results.find(:first, :conditions => "is_accepted = 1")
+    self.prediction_results.find(:first, :conditions => "is_accepted is true")
   end
 end
