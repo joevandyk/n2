@@ -3,7 +3,7 @@ class Categorization < ActiveRecord::Base
   belongs_to :category
   belongs_to :categorizable, :polymorphic => true
 
-  validates_uniqueness_of :category_id, :scope => [:categorizable_type, :categorizable_id]
+  validates_uniqueness_of :category_id, :scope => [:categorizable_type, :categorizable_id, :site_id]
 
   validate :validate_category_type_on_categorizable
 

@@ -30,7 +30,7 @@ class Feed < ActiveRecord::Base
     opts[:title]    ||= rss_url
     opts[:tag_list] = opts.delete(:topic)
 
-    Feed.create!(opts)
+    f = Feed.create(opts)
   end
 
   def self.default_feed_topics
