@@ -15,7 +15,35 @@ class Admin::ViewObjectsController < AdminController
   end
 
   def create
-    raise params.inspect
+    vo_params = params[:view_object]
+    vos_params = params[:view_object_setting]
+    @view_object_template = ViewObjectTemplate.find(vo_params[:view_object_template_id])
+    @view_object = ViewObject.new({
+                                    :view_object_template => @view_object_template,
+                                    :name => vo_params[:key_name]
+                                  })
+    @view_object_setting = Metadata::ViewObjectSetting.new
+    @view_object.setting = @view_object_setting
+    @view_object_setting.view_object_name = vo_params[:key_name].parameterize.to_s
+    @view_object_setting.cache_disabled = vos_params[:cache_disabled].present?
+    @view_object_setting.use_post_button = vos_params[:use_post_button].present?
+    @view_object_setting.locale_title = vos_params[:locale_title]
+    @view_object_setting.locale_subtitle = vos_params[:locale_subtitle]
+    @view_object_setting.klass_name = vos_params[:klass_name]
+    @view_object_setting.add_kommand({:method_name => vos_params[:kommand_name], :args => [vos_params[:kommand_limit].to_i], :options => {}})
+    if validate_view_object_setting and @view_object.valid? and @view_object_setting.valid?
+      #raise @view_object_setting.errors.full_messages.inspect unless @view_object_setting.valid?
+      #raise [@view_object_setting, @view_object, @view_object_template].map(&:valid?).inspect
+      #raise [@view_object_setting, @view_object, @view_object_template, params].inspect
+      @view_object.save!
+      @view_object.setting.save!
+      @view_object.expire
+      flash[:success] = "Successfully created your view object."
+      redirect_to [:admin, @view_object]
+    else
+      flash[:error] = "Could not add your view object. Please clear any errors and try again"
+      render :new
+    end
   end
   
   def show
@@ -48,7 +76,7 @@ class Admin::ViewObjectsController < AdminController
     @view_object_setting.use_post_button = !! vos_params["use_post_button"]
     @view_object_setting.cache_disabled = !! vos_params["cache_disabled"]
     @view_object_setting.klass_name = vos_params["klass_name"]
-    #@view_object_setting.version += 1
+    #@view_object_setting.version += 1 #TODO
     kommand = {
       :method_name => vos_params[:kommand_name],
       :args => [vos_params[:kommand_limit].to_i]
@@ -62,10 +90,6 @@ class Admin::ViewObjectsController < AdminController
       flash[:error] = "Could not update your view object. Please fix any errors and try again."
       render :edit
     end
-  end
-
-  def create
-    raise params.inspect
   end
   
   def edit_curated
@@ -96,6 +120,28 @@ class Admin::ViewObjectsController < AdminController
 
     def set_featured_types
       @featurables ||= [['Stories', 'contents'], ['Ideas', 'ideas'], ['Questions', 'questions'], ['Resources', 'resources'], ['Events', 'events'], ['Galleries', 'galleries'], ['Forums', 'forums'], ['Topics', 'topics'], ['Prediction Groups', 'prediction_groups'], ['Prediction Questions', 'prediction_questions']]
+    end
+
+    def validate_view_object_setting
+      klass = @view_object_setting.get_klass
+      if klass.nil?
+        @view_object_setting.errors.add(:klass_name, "must be a present and a valid resource.")
+      end
+      if @view_object_setting.kommands.size != 1
+        @view_object_setting.errors.add(:kommand_name, "Only one method allowed.")
+      end
+      kommand = @view_object_setting.kommands.first
+      unless klass.view_object_scope_methods.include?(kommand[:method_name])
+        @view_object_setting.errors.add(:kommand_name, "Invalid method")
+      end
+      unless view_context.view_object_template_limit_range(@view_object_template).include?(kommand[:args].first)
+        @view_object_setting.errors.add(:kommand_limit, "Invalid limit")
+      end
+      unless @view_object_setting.locale_title.present?
+        @view_object_setting.errors.add(:locale_title, "Must be present")
+      end
+
+      not @view_object_setting.errors.any?
     end
 
 end

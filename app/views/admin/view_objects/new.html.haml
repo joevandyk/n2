@@ -1,8 +1,67 @@
 - content_for :head do
   :javascript
     $(function() {
+    var baseLimitOptions = #{limit_options.to_json};
     var viewObjectTemplateLimits = #{view_object_template_limit_json};
+    var viewObjectKlasses = #{view_object_class_methods_json};
     console.log(viewObjectTemplateLimits);
+    console.log(baseLimitOptions);
+
+    var rangeForTemplate = function(templateID) {
+    var templateLimits = viewObjectTemplateLimits[templateID];
+    console.log(templateLimits);
+    var min = templateLimits.min, max = templateLimits.max;
+    if (min == null && max == null) {
+    return baseLimitOptions;
+    } else if (min != null && max != null) {
+    return _.range(min,max+1);
+    } else if (min != null) {
+    return _.range(min, baseLimitOptions[baseLimitOptions.length - 1] + 1);
+    } else if (max != null) {
+    return _.range(baseLimitOptions[0], max+1);
+    } else {
+    return baseLimitOptions;
+    };
+    };
+
+    var optionsFromRange = function(list) {
+    console.log("RANGE");
+    return _.map(list, function(val) {
+    return '<option value="' + val + '">' + val + '</option>';
+    });
+    };
+
+    var methodsForKlass = function(klassName) {
+    console.log(viewObjectKlasses);
+    console.log("Selecting methods for " + klassName);
+    return viewObjectKlasses[klassName].methods;
+    };
+
+    var optionsFromMethods = function(list) {
+    return _.map(list, function(method) {
+    return '<option value="' + method[0] + '">' + method[1] + '</option>';
+    });
+    };
+
+    $('#view_object_view_object_template_id').change(function(event) {
+    var templateID = $(this).val();
+    console.log("Selected template " + templateID);
+    var rangeOptions = optionsFromRange(rangeForTemplate(templateID));
+    console.log("Range options: " + rangeOptions);
+    console.log($('#view_object_setting_kommand_limit'));
+    $('#view_object_setting_kommand_limit').html(rangeOptions.join(''));
+    });
+
+    $('#view_object_setting_klass_name').change(function(event) {
+    var klassName = $(this).val();
+    console.log("Selected klass " + klassName);
+    var klassMethods = optionsFromMethods(methodsForKlass(klassName));
+    console.log("Klass Methods: " + klassMethods);
+    $('#view_object_setting_kommand_name').html(klassMethods.join(''));
+    });
+
+    $('#view_object_setting_klass_name').trigger('change');
+    $('#view_object_view_object_template_id').trigger('change');
     });
 
 #content
@@ -11,6 +70,17 @@
     -#%button#save-button.admin-btn.float-right{:type => "button"} Update Template Settings
 
   %h2 Update View Object
+  - if @view_object_setting.errors.any?
+    %h3{:style => "color: red"} Please clear the following errors and try again.
+    %ul
+      - @view_object_setting.errors.full_messages.each do |error|
+        %li{:style => "color: red"}= error
+
+  - if @view_object.errors.any?
+    %ul
+      - @view_object.errors.full_messages.each do |error|
+        %li{:style => "color: red"}= error
+
   = form_tag(admin_view_objects_path, :class => "formtastic") do
     = field_set_tag nil, :class => 'inputs' do
       %ol
@@ -28,15 +98,17 @@
           = select_tag 'view_object[view_object_template_id]', options_for_select(select_view_object_template_options, @view_object.view_object_template_id)
         %li.input.string
           = label_tag 'view_object_setting[klass_name]', 'Model Resource', :class => "label"
-          = select_tag 'view_object_setting[klass_name]', options_for_select(@view_object_setting.class.view_object_classes.map {|c| [c.name.titleize, c.name] }, @view_object_setting.klass_name)
+          = select_tag 'view_object_setting[klass_name]', options_for_select(select_view_object_class_options, @view_object_setting.klass_name)
         - kommand = @view_object_setting.kommands.first
         - klass = @view_object_setting.get_klass
         %li.input.string
           = label_tag 'view_object_setting[kommand_name]', 'Method', :class => "label"
           -#= select_tag 'view_object_setting[kommand_name]', options_for_select(klass.view_object_scope_methods, kommand[:method_name])
+          = select_tag 'view_object_setting[kommand_name]'
         %li.input.string
           = label_tag 'view_object_setting[kommand_limit]', 'Number of Items', :class => "label"
           -#= select_tag 'view_object_setting[kommand_limit]', options_for_select(limit_options, kommand[:args].try(:first))
+          = select_tag 'view_object_setting[kommand_limit]'
         %li.input.boolean
           = label_tag 'view_object_setting[use_post_button]', nil, :class => "label" do
             = check_box_tag 'view_object_setting[use_post_button]', 1, @view_object_setting.use_post_button
