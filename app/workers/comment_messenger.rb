@@ -1,10 +1,11 @@
 class CommentMessenger
   @queue = :comment_messenger
 
-  def self.perform(comment_id, item_url, app_caption, image_url)
+  def self.perform(site_id, comment_id, item_url, app_caption, image_url)
+    Site.current_id = site_id
     # TEMPORARILY DISABLE
     return true
-    
+
     comment = Comment.active.find(comment_id)
 
     self.facebook_messenger comment, item_url, app_caption, image_url
@@ -35,5 +36,5 @@ class CommentMessenger
       raise Exception.new("FB GRAPH API EXCEPTION: #{exception.inspect}")
     end
   end
-    
+
 end

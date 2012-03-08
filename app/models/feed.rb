@@ -43,11 +43,11 @@ class Feed < ActiveRecord::Base
   end
 
   def async_update_feed
-    Resque.enqueue(FeedsWorker, self.id)
+    Resque.enqueue(self.site_id, FeedsWorker, self.id)
   end
 
   def self.async_update_feeds
-    Resque.enqueue(FeedsWorker)
+    Resque.enqueue(self.site_id, FeedsWorker)
   end
 
 end

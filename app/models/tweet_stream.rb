@@ -49,11 +49,11 @@ class TweetStream < ActiveRecord::Base
   end
 
   def async_update_tweet_stream
-    Resque.enqueue(TweetStreamsWorker, self.id)
+    Resque.enqueue(self.site_id, TweetStreamsWorker, self.id)
   end
 
   def self.async_update_tweet_streams
-    Resque.enqueue(TweetStreamsWorker)
+    Resque.enqueue(self.site_id, TweetStreamsWorker)
   end
 
   def to_s

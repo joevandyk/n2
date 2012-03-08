@@ -1,7 +1,9 @@
 class TwitterWorker
   @queue = :twitter
 
-  def self.perform(klass, id)
+  def self.perform(site_id, klass, id)
+    Site.current_id = site_id
+
     item = klass.constantize.find(id)
     return false unless item
 

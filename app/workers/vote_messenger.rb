@@ -1,10 +1,11 @@
 class VoteMessenger
   @queue = :vote_messenger
 
-  def self.perform(vote_id, item_url, app_caption, image_url)
+  def self.perform(site_id, vote_id, item_url, app_caption, image_url)
+    Site.current_id = site_id
     # TEMPORARILY DISABLE
     return true
-    
+
     vote = Vote.find(vote_id)
 
     self.facebook_messenger vote, item_url, app_caption, image_url
@@ -35,5 +36,5 @@ class VoteMessenger
       raise Exception.new("FB GRAPH API EXCEPTION: #{exception.inspect}")
     end
   end
-    
+
 end

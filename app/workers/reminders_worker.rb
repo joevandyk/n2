@@ -3,6 +3,7 @@ class RemindersWorker
 
   # needs to run nightly
   def self.perform()
+    Site.run_on_each {
     admin = Metadata::Setting.find_setting('site_notification_user').value
     user = User.active.find_by_fb_user_id(admin) || User.active.find_by_id(admin) || User.active.admins.last
     if user
@@ -38,5 +39,6 @@ class RemindersWorker
       #  end
       #end
     end
+    }
   end
 end

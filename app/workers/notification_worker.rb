@@ -2,7 +2,8 @@ class NotificationWorker
   @queue = :notifications
 
   # Takes a PfeedItem and stringified PfeedItem.attemp_delivery method params
-  def self.perform(pfeed_item_id, ar_obj_klass_name, ar_obj_id, method_name_arr)
+  def self.perform(site_id, pfeed_item_id, ar_obj_klass_name, ar_obj_id, method_name_arr)
+    Site.current_id = site_id
     pfeed_item = PfeedItem.find(pfeed_item_id)
     klass = ar_obj_klass_name.constantize
     ar_obj = klass.find(ar_obj_id)
@@ -19,7 +20,7 @@ class NotificationWorker
           	  :sender => sender,
           	  :email => from_email,
           	  :recipient => recipient,
-          	  :recipients => recipient.email,          	  
+          	  :recipients => recipient.email,
           	  :originator => pfeed_item.originator,
           	  :participant => pfeed_item.participant,
           	  :site_title => Metadata::Setting.find_setting('site_title').value
@@ -28,5 +29,5 @@ class NotificationWorker
         end
       end
     end
-  end 
+  end
 end
