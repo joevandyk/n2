@@ -11,7 +11,7 @@ class ClassifiedsWorker
 =begin
     posts notification to any user whose classified listing is nearing expiration e.g. 3 days
 =end
-      classifieds = Classified.active.find(:all, :conditions => [ "(expires_at < date_add(NOW(), INTERVAL 3 DAY) and dont_ask_me_for_email = ? and receive_email_notifications = ? )",0, 1], :order => "user_id DESC", :joins => :user).map(&:user)
+      classifieds = Classified.active.find(:all, :conditions => [ "(expires_at < now() + '3 day'::interval and dont_ask_me_for_email = ? and receive_email_notifications = ? )", false, true], :order => "user_id DESC", :joins => :user).map(&:user)
       classifieds.each do |classified|
         chirp = Chirp.new({
           :chirper => user,
@@ -27,7 +27,7 @@ class ClassifiedsWorker
 =begin
     posts notification to any user whose classified listing has expired
 =end
-      classifieds = Classified.active.find(:all, :conditions => [ "(expires_at > date_sub(NOW(), INTERVAL 24 HOUR) and dont_ask_me_for_email = ? and receive_email_notifications = ? )",0, 1], :order => "user_id DESC", :joins => :user).map(&:user)
+      classifieds = Classified.active.find(:all, :conditions => [ "(expires_at > now() - '1 day'::interval and dont_ask_me_for_email = ? and receive_email_notifications = ? )", false, true], :order => "user_id DESC", :joins => :user).map(&:user)
       classifieds.each do |classified|
         chirp = Chirp.new({
           :chirper => user,

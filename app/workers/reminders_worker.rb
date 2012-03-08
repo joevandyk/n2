@@ -15,12 +15,12 @@ class RemindersWorker
     b) haven't turned off email reminders  dont_ask_me_for_email
     c) haven't been asked in two weeks email_last_ask
 =end
-      recipients = UserProfile.active.find(:all, :conditions => [ "dont_ask_me_for_email = ? and (email = ? or receive_email_notifications = ?) and (email_last_ask < date_sub(NOW(), INTERVAL 2 WEEK) or email_last_ask is null)",0, '', 0], :order => "user_id DESC", :joins => :user).map(&:user)
+      recipients = UserProfile.active.find(:all, :conditions => [ "dont_ask_me_for_email = ? and (email = ? or receive_email_notifications = ?) and (email_last_ask < NOW() - '2 week'::interval or email_last_ask is null)", false, '', false], :order => "user_id DESC", :joins => :user).map(&:user)
       recipients.each do |recipient|
         chirp = Chirp.new({
           :chirper => user,
           :recipient => recipient,
-          :message => ActionView::Base.new.render(:partial => "#{Rails.root.to_s}/app/views/reminders/email_signup.html.haml", :locals => { :user => recipient } )
+          :message => ActionView::Base.new.render(:partial => "#{Rails.root.to_s}/app/views/reminders/_email_signup.html", :locals => { :user => recipient } )
         })
         if chirp.valid? and user.sent_chirps.push chirp
           recipient.user_profile.update_attribute(:email_last_ask, Time.now)
