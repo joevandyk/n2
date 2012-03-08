@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'sequel'
 require 'pg'
+require 'json'
 STDOUT.sync = true
 
 LIVE_DB = Sequel.connect(ENV['LIVE_DB'])
@@ -28,6 +29,7 @@ site_id = (LIVE_DB[:sites].max(:id) || 0) + 1
 DB[:sites].insert(:name => ENV['NAME'], :domain => ENV['DOMAIN'], :id => site_id)
 LIVE_DB.run "select setval('sites_id_seq', #{site_id + 1}, false);"
 
+config = JSON.parse(ENV['CONFIG'])
 
 # List of the tables we care about.
 tables =
@@ -122,53 +124,45 @@ tables.each do |table|
   rescue
     puts $!
   end
-
 end
 
-# Create site group table .
-# Each site belongs to a group of other sites.
-# Each site group has a 'primary' site.
 execute "
-create table site_groups (
-  id serial primary key,
-  name text not null,
-  primary_site_id integer not null references sites(id)
+CREATE TABLE external_auth_keys (
+    site_id integer NOT NULL references sites(id),
+    external_site_type text NOT NULL,
+    key text NOT NULL,
+    secret text NOT NULL,
+    CONSTRAINT external_auth_keys_length_check CHECK (((length(key) > 1) AND (length(secret) > 1))),
+    CONSTRAINT external_auth_keys_site_type CHECK (external_site_type in ('facebook', 'twitter')),
+    primary key (site_id, external_site_type)
+);
+
+CREATE TABLE smtp_settings (
+    site_id integer primary key,
+    address text NOT NULL,
+    port integer NOT NULL,
+    domain text NOT NULL,
+    authentication text NOT NULL,
+    user_name text NOT NULL,
+    password text NOT NULL,
+    enable_starttls_auto boolean DEFAULT false NOT NULL
 );
 "
 
-# The join table of sites to site_groups
-execute "
-  create table site_groups_sites (
-    site_id integer not null references sites(id),
-    site_group_id integer not null references site_groups(id),
-    primary key (site_id, site_group_id)
-  );
-  create index on site_groups_sites using btree(site_group_id);
-"
 
-# Each site can be in a maximum of one group.
-execute "create unique index on site_groups_sites using btree(site_id);"
+site_config = config["sites"][ENV['NAME']]
 
+if o = site_config["smtp"]
+  o.merge!(:site_id => site_id)
+  DB[:smtp_settings].insert(o)
+end
 
+if o = site_config["auth"]["facebook"]
+  o.merge!(:site_id => site_id, :external_site_type => 'facebook')
+  DB[:external_auth_keys].insert(o)
+end
 
-
-execute "
-create table if not exists external_auth_sites (
-  name text primary key
-);
-
--- should only run once
-do $f$ begin
-  if ((select count(*) from external_auth_sites) = 0) then
-    insert into external_auth_sites values ('facebook'), ('twitter');
-  end if;
-end $f$;
-
-create table if not exists external_auth_keys (
-  site_id integer not null references sites(id),
-  external_site_type text not null references external_auth_sites(name),
-  key text not null,
-  secret text not null,
-  unique(site_id, external_site_type),
-  check (length(key) > 1 and length(secret) > 1)
-);"
+if o = site_config["auth"]["twitter"]
+  o.merge!(:site_id => site_id, :external_site_type => 'twitter')
+  DB[:external_auth_keys].insert(o)
+end

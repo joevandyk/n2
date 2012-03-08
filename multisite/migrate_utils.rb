@@ -1,5 +1,6 @@
 require 'tempfile'
 require 'uri'
+require 'json'
 
 module MigrateUtils
   def self.mysql_creds
@@ -60,25 +61,16 @@ module MigrateUtils
 
     ENV['DB'] = postgres_connect_string(config["local_db_settings"], site_name)
     ENV['LIVE_DB'] = postgres_connect_string(config["local_db_settings"], config["pg_db"])
+    ENV['CONFIG'] = config.to_json
 
     puts "Running multisite migrations..."
     system "ruby ./multisite/migrate_sql.rb"
 
     puts "Dumping temp postgres db to file"
-    system "pg_dump -a -T schema_migrations -T external_auth_sites #{site_name} > /tmp/db.sql"
+    system "pg_dump -a -T schema_migrations #{site_name} > /tmp/db.sql"
 
     puts "Loading temp postgres dump into #{ config["pg_db"] }"
     system "psql #{ config["pg_db"] } < /tmp/db.sql"
-
-
-    # Restore pg dump file to pg_db
-    #
-    # Profit?
-    #
-    # Review site-specific configuration, maybe add some more
-    # tables for it. Then populate site-specific config
-    # from the yaml config file
-
   end
 
   def self.postgres_connect_string settings, db_name
@@ -90,6 +82,83 @@ module MigrateUtils
     db_connection_string << settings["postgres"]["hostname"].to_s
     db_connection_string << "/"
     db_connection_string << db_name
+  end
+
+  def self.reset_sequences config
+    tables =
+    %w( announcements
+        answers
+        articles
+        audios
+        authentications
+        cards
+        categories
+        categorizations
+        chirps
+        classifieds
+        comments
+        consumer_tokens
+        content_images
+        contents
+        dashboard_messages
+        events
+        featured_items
+        feeds
+        flags
+        forums
+        galleries
+        gallery_items
+        gos
+        idea_boards
+        ideas
+        images
+        item_actions
+        item_tweets
+        locales
+        messages
+        metadatas
+        newswires
+        pfeed_deliveries
+        pfeed_items
+        prediction_groups
+        prediction_guesses
+        prediction_results
+        prediction_questions
+        prediction_scores
+        questions
+        related_items
+        resource_sections
+        roles
+        scores
+        sent_cards
+        sessions
+        slugs
+        sources
+        taggings
+        tags
+        topics
+        translations
+        tweet_accounts
+        tweet_streams
+        tweet_urls
+        tweeted_items
+        tweets
+        urls
+        user_profiles
+        users
+        videos
+        view_object_templates
+        view_objects
+        view_tree_edges
+        votes
+        widget_pages
+        widgets)
+
+
+    tables.each do |table|
+      sql = "select setval('#{table}_id_seq', (select max(id) from #{table}))"
+      system "psql -c \"#{sql}\" #{ config["pg_db"] }"
+    end
   end
 
 end

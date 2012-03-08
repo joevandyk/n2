@@ -33,4 +33,6 @@ config["sites"].each do |site_name, info|
                   info)
 end
 
+MU.reset_sequences config
+
 exit

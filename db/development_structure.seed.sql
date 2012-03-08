@@ -260,7 +260,8 @@ CREATE TABLE cards (
     image_content_type character varying(255),
     image_file_size integer,
     image_updated_at timestamp without time zone,
-    site_id integer NOT NULL
+    site_id integer NOT NULL,
+    available_at timestamp without time zone
 );
 
 
@@ -629,19 +630,13 @@ CREATE TABLE external_auth_keys (
     external_site_type text NOT NULL,
     key text NOT NULL,
     secret text NOT NULL,
-    CONSTRAINT external_auth_keys_check CHECK (((length(key) > 1) AND (length(secret) > 1)))
+    CONSTRAINT external_auth_keys_length_check CHECK (((length(key) > 1) AND (length(secret) > 1))),
+    CONSTRAINT external_auth_keys_site_type CHECK (external_site_type in ('facebook', 'twitter')),
+    primary key (site_id, external_site_type)
 );
 
 
 --
--- Name: external_auth_sites; Type: TABLE; Schema: public; Owner: -; Tablespace:
---
-
-CREATE TABLE external_auth_sites (
-    name text NOT NULL
-);
-
-
 --
 -- Name: featured_items_id_seq; Type: SEQUENCE; Schema: public; Owner: -
 --
@@ -1812,24 +1807,6 @@ CREATE TABLE slugs (
 
 
 --
--- Name: smtp_authentication_types; Type: TABLE; Schema: public; Owner: -; Tablespace:
---
-
-CREATE TABLE smtp_authentication_types (
-    type text NOT NULL
-);
-
-
---
--- Name: smtp_openssl_verify_modes; Type: TABLE; Schema: public; Owner: -; Tablespace:
---
-
-CREATE TABLE smtp_openssl_verify_modes (
-    type text NOT NULL
-);
-
-
---
 -- Name: smtp_settings; Type: TABLE; Schema: public; Owner: -; Tablespace:
 --
 
@@ -1838,11 +1815,10 @@ CREATE TABLE smtp_settings (
     address text NOT NULL,
     port integer NOT NULL,
     domain text NOT NULL,
-    authentication_type text NOT NULL,
+    authentication text NOT NULL,
     user_name text NOT NULL,
     password text NOT NULL,
-    enable_starttls_auto boolean DEFAULT false NOT NULL,
-    openssl_verify_mode text NOT NULL
+    enable_starttls_auto boolean DEFAULT false NOT NULL
 );
 
 
@@ -2662,21 +2638,8 @@ ALTER TABLE ONLY events
     ADD CONSTRAINT events_pkey PRIMARY KEY (id, site_id);
 
 
---
--- Name: external_auth_keys_site_id_external_site_type_key; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
---
-
-ALTER TABLE ONLY external_auth_keys
-    ADD CONSTRAINT external_auth_keys_site_id_external_site_type_key UNIQUE (site_id, external_site_type);
-
 
 --
--- Name: external_auth_sites_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
---
-
-ALTER TABLE ONLY external_auth_sites
-    ADD CONSTRAINT external_auth_sites_pkey PRIMARY KEY (name);
-
 
 --
 -- Name: featured_items_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
@@ -2978,17 +2941,8 @@ ALTER TABLE ONLY slugs
 -- Name: smtp_authentication_types_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
 --
 
-ALTER TABLE ONLY smtp_authentication_types
-    ADD CONSTRAINT smtp_authentication_types_pkey PRIMARY KEY (type);
-
 
 --
--- Name: smtp_openssl_verify_modes_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
---
-
-ALTER TABLE ONLY smtp_openssl_verify_modes
-    ADD CONSTRAINT smtp_openssl_verify_modes_pkey PRIMARY KEY (type);
-
 
 --
 -- Name: smtp_settings_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace:
@@ -5130,14 +5084,6 @@ ALTER TABLE ONLY events
 
 
 --
--- Name: external_auth_keys_external_site_type_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY external_auth_keys
-    ADD CONSTRAINT external_auth_keys_external_site_type_fkey FOREIGN KEY (external_site_type) REFERENCES external_auth_sites(name);
-
-
---
 -- Name: external_auth_keys_site_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -5429,16 +5375,10 @@ ALTER TABLE ONLY slugs
 -- Name: smtp_settings_authentication_type_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
-ALTER TABLE ONLY smtp_settings
-    ADD CONSTRAINT smtp_settings_authentication_type_fkey FOREIGN KEY (authentication_type) REFERENCES smtp_authentication_types(type);
-
 
 --
 -- Name: smtp_settings_openssl_verify_mode_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
-
-ALTER TABLE ONLY smtp_settings
-    ADD CONSTRAINT smtp_settings_openssl_verify_mode_fkey FOREIGN KEY (openssl_verify_mode) REFERENCES smtp_openssl_verify_modes(type);
 
 
 --

@@ -1,5 +1,9 @@
 source :gemcutter
 
+# these two gems can be removed after the pg migration if wanted
+gem 'mysql'
+gem 'sequel'
+
 gem "rails", "3.1.3"
 gem "composite_primary_keys"
 gem "acts_as_tree"
