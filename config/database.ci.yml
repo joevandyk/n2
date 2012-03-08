@@ -1,6 +1,6 @@
 development:
   adapter: postgresql
-  database: n2_development
+  database: n2_test
 
 test:
   adapter: postgresql
