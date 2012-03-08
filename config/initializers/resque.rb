@@ -23,6 +23,10 @@ app_name = rails_root.to_s =~ %r(/([^/]+)/(current|release)) ? $1 : nil
 APP_CONFIG['namespace'] = app_name
 Resque.redis.namespace = "resque:#{app_name}" if app_name
 
+if defined?(ActiveRecord)
+  Resque.before_fork = Proc.new { ActiveRecord::Base.establish_connection }
+end
+
 # If we're in rails, set the global redis connection
 if defined?(Newscloud)
   $redis = Newscloud::Redcloud.create
