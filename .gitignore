@@ -59,3 +59,4 @@ tramp
 .rspec
 .rvmrc
 .idea
+db/development_structure.sql
