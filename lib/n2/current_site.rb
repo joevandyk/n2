@@ -12,13 +12,10 @@ module N2
         end
 
         default_scope do
-          begin
-            if Site.current.blank?
-              raise "No site currently selected!"
-            else
-              where(:site_id => Site.current.id)
-            end
+          if Site.current.blank?
+            Site.create! :name => 'default', :domain => 'localhost'
           end
+          where(:site_id => Site.current.id)
         end
       end
     end
