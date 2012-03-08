@@ -20,7 +20,11 @@ class Comment < ActiveRecord::Base
   after_create :trigger_user_comment
 
   def voices
-    Comment.find(:all, :include => :user, :group => :user_id, :conditions => {:commentable_type => self.commentable_type, :commentable_id => self.commentable_id}).map(&:user)
+    Comment.find(:all,
+                 :include => :user,
+                 :conditions => {:commentable_type => self.commentable_type,
+                                 :commentable_id => self.commentable_id}
+                ).map(&:user).uniq
   end
 
   def recipient_voices

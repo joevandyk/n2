@@ -26,7 +26,7 @@ describe Comment do
         end
 
         it "should have multiple recipient voices" do
-          @comment.voices.should == [@comment.user, @comment2.user, @comment3.user]
+          @comment.voices.sort.should == [@comment.user, @comment2.user, @comment3.user].sort
         end
       end
     end

@@ -19,7 +19,10 @@ class Answer < ActiveRecord::Base
   scope :featured, lambda { |*args| { :conditions => ["is_featured is true "],:order => ["created_at desc"], :limit => (args.first || 3)} }
 
   def voices
-    Answer.find(:all, :include => :user, :group => :user_id, :conditions => {:question_id => self.question_id}).map(&:user)
+    Answer.find(:all,
+                :include => :user,
+                :conditions => {:question_id => self.question_id}).
+                map(&:user).uniq
   end
 
   def recipient_voices

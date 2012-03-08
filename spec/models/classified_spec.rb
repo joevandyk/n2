@@ -56,7 +56,7 @@ describe Classified do
         @classified2 = Factory(:sale_classified)
         @classified3 = Factory(:free_classified)
         @classified4 = Factory(:loan_classified)
-        Classified.available.should == [@classified1, @classified2, @classified3, @classified4]
+        Classified.available.sort.should == [@classified1, @classified2, @classified3, @classified4].sort
       end
     end
   end
