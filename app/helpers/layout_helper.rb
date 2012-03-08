@@ -25,8 +25,8 @@ module LayoutHelper
       return nil
     end
 
-    if APP_CONFIG['omniauth']['providers'] and APP_CONFIG['omniauth']['providers']['facebook']
-      metas << ["fb:app_id", APP_CONFIG['omniauth']['providers']['facebook']['key']]
+    if key = ExternalAuthKey.load('facebook').try(:key)
+      metas << ["fb:app_id", key]
     end
     metas.map {|m| meta_tag(*m) }.join("\n").html_safe
   end

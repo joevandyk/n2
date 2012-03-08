@@ -35,7 +35,7 @@
     :javascript
       var Newscloud = {};
       Newscloud.config = {};
-      Newscloud.config.fbAppId = "#{APP_CONFIG['omniauth']['providers']['facebook']['key']}";
+      Newscloud.config.fbAppId = ExternalAuthKey.load('facebook').try(:key)
       Newscloud.config.settings = #{get_json_app_config}
       window.Newscloud = Newscloud;
 

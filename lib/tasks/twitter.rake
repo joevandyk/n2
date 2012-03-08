@@ -46,7 +46,7 @@ namespace :n2 do
 
     desc "Post hot items to Twitter"
     task :post_hot_items => :environment do
-      default_url_options[:host] = APP_CONFIG['base_url'].sub(%r{^https?://}, '')
+      default_url_options[:host] = Site.current.domain
 
       if Metadata::Setting.find_setting( 'tweet_popular_items').value
         if !Metadata::Setting.find_setting('oauth_consumer_key').present? && !Metadata::Setting.find_setting('oauth_consumer_secret').present?
