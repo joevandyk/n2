@@ -1,6 +1,7 @@
 source :gemcutter
 
 # these two gems can be removed after the pg migration if wanted
+gem 'rake'
 gem 'mysql'
 gem 'sequel'
 
