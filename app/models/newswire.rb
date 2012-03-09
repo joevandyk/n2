@@ -36,8 +36,8 @@ class Newswire < ActiveRecord::Base
       :story_type => story_type
     })
 
-    if self.imageUrl.present?
-      @content.images.build({ :remote_image_url => self.imageUrl})
+    if self.imageurl.present?
+      @content.images.build({ :remote_image_url => self.imageurl})
       @content.images.first.override_image = true if override_image
     else
       begin
