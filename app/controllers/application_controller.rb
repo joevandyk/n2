@@ -468,7 +468,7 @@ class ApplicationController < ActionController::Base
   end
 
   def base_site_url
-    Site.current.domain
+    "http://#{Site.current.domain}/"
   end
 
   def base_site_domain
