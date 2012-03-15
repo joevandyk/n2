@@ -70,12 +70,9 @@
       - @view_object.errors.full_messages.each do |error|
         %li{:style => "color: red"}= error
 
-  = form_tag(admin_view_object_path(@view_object), :class => "formtastic") do
+  = form_tag(admin_view_object_path(@view_object), :class => "formtastic", :method => :put) do
     = field_set_tag nil, :class => 'inputs' do
       %ol
-        %li.input.string
-          = label_tag 'view_object[key_name]', 'View Object Name', :class => "label"
-          = text_field_tag 'view_object[key_name]', @view_object.name
         %li.input.string
           = label_tag 'view_object_setting[locale_title]', 'Locale Title', :class => "label"
           = text_field_tag 'view_object_setting[locale_title]', @view_object_setting.locale_title
