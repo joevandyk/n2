@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120122122155) do
+ActiveRecord::Schema.define(:version => 20120302002905) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.integer  "resource_id",   :null => false
@@ -1115,6 +1115,8 @@ ActiveRecord::Schema.define(:version => 20120122122155) do
     t.string   "pretty_name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "min_items"
+    t.integer  "max_items"
   end
 
   add_index "view_object_templates", ["name"], :name => "index_view_object_templates_on_name"
