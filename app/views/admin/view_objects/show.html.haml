@@ -6,7 +6,7 @@
     %h1 View Object Details
     %hr
     %p== Name: #{@view_object.name}
-    %p== Locale Title Text: #{t(@view_object_setting.locale_title.to_sym) || @view_object_setting.locale_title}
+    %p== Locale Title Text: #{t(@view_object_setting.locale_title.try(:to_sym)) || @view_object_setting.locale_title}
     - if @view_object_setting.locale_subtitle.present?
       %p== Locale Subtitle Text: #{t(@view_object_setting.locale_subtitle.to_sym) || @view_object_setting.locale_subtitle}
     - unless @view_object_setting.is_curated
