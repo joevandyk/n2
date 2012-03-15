@@ -495,122 +495,161 @@ view_object_templates =
    {
      :name        => "v2_welcome_panel",
      :pretty_name => "Version 2 Welcome Panel",
-     :template    => "shared/templates/single_col_welcome_panel"
+     :template    => "shared/templates/single_col_welcome_panel",
+     :min_items => nil,
+     :max_items => nil
    },
    {
      :name        => "v2_single_col_list",
      :pretty_name => "Version 2 Single Column List",
-     :template    => "shared/templates/single_col_list"
+     :template    => "shared/templates/single_col_list",
+     :min_items => 1
    },
    {
      :name        => "v2_single_col_list_with_profile",
      :pretty_name => "Version 2 Single Column List With Profile",
-     :template    => "shared/templates/single_col_list_with_profile"
+     :template    => "shared/templates/single_col_list_with_profile",
+     :min_items => 1
    },
    {
      :name        => "v2_single_facebook_widget",
      :pretty_name => "Version 2 Single Column Facebook Widget",
-     :template    => "shared/templates/single_col_facebook_widget"
+     :template    => "shared/templates/single_col_facebook_widget",
+     :min_items => nil,
+     :max_items => nil
    },
    {
      :name        => "v2_triple_col_large_2",
      :pretty_name => "Version 2 Triple Column Large Feature With 2 Sub Items",
-     :template    => "shared/templates/triple_col_large_2"
+     :template    => "shared/templates/triple_col_large_2",
+     :min_items => 3,
+     :max_items => 3
    },
    {
      :name        => "v2_double_col_feature",
      :pretty_name => "Version 2 Double Column Feature",
-     :template    => "shared/templates/double_col_feature"
+     :template    => "shared/templates/double_col_feature",
+     :min_items => 1,
+     :max_items => 1
    },
    {
      :name        => "v2_single_col_user_list",
      :pretty_name => "Version 2 Single Column User List",
-     :template    => "shared/templates/single_col_user_list"
+     :template    => "shared/templates/single_col_user_list",
+     :min_items => 1
    },
    {
      :name        => "v2_single_col_small_list",
      :pretty_name => "Version 2 Single Column Small List",
-     :template    => "shared/templates/single_col_small_list"
+     :template    => "shared/templates/single_col_small_list",
+     :min_items => 1
    },
    {
      :name        => "v2_single_col_gallery_strip",
      :pretty_name => "Version 2 Single Column Gallery Strip",
-     :template    => "shared/templates/single_col_gallery_strip"
+     :template    => "shared/templates/single_col_gallery_strip",
+     :min_items => 1
    },
    {
      :name        => "v2_single_col_item",
      :pretty_name => "Version 2 Single Column Item",
-     :template    => "shared/templates/single_col_item"
+     :template    => "shared/templates/single_col_item",
+     :min_items => 1,
+     :max_items => 1
    },
    {
      :name        => "v2_double_col_item",
      :pretty_name => "Version 2 Double Column Item",
-     :template    => "shared/templates/double_col_item"
+     :template    => "shared/templates/double_col_item",
+     :min_items => 1,
+     :max_items => 1
    },
    {
      :name        => "v2_double_col_item_list",
      :pretty_name => "Version 2 Double Column Item List",
-     :template    => "shared/templates/double_col_item_list"
+     :template    => "shared/templates/double_col_item_list",
+     :min_items => 1
    },
    {
      :name        => "v2_single_col_gallery_big_image",
      :pretty_name => "Version 2 Single Column Gallery Big Image",
-     :template    => "shared/templates/single_col_gallery_big_image"
+     :template    => "shared/templates/single_col_gallery_big_image",
+     :min_items => 1
    },
    {
      :name        => "v2_double_col_gallery_strip",
      :pretty_name => "Version 2 Double Column Gallery Strip",
-     :template    => "shared/templates/double_col_gallery_strip"
+     :template    => "shared/templates/double_col_gallery_strip",
+     :min_items => 1
    },
    {
      :name        => "v2_double_col_triple_item",
      :pretty_name => "Version 2 Double Column Triple Item",
-     :template    => "shared/templates/double_col_triple_item"
+     :template    => "shared/templates/double_col_triple_item",
+     :min_items => 3,
+     :max_items => 3
    },
    {
      :name        => "v2_double_col_feature_triple_item",
      :pretty_name => "Version 2 Double Column Feature With Triple Item",
-     :template    => "shared/templates/double_col_feature_triple_item"
+     :template    => "shared/templates/double_col_feature_triple_item",
+     :min_items => 1
    },
    {
      :name        => "twitter_standard_list",
      :pretty_name => "Twitter Standard List",
-     :template    => "shared/sidebar/twitter_standard_list"
+     :template    => "shared/sidebar/twitter_standard_list",
+     :min_items => nil,
+     :max_items => nil
    },
    {
      :name        => "twitter_standard_favorites",
      :pretty_name => "Twitter Standard Favorites",
-     :template    => "shared/sidebar/twitter_standard_favorites"
+     :template    => "shared/sidebar/twitter_standard_favorites",
+     :min_items => nil,
+     :max_items => nil
    },
    {
      :name        => "twitter_standard_profile",
      :pretty_name => "Twitter Standard Profile",
-     :template    => "shared/sidebar/twitter_standard_profile"
+     :template    => "shared/sidebar/twitter_standard_profile",
+     :min_items => nil,
+     :max_items => nil
    },
    {
      :name        => "twitter_standard_search",
      :pretty_name => "Twitter Standard Search",
-     :template    => "shared/sidebar/twitter_standard_search"
+     :template    => "shared/sidebar/twitter_standard_search",
+     :min_items => nil,
+     :max_items => nil
    },   
    {
      :name        => "v2_ad_template",
      :pretty_name => "Version 2 Ad Template",
-     :template    => "shared/templates/ad_template"
+     :template    => "shared/templates/ad_template",
+     :min_items => nil,
+     :max_items => nil
    },
    {
      :name        => "v2_single_col_custom_widget",
      :pretty_name => "Version 2 Single Column Custom Widget",
-     :template    => "shared/templates/single_col_custom_widget"
+     :template    => "shared/templates/single_col_custom_widget",
+     :min_items => nil,
+     :max_items => nil
    },
    {
      :name        => "v2_double_col_custom_widget",
      :pretty_name => "Version 2 Double Column Custom Widget",
-     :template    => "shared/templates/double_col_custom_widget"
+     :template    => "shared/templates/double_col_custom_widget",
+     :min_items => nil,
+     :max_items => nil
    },
    {
      :name        => "v2_triple_col_custom_widget",
      :pretty_name => "Version 2 Triple Column Custom Widget",
-     :template    => "shared/templates/triple_col_custom_widget"
+     :template    => "shared/templates/triple_col_custom_widget",
+     :min_items => nil,
+     :max_items => nil
    },
    # V3 widgets
    {

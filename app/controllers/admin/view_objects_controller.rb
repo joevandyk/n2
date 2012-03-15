@@ -204,7 +204,8 @@ class Admin::ViewObjectsController < AdminController
         unless klass.view_object_scope_methods.include?(kommand[:method_name])
           @view_object_setting.errors.add(:kommand_name, "Invalid method")
         end
-        unless view_context.view_object_template_limit_range(@view_object_template).include?(kommand[:args].first)
+        limits = view_context.view_object_template_limit_range(@view_object_template)
+        unless limits.include?(kommand[:args].first) or (limits.empty? and kommand[:args].first.to_i.zero?) 
           @view_object_setting.errors.add(:kommand_limit, "Invalid limit")
         end
       else

@@ -41,7 +41,7 @@ module Admin::ViewObjectsHelper
   def view_object_template_limit_range vot
     min, max = vot.min_items, vot.max_items
     if min.nil? and max.nil?
-      limit_options
+      []
     elsif min and max
       (min..max).to_a
     elsif min.nil?

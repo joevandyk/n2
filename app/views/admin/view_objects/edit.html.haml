@@ -4,15 +4,12 @@
     var baseLimitOptions = #{limit_options.to_json};
     var viewObjectTemplateLimits = #{view_object_template_limit_json};
     var viewObjectKlasses = #{view_object_class_methods_json};
-    console.log(viewObjectTemplateLimits);
-    console.log(baseLimitOptions);
 
     var rangeForTemplate = function(templateID) {
     var templateLimits = viewObjectTemplateLimits[templateID];
-    console.log(templateLimits);
     var min = templateLimits.min, max = templateLimits.max;
     if (min == null && max == null) {
-    return baseLimitOptions;
+    return [];
     } else if (min != null && max != null) {
     return _.range(min,max+1);
     } else if (min != null) {
@@ -25,15 +22,12 @@
     };
 
     var optionsFromRange = function(list) {
-    console.log("RANGE");
     return _.map(list, function(val) {
     return '<option value="' + val + '">' + val + '</option>';
     });
     };
 
     var methodsForKlass = function(klassName) {
-    console.log(viewObjectKlasses);
-    console.log("Selecting methods for " + klassName);
     return viewObjectKlasses[klassName].methods;
     };
 
@@ -45,18 +39,13 @@
 
     $('#view_object_view_object_template_id').change(function(event) {
     var templateID = $(this).val();
-    console.log("Selected template " + templateID);
     var rangeOptions = optionsFromRange(rangeForTemplate(templateID));
-    console.log("Range options: " + rangeOptions);
-    console.log($('#view_object_setting_kommand_limit'));
     $('#view_object_setting_kommand_limit').html(rangeOptions.join(''));
     });
 
     $('#view_object_setting_klass_name').change(function(event) {
     var klassName = $(this).val();
-    console.log("Selected klass " + klassName);
     var klassMethods = optionsFromMethods(methodsForKlass(klassName));
-    console.log("Klass Methods: " + klassMethods);
     $('#view_object_setting_kommand_name').html(klassMethods.join(''));
     });
 

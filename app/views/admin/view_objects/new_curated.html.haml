@@ -9,7 +9,7 @@
     var templateLimits = viewObjectTemplateLimits[templateID];
     var min = templateLimits.min, max = templateLimits.max;
     if (min == null && max == null) {
-    return baseLimitOptions;
+    return [];
     } else if (min != null && max != null) {
     return _.range(min,max+1);
     } else if (min != null) {
@@ -33,7 +33,6 @@
     var min = templateLimits.min, max = templateLimits.max;
     min = min || 0;
     max = max || baseLimitOptions[baseLimitOptions.length-1];
-    console.log("MIN: ("+min+") -- MAX: ("+max+")");
     $('.drop-item').hide().slice(0,max).show();
     });
     $('#view_object_view_object_template_id').trigger('change');
