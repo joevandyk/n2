@@ -81,7 +81,7 @@
       - @view_object.errors.full_messages.each do |error|
         %li{:style => "color: red"}= error
 
-  = form_tag(admin_view_object_path(@view_object), :class => "formtastic") do
+  = form_tag(admin_view_objects_path, :class => "formtastic") do
     = field_set_tag nil, :class => 'inputs' do
       %ol
         %li.input.string
@@ -93,6 +93,9 @@
         %li.input.string
           = label_tag 'view_object_setting[locale_subtitle]', 'Locale Subtitle', :class => "label"
           = text_field_tag 'view_object_setting[locale_subtitle]', @view_object_setting.locale_subtitle
+        %li.input.string
+          = label_tag 'view_object[view_object_template_id]', 'View Object Template', :class => "label"
+          = select_tag 'view_object[view_object_template_id]', options_for_select(select_view_object_template_options, @view_object.view_object_template_id)
         %li.input.string
           = label_tag 'view_object_setting[klass_name]', 'Model Resource', :class => "label"
           = select_tag 'view_object_setting[klass_name]', options_for_select(select_view_object_class_options, @view_object_setting.klass_name)
@@ -118,4 +121,4 @@
     = field_set_tag nil, :class => 'buttons' do
       %ol
         %li
-          = submit_tag "Update View Object"
+          = submit_tag "Create View Object"

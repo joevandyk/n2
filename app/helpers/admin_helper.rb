@@ -39,7 +39,9 @@ module AdminHelper
 
   def gen_new_link model
     set_model_vars model
-    unless model.name == 'Topic'
+    if model.name == "ViewObject"
+      [link_to("New Automated View Object", new_admin_view_object_path), link_to("New Curated View Object", new_curated_admin_view_objects_path)].join(" | ")
+    elsif model.name != 'Topic'
       link_to "New #{@model_name}", new_polymorphic_path([:admin, model])
     end
   end

@@ -616,72 +616,98 @@ view_object_templates =
    {
      :name        => "v3_triple_col_1_large_4_small",
      :pretty_name => "Version 3 Triple Column 1 Large 4 Small Widget",
-     :template    => "shared/templates/v3/triple_col_1_large_4_small"
+     :template    => "shared/templates/v3/triple_col_1_large_4_small",
+     :min_items => 5,
+     :max_items => 5
    },
    {
      :name        => "v3_triple_col_2_large",
      :pretty_name => "Version 3 Triple Column 2 Large Widget",
-     :template    => "shared/templates/v3/triple_col_2_large"
+     :template    => "shared/templates/v3/triple_col_2_large",
+     :min_items => 2,
+     :max_items => 2
    },
    {
      :name        => "v3_triple_col_1_large_2_small_3_links",
      :pretty_name => "Version 3 Triple Column 1 Large 2 Small 3 Links Widget",
-     :template    => "shared/templates/v3/triple_col_1_large_2_small_3_links"
+     :template    => "shared/templates/v3/triple_col_1_large_2_small_3_links",
+     :min_items => 6,
+     :max_items => 6
    },
    {
      :name        => "v3_triple_col_2_medium_2_links",
      :pretty_name => "Version 3 Triple Column 2 medium 2 links",
-     :template    => "shared/templates/v3/triple_col_2_medium_2_links"
+     :template    => "shared/templates/v3/triple_col_2_medium_2_links",
+     :min_items => 4,
+     :max_items => 4
    },
    {
      :name        => "v3_double_col_1_large_2_small",
      :pretty_name => "Version 3 Double Column 1 Large 2 Small",
-     :template    => "shared/templates/v3/double_col_1_large_2_small"
+     :template    => "shared/templates/v3/double_col_1_large_2_small",
+     :min_items => 3,
+     :max_items => 3
    },
    {
      :name        => "v3_double_col_2_medium",
      :pretty_name => "Version 3 Double Column 2 Medium",
-     :template    => "shared/templates/v3/double_col_2_medium"
+     :template    => "shared/templates/v3/double_col_2_medium",
+     :min_items => 2,
+     :max_items => 2
    },
    {
      :name        => "v3_double_col_2_small_3_medium_links",
      :pretty_name => "Version 3 Double Column 2 small 3 medium links",
-     :template    => "shared/templates/v3/double_col_2_small_3_medium_links"
+     :template    => "shared/templates/v3/double_col_2_small_3_medium_links",
+     :min_items => 5,
+     :max_items => 5
    },
    {
      :name        => "v3_double_col_3_medium_links_2_small",
      :pretty_name => "Version 3 Double Column 3 Medium Links 2 Small",
-     :template    => "shared/templates/v3/double_col_3_medium_links_2_small"
+     :template    => "shared/templates/v3/double_col_3_medium_links_2_small",
+     :min_items => 5,
+     :max_items => 5
    },
    {
      :name        => "v3_double_col_2_medium_links_1_medium",
      :pretty_name => "Version 3 Double Column 2 Medium Links 1 Medium",
-     :template    => "shared/templates/v3/double_col_2_medium_links_1_medium"
+     :template    => "shared/templates/v3/double_col_2_medium_links_1_medium",
+     :min_items => 3,
+     :max_items => 3     
    },
    {
      :name        => "v3_double_col_1_medium_2_medium_links",
      :pretty_name => "Version 3 Double Column 1 Medium 2 Medium Links",
-     :template    => "shared/templates/v3/double_col_1_medium_2_medium_links"
+     :template    => "shared/templates/v3/double_col_1_medium_2_medium_links",
+     :min_items => 3,
+     :max_items => 3
    },
    {
      :name        => "v3_double_col_item_list",
      :pretty_name => "Version 3 Double Column Item List",
-     :template    => "shared/templates/v3/double_col_item_list"
+     :template    => "shared/templates/v3/double_col_item_list",
+     :min_items => 5
    },
    {
      :name        => "v3_single_col_featured_item",
      :pretty_name => "Version 3 Single Column Featured Item",
-     :template    => "shared/templates/v3/single_col_featured_item"
+     :template    => "shared/templates/v3/single_col_featured_item",
+     :min_items => 1,
+     :max_items => 1
    },
    {
      :name        => "v3_single_col_medium",
      :pretty_name => "Version 3 Single Column Medium",
-     :template    => "shared/templates/v3/single_col_medium"
+     :template    => "shared/templates/v3/single_col_medium",
+     :min_items => 1,
+     :max_items => 1
    },
    {
      :name        => "v3_single_col_item_list",
      :pretty_name => "Version 3 Single Column Item List",
-     :template    => "shared/templates/v3/single_col_item_list"
+     :template    => "shared/templates/v3/single_col_item_list",
+     :min_items => 1
    },
    {
      :name        => "v3_single_col_post_story",
@@ -691,17 +717,25 @@ view_object_templates =
    {
      :name        => "v3_triple_col_3_medium",
      :pretty_name => "Version 3 Triple Column 3 Medium Skybox",
-     :template    => "shared/templates/v3/triple_col_3_medium"
+     :template    => "shared/templates/v3/triple_col_3_medium",
+     :min_items => 3,
+     :max_items => 3
    },
    {
      :name        => "v3_triple_col_4_small",
      :pretty_name => "Version 3 Triple Column 4 Small Skybox",
-     :template    => "shared/templates/v3/triple_col_4_small"
+     :template    => "shared/templates/v3/triple_col_4_small",
+     :min_items => 4,
+     :max_items => 4
    },
   ]
 view_object_templates.each do |view_object_template|
   puts "Creating View Object Template: #{view_object_template[:name]} (#{view_object_template[:template]})" if debug and ViewObjectTemplate.find_by_name(view_object_template[:name]).nil?
-  ViewObjectTemplate.find_or_create_by_name(view_object_template)
+  vot = ViewObjectTemplate.find_or_create_by_name(view_object_template)
+  if vot.min_items != view_object_template[:min_items] or vot.max_items != view_object_template[:max_items]
+    puts "Updating View Object Template: #{view_object_template[:name]} -- min_items: #{vot.min_items} --> #{view_object_template[:min_items]} -- max_items: #{vot.max_items} --> #{view_object_template[:max_items]}"
+    vot.update_attributes(view_object_template)
+  end
 end
 
 #
@@ -815,12 +849,13 @@ view_objects = [
   },
   {
   	:name          => "Newest Stories",
-  	:template_name => "v2_single_col_list",
+  	:template_name => "v3_single_col_item_list",
   	:settings      => {
   		:klass_name      => "Content",
   		:locale_title    => "shared.sidebar.newest_stories.newest_stories_title",
   		:locale_subtitle => nil,
-  		:use_post_button => true,
+                    :use_post_button => true,
+                    :version => 2,
   		:kommands        => [
   		  {
           :method_name => "newest",
@@ -831,44 +866,46 @@ view_objects = [
   },
   {
   	:name          => "Newest Stories Double Column Item List",
-  	:template_name => "v2_double_col_item_list",
+  	:template_name => "v3_double_col_1_medium_2_medium_links",
   	:settings      => {
   		:klass_name      => "Content",
   		:locale_title    => "shared.sidebar.newest_stories.newest_stories_title",
   		:locale_subtitle => "shared.stories.stories_subtitle",
-  		:use_post_button => true,
+                    :use_post_button => true,
+                    :version => 2,
   		:kommands        => [
   		  {
           :method_name => "newest",
-          :args        => [4]
+          :args        => [3]
         }
   		]
   	}
   },
   {
   	:name          => "Newest Univeral Items Double Column List",
-  	:template_name => "v2_double_col_item_list",
+  	:template_name => "v3_double_col_1_medium_2_medium_links",
   	:settings      => {
   		:klass_name      => "ItemAction",
   		:locale_title    => "generic.newest_items.title",
   		:locale_subtitle => "generic.newest_items.subtitle",
                     :use_post_button => false,
-                    :version => 2,
+                    :version => 3,
   		:kommands        => [
   		  {
           :method_name => "newest_items",
-          :args        => [4]
+          :args        => [3]
         }
   		]
   	}
   },
   {
   	:name          => "Top Stories",
-  	:template_name => "v2_single_col_list",
+  	:template_name => "v3_single_col_item_list",
   	:settings      => {
   		:klass_name      => "Content",
   		:locale_title    => "shared.sidebar.top_stories.top_stories_title",
-  		:locale_subtitle => nil,
+                    :locale_subtitle => nil,
+                    :version => 2,
   		:use_post_button => true,
   		:kommands        => [
   		  {
@@ -914,21 +951,23 @@ view_objects = [
                 },
   {
   	:name          => "Top Story Single Column Item",
-  	:template_name => "v2_single_col_item",
+  	:template_name => "v3_single_col_featured_item",
   	:settings      => {
-  		:klass_name      => "Content",
+  		:klass_name      => "ItemScore",
   		:locale_title    => "shared.sidebar.top_stories.top_stories_title",
   		:locale_subtitle => "shared.stories.stories_subtitle",
-  		:use_post_button => true,
+                    :use_post_button => true,
+                    :version => 2,
   		:kommands        => [
   		  {
           :method_name => "top_items",
-          :args        => [5, false]
+          :args        => [1]
         }
   		]
   	}
   },
-  {
+                {
+                  # TODO: delete this view object?
   	:name          => "Newest Story Double Column Item",
   	:template_name => "v2_double_col_item",
   	:settings      => {
@@ -946,13 +985,13 @@ view_objects = [
   },
   {
   	:name          => "Top Classifieds",
-  	:template_name => "v2_single_col_list",
+  	:template_name => "v3_single_col_item_list",
   	:settings      => {
   		:klass_name      => "Classified",
   		:locale_title    => "classifieds.top_classifieds_title",
   		:locale_subtitle => nil,
   		:use_post_button => true,
-      :version => 2,
+      :version => 3,
       :kommands        => [
   		  {
   		    :method_name => "available"
@@ -969,12 +1008,13 @@ view_objects = [
   },
   {
   	:name          => "Random Question",
-  	:template_name => "v2_single_col_item",
+  	:template_name => "v3_single_col_featured_item",
   	:settings      => {
   		:klass_name      => "Question",
   		:locale_title    => "questions.random_questions_title",
   		:locale_subtitle => nil,
-  		:use_post_button => true,
+                    :use_post_button => true,
+                    :version => 2,
   		:kommands        => [
   		  {
           :method_name => "view_object_random_item"
@@ -984,12 +1024,13 @@ view_objects = [
   },
   {
   	:name          => "Random Prediction Question",
-  	:template_name => "v2_single_col_item",
+  	:template_name => "v3_single_col_featured_item",
   	:settings      => {
   		:klass_name      => "PredictionQuestion",
   		:locale_title    => "predictions.random_predictions_title",
   		:locale_subtitle => nil,
-  		:use_post_button => true,
+                    :use_post_button => true,
+                    :version => 2,
   		:kommands        => [
   		  {
           :method_name => "approved"
@@ -1005,12 +1046,13 @@ view_objects = [
   },
   {
   	:name          => "Newest Prediction Questions",
-  	:template_name => "v2_single_col_list",
+  	:template_name => "v3_single_col_item_list",
   	:settings      => {
   		:klass_name      => "PredictionQuestion",
   		:locale_title    => "predictions.newest_predictions_title",
   		:locale_subtitle => nil,
-  		:use_post_button => true,
+                    :use_post_button => true,
+                    :version => 2,
   		:kommands        => [
   		  {
           :method_name => "approved"
@@ -1027,28 +1069,30 @@ view_objects = [
   },
   {
   	:name          => "Newest Questions",
-  	:template_name => "v2_single_col_list",
+  	:template_name => "v3_single_col_item_list",
   	:settings      => {
   		:klass_name      => "Question",
   		:locale_title    => "questions.newest_questions_title",
   		:locale_subtitle => nil,
-  		:use_post_button => true,
+                    :use_post_button => true,
+                    :version => 3,
   		:kommands        => [
   		  {
           :method_name => "newest",
-          :args        => [5]
+          :args        => [3]
         }
   		]
   	}
   },
   {
   	:name          => "Newest Resources",
-  	:template_name => "v2_single_col_list",
+  	:template_name => "v3_single_col_item_list",
   	:settings      => {
   		:klass_name      => "Resource",
   		:locale_title    => "resources.newest_resources_title",
   		:locale_subtitle => nil,
-  		:use_post_button => true,
+                    :use_post_button => true,
+                    :version => 2,
   		:kommands        => [
   		  {
           :method_name => "newest",
@@ -1077,42 +1121,46 @@ view_objects = [
   },
   {
   	:name          => "Top Universal Items",
-  	:template_name => "v2_single_col_list",
+  	:template_name => "v3_single_col_item_list",
   	:settings      => {
   		:klass_name      => "ItemScore",
   		:locale_title    => "generic.top_items.title",
   		:locale_subtitle => nil,
   		:use_post_button => false,
                     :css_class       => "active",
-                    :version => 4,
+                    :version => 7,
   		:kommands        => [
   		  {
-  		    :method_name => "top_items"
+                                       :method_name => "top_items",
+                                       :args => [5]
   		  }
   		]
   	}
   },
   {
   	:name          => "Triple Item Featured Widget",
-  	:template_name => "v2_triple_col_large_2",
+  	:template_name => "v3_triple_col_1_large_2_small_3_links",
   	:settings      => {
-  		:klass_name      => "Content",
+  		:klass_name      => "ItemScore",
   		:locale_title    => nil,
   		:locale_subtitle => nil,
-  		:use_post_button => true,
-  		:kommands        => [
+                    :use_post_button => true,
+                    :version => 2,
+                    :kommands        => [
+                                         :method_name => "top_items",
+                                         :args => [6]
   		]
   	}
   },
   {
   	:name          => "Newest Classifieds",
-  	:template_name => "v2_single_col_list",
+  	:template_name => "v3_single_col_item_list",
   	:settings      => {
   		:klass_name      => "Classified",
   		:locale_title    => "classifieds.newest_classifieds_title",
   		:locale_subtitle => nil,
   		:use_post_button => true,
-      :version => 2,
+                    :version => 3,
   		:kommands        => [
   		  {
   		    :method_name => "available"
@@ -1122,19 +1170,20 @@ view_objects = [
   		  },
   		  {
           :method_name => "newest",
-          :args        => [5]
+          :args        => [3]
         }
   		]
   	}
   },
   {
   	:name          => "Newest Topics",
-  	:template_name => "v2_single_col_list",
+  	:template_name => "v3_single_col_item_list",
   	:settings      => {
   		:klass_name      => "Topic",
   		:locale_title    => "forums.newest_topics_title",
   		:locale_subtitle => nil,
-  		:use_post_button => true,
+                    :use_post_button => true,
+                    :version => 2,
   		:kommands        => [
   		  {
           :method_name => "newest"
@@ -1413,6 +1462,45 @@ view_objects = [
   	    :data_recommendations => false
       }
   	}
+                },
+                #
+                # Automated items for default layout
+                #
+                  {
+  	:name          => "Newest Universal Items",
+  	:template_name => "v2_single_col_list_with_profile",
+  	:settings      => {
+  		:klass_name      => "ItemAction",
+  		:locale_title    => "generic.newest_items.title",
+  		:locale_subtitle => nil,
+  		:use_post_button => false,
+                    :css_class       => "active",
+                    :version => 3,
+  		:kommands        => [
+  		  {
+  		    :method_name => "newest_items",
+          :args        => [5]
+  		  }
+  		]
+  	}
+  },
+  {
+  	:name          => "Double Column Triple Trending Stories",
+  	:template_name => "v3_single_col_item_list",
+  	:settings      => {
+  		:klass_name      => "ItemScore",
+  		:locale_title    => "generic.top_items.title",
+  		:locale_subtitle => nil,
+  		:use_post_button => false,
+                    :css_class       => "active",
+                    :version => 1,
+  		:kommands        => [
+  		  {
+                                       :method_name => "top_items",
+                                       :args => [5]
+  		  }
+  		]
+  	}
   }
 ]
 view_objects.each do |view_object_hash|
@@ -1470,7 +1558,7 @@ end
 
 home_view_object = ViewObject.find_or_create_by_name("home--index")
 unless home_view_object.edge_children.any?
-  ["Newest Univeral Items Double Column List", "Welcome Panel", "Recent Users", "Newest Story Double Column Item", "Newest Gallery Double Column Small Strip", "Recent Users", "Newswire","Default Ad Medium Rectangle"].each do |name|
+  ["Double Column Triple Trending Stories", "Newest Univeral Items", "Top Universal Items", "Newest Questions", "Newest Classifieds", "Default Ad Square", "Newest Gallery Double Column Small Strip", "Recent Users", "Welcome Panel"].each do |name|
     puts "Adding #{name}" if debug
     home_view_object.add_child! ViewObject.find_by_name(name)
   end
@@ -1526,7 +1614,7 @@ menu_items = {
           :name          => "New Article Page",
           :position      => 4,
           :resource_path => "new_article_path",
-          :locale_string => "shared.page_tabs.newswire",
+          :locale_string => "shared.page_tabs.new_article",
           :enabled       => false
         }
       }

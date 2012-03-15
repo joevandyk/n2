@@ -125,7 +125,7 @@ module TemplateHelper
     options.merge!({
                      :type        => 'large',
                      :title_tag   => :h2,
-                     :description => true
+                     :description => false # TODO:: add this back in when suitable description truncate method found
                    })
 
     featured_item item, options, &block
@@ -144,7 +144,7 @@ module TemplateHelper
         content_tag(:ul) do
           last = items.pop
           content = items.map {|i| featured_item_list_item(i) }
-          content.push featured_item_list_item(last, :class => 'last')
+          content.push featured_item_list_item(last, :class => 'last') if last
           content.join.html_safe
         end
       end
@@ -159,7 +159,9 @@ module TemplateHelper
 
     content_tag(:li, :class => options[:class]) do
       content = content_tag(options[:title_tag], link_to(item.item_title, item.item_link))
-      content << content_tag(:p, item.item_description)
+      content << content_tag(:p, item.item_description) if options[:item_description]
+      content << content_tag(:h6, posted_by_with_date_and_topic(item)) unless options[:profile_disabled]
+      content
     end
   end
 

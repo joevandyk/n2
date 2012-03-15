@@ -82,6 +82,10 @@ class ItemScore < ActiveRecord::Base
     end
   end
 
+  def self.view_object_scope_methods
+    ["top_items"]
+  end
+
   private
 
   def self.create_from_item! item
