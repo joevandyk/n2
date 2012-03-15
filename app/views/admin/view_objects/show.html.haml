@@ -9,11 +9,17 @@
     %p== Locale Title Text: #{t(@view_object_setting.locale_title.to_sym) || @view_object_setting.locale_title}
     - if @view_object_setting.locale_subtitle.present?
       %p== Locale Subtitle Text: #{t(@view_object_setting.locale_subtitle.to_sym) || @view_object_setting.locale_subtitle}
-    %p== Model Resource: #{@view_object_setting.klass_name.tableize.titleize}
-    - kommand = @view_object_setting.kommands.first
-    %p== Model Method: #{kommand[:method_name].titleize}
-    - if kommand[:limit].present?
-      %p== Number of Items: #{kommand[:limit]}
+    - unless @view_object_setting.is_curated
+      %p== Model Resource: #{@view_object_setting.klass_name.tableize.titleize}
+      - kommand = @view_object_setting.kommands.first
+      %p== Model Method: #{kommand[:method_name].titleize}
+      - if kommand[:limit].present?
+        %p== Number of Items: #{kommand[:limit]}
+    - else
+      %p Dataset
+      %ul
+        - @view_object_setting.load_dataset.each do |item|
+          %li= link_to item.item_title, item.item_link
     %p== Post Items Button: #{@view_object_setting.use_post_button ? "Enabled" : "Disabled"}
     %p== Caching: #{@view_object_setting.cache_disabled ? "Disabled" : "Enabled"}
 
@@ -22,7 +28,10 @@
       Actions
       = link_to "Back", admin_view_objects_path
       |
-      = link_to "Edit", edit_admin_view_object_path(@view_object)
+      - if @view_object.setting.is_curated
+        = link_to "Edit", edit_curated_admin_view_object_path(@view_object)
+      - else
+        = link_to "Edit", edit_admin_view_object_path(@view_object)
       |
       = link_to "Clone", clone_admin_view_object_path(@view_object)
 -#

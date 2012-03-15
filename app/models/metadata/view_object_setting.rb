@@ -1,10 +1,11 @@
 class Metadata::ViewObjectSetting < Metadata
-  metadata_keys :view_object_name, :klass_name, :kommands, :use_post_button, :locale_title, :cache_disabled, :item_descriptions, :profiles_disabled, :version
+  metadata_keys :view_object_name, :klass_name, :kommands, :use_post_button, :locale_title, :cache_disabled, :item_descriptions, :profiles_disabled, :version, :dataset, :is_curated
 
   scope :key_sub_type_name, lambda { |*args| { :conditions => ["key_sub_type = ? AND key_name = ?", args.first, args.second] } }
 
   validates_format_of :view_object_name, :with => /^[A-Za-z0-9 _-]+$/, :message => "View Object Name must be present and may only contain letters, numbers and spaces"
-  validates_format_of :klass_name, :with => /^[A-Za-z _]+$/, :message => "Klass Name must be present and may only contain letters and spaces"
+  validates_format_of :klass_name, :with => /^[A-Za-z _]+$/, :message => "Klass Name must be present and may only contain letters and spaces", :unless => :is_curated
+  validates_presence_of :dataset, :if => :is_curated
   # HACK:: emulate validate_presence_of
   # these are dynamicly created attributes to they don't exist for the model
   validate :validate_kommands
@@ -82,9 +83,7 @@ class Metadata::ViewObjectSetting < Metadata
   def old_widget=(val) self.data[:old_widget] = val end
   def css_class() self.data[:css_class] or self.klass_name.tableize end
   def css_class=(val) self.data[:css_class] = val end
-  def dataset() self.data[:dataset] end
   def kommands() self.data[:kommands] ||= [] end
-  def dataset=(val) self.data[:dataset] = val end
 
   def load_dataset
     return [] unless self.dataset

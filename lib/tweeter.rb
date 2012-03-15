@@ -153,7 +153,7 @@ module Newscloud
     end
 
     def tweet_hot_items
-      klasses = Dir.glob("#{Rails.root}/app/models/*.rb").map {|f| f.sub(%r{^.*/(.*?).rb$}, '\1').pluralize.classify }.map(&:constantize).select {|m| m.respond_to?(:tweetable?) and m.tweetable? }
+      klasses = Dir.glob("#{Rails.root}/app/models/*.rb").map {|f| f.sub(%r{^.*/(.*?).rb$}, '\1').pluralize.classify }.map {|s| s == "Metadatum" ? "Metadata" : s}.map(&:constantize).select {|m| m.respond_to?(:tweetable?) and m.tweetable? }
       klasses.each do |klass|
         hot_items = klass.hot_items
         next unless hot_items

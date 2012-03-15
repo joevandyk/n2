@@ -151,7 +151,13 @@ N2::Application.routes.draw do
     resources :users,           :active_scaffold => true
     resources :view_objects do
       member do
+        get :edit_curated
+        post :update_curated
         get :clone
+      end
+      collection do
+        get :new_curated
+        post :create_curated
       end
     end
     resources :view_object_templates

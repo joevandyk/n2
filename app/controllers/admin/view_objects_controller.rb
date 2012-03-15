@@ -1,5 +1,5 @@
 class Admin::ViewObjectsController < AdminController
-  before_filter :set_featured_types, :only => [:edit, :update]
+  before_filter :set_featured_types, :only => [:edit, :update, :new_curated, :create_curated, :clone, :edit_curated, :update_curated]
 
   admin_scaffold :view_object do |config|
     config.index_fields = [:name, :view_object_template_id]
@@ -12,6 +12,43 @@ class Admin::ViewObjectsController < AdminController
     @view_object = ViewObject.new
     @view_object_setting = Metadata::ViewObjectSetting.new
     @view_object_setting.metadatable = @view_object
+  end
+
+  def new_curated
+    @view_object = ViewObject.new
+    @view_object_setting = Metadata::ViewObjectSetting.new
+    @view_object_setting.metadatable = @view_object
+    @view_object_setting.is_curated = true
+  end
+
+  def create_curated
+    vo_params = params[:view_object]
+    vos_params = params[:view_object_setting]
+    items = params[:view_object_setting][:items].select {|k,v| v.present? }
+    @view_object_template = ViewObjectTemplate.find(vo_params[:view_object_template_id])
+    @view_object = ViewObject.new({
+                                    :view_object_template => @view_object_template,
+                                    :name => vo_params[:key_name]
+                                  })
+    @view_object_setting = Metadata::ViewObjectSetting.new
+    @view_object.setting = @view_object_setting
+    @view_object_setting.is_curated = true
+    @view_object_setting.view_object_name = vo_params[:key_name].parameterize.to_s
+    @view_object_setting.cache_disabled = vos_params[:cache_disabled].present?
+    @view_object_setting.use_post_button = vos_params[:use_post_button].present?
+    @view_object_setting.locale_title = vos_params[:locale_title]
+    @view_object_setting.locale_subtitle = vos_params[:locale_subtitle]
+    @view_object_setting.dataset = items.map {|k,i| i.split(/-/) }.map{|i| [i[0].classify, i[1]] }
+    if validate_view_object_setting and @view_object.valid? and @view_object_setting.valid?
+      @view_object.save!
+      @view_object.setting.save!
+      @view_object.expire
+      flash[:success] = "Successfully created your view object."
+      redirect_to [:admin, @view_object]
+    else
+      flash[:error] = "Could not add your view object. Please clear any errors and try again"
+      render :new_curated
+    end
   end
 
   def create
@@ -32,9 +69,6 @@ class Admin::ViewObjectsController < AdminController
     @view_object_setting.klass_name = vos_params[:klass_name]
     @view_object_setting.add_kommand({:method_name => vos_params[:kommand_name], :args => [vos_params[:kommand_limit].to_i], :options => {}})
     if validate_view_object_setting and @view_object.valid? and @view_object_setting.valid?
-      #raise @view_object_setting.errors.full_messages.inspect unless @view_object_setting.valid?
-      #raise [@view_object_setting, @view_object, @view_object_template].map(&:valid?).inspect
-      #raise [@view_object_setting, @view_object, @view_object_template, params].inspect
       @view_object.save!
       @view_object.setting.save!
       @view_object.expire
@@ -56,13 +90,19 @@ class Admin::ViewObjectsController < AdminController
     @view_object = @parent_view_object.dup
     @view_object_setting = @parent_view_object.setting.dup
     @view_object_setting.metadatable = @view_object
-    render :new
+    @view_object_setting.is_curated ? render(:new_curated) : render(:new)
   end
   
   def edit
     @view_object = ViewObject.find(params[:id])
     @view_object_setting = @view_object.setting
-    raise @view_object_setting.inspect if @view_object_setting.kommands.size > 1
+    if @view_object_setting.is_curated
+      redirect_to edit_curated_admin_view_object_path(@view_object) and return
+    end
+    if @view_object_setting.kommands.size > 1
+      flash[:error] = "Unable to edit this view object, please select a different one."
+      redirect_to admin_view_objects_path and return
+    end
   end
 
   def update
@@ -91,8 +131,37 @@ class Admin::ViewObjectsController < AdminController
       render :edit
     end
   end
-  
+
   def edit_curated
+    @view_object = ViewObject.find(params[:id])
+    @view_object_setting = @view_object.setting
+  end
+
+  def update_curated
+    vo_params = params[:view_object]
+    vos_params = params[:view_object_setting]
+    items = params[:view_object_setting][:items].select {|k,v| v.present? }
+    @view_object = ViewObject.find(params[:id])
+    @view_object_template = @view_object.view_object_template
+    @view_object_setting = @view_object.setting
+    @view_object_setting.cache_disabled = vos_params[:cache_disabled].present?
+    @view_object_setting.use_post_button = vos_params[:use_post_button].present?
+    @view_object_setting.locale_title = vos_params[:locale_title]
+    @view_object_setting.locale_subtitle = vos_params[:locale_subtitle]
+    @view_object_setting.dataset = items.map {|k,i| i.split(/-/) }.map{|i| [i[0].classify, i[1]] }
+    if validate_view_object_setting and @view_object.valid? and @view_object_setting.valid?
+      @view_object.save!
+      @view_object.setting.save!
+      @view_object.expire
+      flash[:success] = "Successfully updated your view object."
+      redirect_to [:admin, @view_object]
+    else
+      flash[:error] = "Could not update your view object. Please clear any errors and try again"
+      render :edit_curated
+    end
+  end
+  
+  def old_edit_curated
     @view_objects = ["v2_double_col_feature_triple_item", "v2_double_col_triple_item", "v2_triple_col_large_2"].map {|name| ViewObjectTemplate.find_by_name(name) }.map(&:view_objects).flatten.select {|vo| vo.setting.kommands.empty? }
     @view_object = ViewObject.find(params[:id])
     @view_object_template = @view_object.view_object_template
@@ -103,7 +172,7 @@ class Admin::ViewObjectsController < AdminController
     end
   end
 
-  def update_curated
+  def old_update_curated
     data = params['featured_items']
     view_object = ViewObject.find(params[:id])
 
@@ -123,19 +192,25 @@ class Admin::ViewObjectsController < AdminController
     end
 
     def validate_view_object_setting
-      klass = @view_object_setting.get_klass
-      if klass.nil?
-        @view_object_setting.errors.add(:klass_name, "must be a present and a valid resource.")
-      end
-      if @view_object_setting.kommands.size != 1
-        @view_object_setting.errors.add(:kommand_name, "Only one method allowed.")
-      end
-      kommand = @view_object_setting.kommands.first
-      unless klass.view_object_scope_methods.include?(kommand[:method_name])
-        @view_object_setting.errors.add(:kommand_name, "Invalid method")
-      end
-      unless view_context.view_object_template_limit_range(@view_object_template).include?(kommand[:args].first)
-        @view_object_setting.errors.add(:kommand_limit, "Invalid limit")
+      unless @view_object_setting.is_curated
+        klass = @view_object_setting.get_klass
+        if klass.nil?
+          @view_object_setting.errors.add(:klass_name, "must be a present and a valid resource.")
+        end
+        if @view_object_setting.kommands.size != 1
+          @view_object_setting.errors.add(:kommand_name, "Only one method allowed.")
+        end
+        kommand = @view_object_setting.kommands.first
+        unless klass.view_object_scope_methods.include?(kommand[:method_name])
+          @view_object_setting.errors.add(:kommand_name, "Invalid method")
+        end
+        unless view_context.view_object_template_limit_range(@view_object_template).include?(kommand[:args].first)
+          @view_object_setting.errors.add(:kommand_limit, "Invalid limit")
+        end
+      else
+        unless view_context.view_object_template_limit_range(@view_object_template).include?(@view_object_setting.dataset.size)
+          @view_object_setting.errors.add(:selected_items, "You must select the appropriate amount of items.")
+        end
       end
       unless @view_object_setting.locale_title.present?
         @view_object_setting.errors.add(:locale_title, "Must be present")

@@ -133,7 +133,7 @@
       - @view_object.errors.full_messages.each do |error|
         %li{:style => "color: red"}= error
 
-  = form_tag(update_curated_admin_view_object_path(@view_object), :class => "formtastic") do
+  = form_tag(create_curated_admin_view_objects_path, :class => "formtastic") do
     = field_set_tag nil, :class => 'inputs' do
       %ol
         %li.input.string
@@ -179,7 +179,7 @@
     = field_set_tag nil, :class => 'buttons' do
       %ol
         %li
-          = submit_tag "Update View Object"
+          = submit_tag "Create View Object"
 
 
 -#.clearfix

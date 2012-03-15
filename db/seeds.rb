@@ -1060,11 +1060,11 @@ view_objects = [
   		:locale_title    => "questions.newest_questions_title",
   		:locale_subtitle => nil,
                     :use_post_button => true,
-                    :version => 2,
+                    :version => 3,
   		:kommands        => [
   		  {
           :method_name => "newest",
-          :args        => [5]
+          :args        => [3]
         }
   		]
   	}
@@ -1155,7 +1155,7 @@ view_objects = [
   		  },
   		  {
           :method_name => "newest",
-          :args        => [5]
+          :args        => [3]
         }
   		]
   	}
@@ -1402,6 +1402,45 @@ view_objects = [
   	    :data_recommendations => false
       }
   	}
+                },
+                #
+                # Automated items for default layout
+                #
+                  {
+  	:name          => "Newest Universal Items",
+  	:template_name => "v2_single_col_list_with_profile",
+  	:settings      => {
+  		:klass_name      => "ItemAction",
+  		:locale_title    => "generic.newest_items.title",
+  		:locale_subtitle => nil,
+  		:use_post_button => false,
+                    :css_class       => "active",
+                    :version => 3,
+  		:kommands        => [
+  		  {
+  		    :method_name => "newest_items",
+          :args        => [5]
+  		  }
+  		]
+  	}
+  },
+  {
+  	:name          => "Double Column Triple Trending Stories",
+  	:template_name => "v3_single_col_item_list",
+  	:settings      => {
+  		:klass_name      => "ItemScore",
+  		:locale_title    => "generic.top_items.title",
+  		:locale_subtitle => nil,
+  		:use_post_button => false,
+                    :css_class       => "active",
+                    :version => 1,
+  		:kommands        => [
+  		  {
+                                       :method_name => "top_items",
+                                       :args => [5]
+  		  }
+  		]
+  	}
   }
 ]
 view_objects.each do |view_object_hash|
@@ -1459,7 +1498,7 @@ end
 
 home_view_object = ViewObject.find_or_create_by_name("home--index")
 unless home_view_object.edge_children.any?
-  ["Newest Univeral Items Double Column List", "Welcome Panel", "Recent Users", "Newest Story Double Column Item", "Newest Gallery Double Column Small Strip", "Recent Users", "Newswire","Default Ad Medium Rectangle"].each do |name|
+  ["Double Column Triple Trending Stories", "Newest Univeral Items", "Top Universal Items", "Newest Questions", "Newest Classifieds", "Default Ad Square", "Newest Gallery Double Column Small Strip", "Recent Users", "Welcome Panel"].each do |name|
     puts "Adding #{name}" if debug
     home_view_object.add_child! ViewObject.find_by_name(name)
   end
