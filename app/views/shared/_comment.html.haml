@@ -1,7 +1,7 @@
 -# @expects: local 'comment' %>
 %li.comment-block
   .comment-bubble
-    .comment-quote= nl2br linkify(comment.comments)
+    .comment-quote= raw nl2br(linkify(comment.comments))
     .arrow
       .arrow-inner
   .comment-meta-data
@@ -14,5 +14,5 @@
       %span= votes_link(comment, comment.votes_tally)
 
 -#  .comment_reply
--#    %a.commentReply{:href => '#'}= "Reply" 
+-#    %a.commentReply{:href => '#'}= "Reply"
 -# TODO:: ADD TRANSLATION ^^

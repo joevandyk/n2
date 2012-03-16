@@ -9,7 +9,7 @@ class AdminController < ApplicationController
     # TODO::
     #   - finish methods
     #   - add associations to edit/new forms
-    #   - dynamically find associations 
+    #   - dynamically find associations
     #   - add association lists to show page
     #   - add mixin logic
     #   - add action links
@@ -53,7 +53,7 @@ class AdminController < ApplicationController
             else
               @items = @config.model_klass.paginate(:page => params[:page], :per_page => 20, :order => "created_at desc")
             end
-            render :partial => 'shared/admin/index_page', :layout => 'new_admin', :locals => {
+            render 'shared/admin/index_page', :layout => 'new_admin', :locals => {
               # TODO:: handle active
               #:items        => @config.model_klass.active.paginate(:page           => params[:page], :per_page => 20, :order => "created_at desc"),
               :items        => @items,
@@ -65,7 +65,7 @@ class AdminController < ApplicationController
             }
           when :show
             @config = self.admin_scaffold_config
-            render :partial => 'shared/admin/show_page', :layout => 'new_admin', :locals => {
+            render 'shared/admin/show_page', :layout => 'new_admin', :locals => {
               :item         => @config.model_klass.find(params[:id]),
               :model        => @config.model_klass,
               :associations => @config.associations,
@@ -74,7 +74,7 @@ class AdminController < ApplicationController
             }
           when :edit
             @config = self.admin_scaffold_config
-            render :partial => 'shared/admin/edit_page', :layout => 'new_admin', :locals => {
+            render 'shared/admin/edit_page', :layout => 'new_admin', :locals => {
               :item               => @config.model_klass.find(params[:id]),
               :model              => @config.model_klass,
               :include_media_form => @config.media_form,
@@ -84,7 +84,7 @@ class AdminController < ApplicationController
             }
           when :new
             @config = self.admin_scaffold_config
-            render :partial => 'shared/admin/new_page', :layout => 'new_admin', :locals => {
+            render 'shared/admin/new_page', :layout => 'new_admin', :locals => {
               :item               => @config.model_klass.new,
               :include_media_form => @config.media_form,
               :model              => @config.model_klass,
@@ -100,7 +100,7 @@ class AdminController < ApplicationController
               redirect_to [:admin, @item]
             else
               flash[:error] = "Please clear any errors and try again"
-              render :partial => 'shared/admin/new_page', :layout => 'new_admin', :locals => {
+              render 'shared/admin/new_page', :layout => 'new_admin', :locals => {
                 :item               => @item,
                 :include_media_form => @config.media_form,
                 :model              => @config.model_klass,
@@ -117,7 +117,7 @@ class AdminController < ApplicationController
               redirect_to [:admin, @item]
             else
               flash[:error] = "Please clear any errors and try again"
-              render :partial => 'shared/admin/edit_page', :layout => 'new_admin', :locals => {
+              render 'shared/admin/edit_page', :layout => 'new_admin', :locals => {
                 :item               => @item,
                 :include_media_form => @config.media_form,
                 :model              => @config.model_klass,
@@ -127,7 +127,7 @@ class AdminController < ApplicationController
               }
             end
           else
-          	render :text => "Implement: #{action}", :layout => 'new_admin'
+            render :text => "Implement: #{action}", :layout => 'new_admin'
           end
         end
       end
@@ -152,21 +152,6 @@ class AdminController < ApplicationController
     @current_tab = 'dashboard'
   end
 
-  def check_admin_or_default_status
-    return true if current_user and current_user.is_admin?
-
-    if User.admins.empty?
-      flash[:error] = "WARNING:: NO ACTIVE ADMINS. Please set an admin"
-=begin
-      authenticate_or_request_with_http_basic do |username, password|
-        username == get_setting('default_admin_user').try(:value) and password == get_setting('default_admin_password').try(:value)
-      end
-=end
-    else 
-      redirect_to home_index_path and return false
-    end
-  end
-
   def find_moderatable_item
     params.each do |name, value|
       next if name =~ /^fb/
@@ -181,11 +166,11 @@ class AdminController < ApplicationController
 
   def check_iframe
     if @iframe_status
-    	@iframe_status = false
-    	redirect_to admin_path and return false
+      @iframe_status = false
+      redirect_to admin_path and return false
     end
   end
-  
+
   def check_dashboard_settings
     @enabled_configs = {}
     @enabled_configs[:automated_feeds] = Feed.count == 0

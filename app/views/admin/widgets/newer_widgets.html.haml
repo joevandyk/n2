@@ -60,8 +60,8 @@
       $('ul.sortable, ul.destination').sortable({placeholder:'ui-state-highlight'}).disableSelection();
 
       $('li.widget').each(function(i, ele) {
-      	//$$(ele).birth_parent = $(ele).parent().parent().attr('id');
-      	$(ele).data('birth_parent', $(ele).parent().parent());
+        //$$(ele).birth_parent = $(ele).parent().parent().attr('id');
+        $(ele).data('birth_parent', $(ele).parent().parent());
       });
 
       var getWidgetID = function(widget_str) {
@@ -78,7 +78,7 @@
         hoverClass: 'ui-state-active',
         helper: 'clone',
         drop: function(event, ui) {
-        	if (!ui.draggable.parent().hasClass('destination')) {
+          if (!ui.draggable.parent().hasClass('destination')) {
             var widget = ui.draggable;
             widget.fadeOut(function() {
               widget.appendTo($('ul.destination')).fadeIn();
@@ -92,7 +92,7 @@
         hoverClass: 'ui-state-active',
         helper: 'clone',
         drop: function(event, ui) {
-        	if (ui.draggable.parent().hasClass('destination')) {
+          if (ui.draggable.parent().hasClass('destination')) {
             var widget = ui.draggable;
             widget.fadeOut(function() {
               widget.appendTo($('ul', $(widget).data('birth_parent'))).fadeIn();
@@ -151,7 +151,7 @@
 
       var current_widgets = #{@main_widgets.map {|vo| vo.id}.to_json};
       $(current_widgets).each(function(index, widget_id) {
-      	var element = $('#view-object-'+widget_id);
+        var element = $('#view-object-'+widget_id);
         $(element).appendTo($('ul.destination')).fadeIn();
       });
 
@@ -179,12 +179,16 @@
       %div{:id => "tabs-#{i+1}"}
         %ul.source.sortable.ui-helper-reset
           - vo_list.each do |view_object|
-            - if @editable_view_objects.include? view_object
-              %li.widget.ui-state-default{:id => "view-object-#{view_object.id}"}
-                = view_object.name
-                %span{:style => "float:right"}= link_to 'Edit ', edit_admin_view_object_path(view_object), :target => "_view_object"
-            - else
-              %li.widget.ui-state-default{:id => "view-object-#{view_object.id}"}= view_object.name
+            %li.widget.ui-state-default{:id => "view-object-#{view_object.id}"}
+              = view_object.name
+              %span{:style => "float:right"}= link_to 'Edit ', edit_admin_view_object_path(view_object), :target => "_view_object"
+            -#
+              - if @editable_view_objects.include? view_object
+                %li.widget.ui-state-default{:id => "view-object-#{view_object.id}"}
+                  = view_object.name
+                  %span{:style => "float:right"}= link_to 'Edit ', edit_admin_view_object_path(view_object), :target => "_view_object"
+              - else
+                %li.widget.ui-state-default{:id => "view-object-#{view_object.id}"}= view_object.name
 
   #widget-tabs-destination.ui-widget.ui-widget-content.ui-corner-all.ui-droppable
     %h2 Drop and Rearrange Widgets Here

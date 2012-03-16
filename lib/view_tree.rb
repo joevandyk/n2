@@ -5,7 +5,7 @@ class ViewTree
   def_delegators :@children, :<<, :[], :[]=, :last, :first, :push
 
   def initialize key_name, controller = nil, view_object = nil
-    @key_name = key_name
+    @key_name = key_name.to_s
     @cache_key_name = self.class.view_tree_cache_key_name @key_name
     @view_object = view_object
     @children = []
@@ -13,7 +13,8 @@ class ViewTree
     #@cache = true
     #@cache = Rails.env.development? and (not key_name =~ /--/) and key_name != 'Welcome Panel'
     #@cache = (not key_name.include?('--')) and key_name != 'Welcome Panel'
-    @cache = (key_name.include?('--') or key_name == 'Welcome Panel') ? false : true
+    #@cache = (@key_name.include?('--') or @key_name == 'Welcome Panel') ? false : true
+    @cache = @view_object and @view_object.cache_enabled?
     @cache = false unless Rails.env.production?
     # Initialize new view tree
     # add children view tree elements for each view object
@@ -24,11 +25,11 @@ class ViewTree
   def each
     @children.each {|child| yield child }
   end
-  
+
   def cache_it output
     if @cache and @view_object
       @view_object.cache_deps
-      $redis.set("#{@cache_key_name}", output)
+      Newscloud::Redcloud.redis.set("#{@cache_key_name}", output)
     end
     output
   end
@@ -36,12 +37,16 @@ class ViewTree
   def uncache_it
     if @cache and @view_object
       @view_object.uncache_deps
-      $redis.del("#{@cache_key_name}", @output)
+      Newscloud::Redcloud.redis.del("#{@cache_key_name}", @output)
     end
   end
 
   def translate locale_key, options = {}
-    I18n.translate(locale_key, options)
+    # HACK: I18n.translate when passed a symbol will return nil if it
+    # doesn't exist, rather than creating it.
+    # We Take advantage of this to allow users providing custom in
+    # place titles in the view objects edit page.
+    I18n.translate(locale_key.to_sym, options) || locale_key
   end
   alias_method :t, :translate
 
@@ -68,7 +73,7 @@ class ViewTree
   end
 
   def render
-    if @cache and out = $redis.get(@cache_key_name) and out.present?
+    if @cache and out = Newscloud::Redcloud.redis.get(@cache_key_name) and out.present?
       return out
     else
       load_view_object
@@ -79,15 +84,15 @@ class ViewTree
     return cache_it self.load
   end
 
-	#
-	# Class Methods
-	#
+  #
+  # Class Methods
+  #
   def self.render target, controller = nil
     if target.class.name =~ /Controller$/
-    	view_object_name = "#{target.controller_name}--#{target.action_name}"
-    	controller = target
+      view_object_name = "#{target.controller_name}--#{target.action_name}"
+      controller = target
     else
-    	view_object_name = target
+      view_object_name = target
     end
     self.fetch view_object_name, controller
   end

@@ -8,10 +8,10 @@ class Event < ActiveRecord::Base
   acts_as_wall_postable
   acts_as_relatable
   acts_as_tweetable
- 
-  named_scope :newest, lambda { |*args| { :conditions => ["start_time > now()"], :order => ["created_at desc"], :limit => (args.first || 10)} }
-  named_scope :featured, lambda { |*args| { :conditions => ["is_featured=1 AND start_time > now()"],:order => ["created_at desc"], :limit => (args.first || 3)} }
-  named_scope :upcoming, lambda { |*args| { :conditions => ["start_time > now()"], :order => ["start_time asc"], :limit => (args.first || 10)} }
+
+  scope :newest, lambda { |*args| { :conditions => ["start_time > now()"], :order => ["created_at desc"], :limit => (args.first || 10)} }
+  scope :featured, lambda { |*args| { :conditions => ["is_featured=1 AND start_time > now()"],:order => ["created_at desc"], :limit => (args.first || 3)} }
+  scope :upcoming, lambda { |*args| { :conditions => ["start_time > now()"], :order => ["start_time asc"], :limit => (args.first || 10)} }
 
   belongs_to :user
 
@@ -24,21 +24,21 @@ class Event < ActiveRecord::Base
   validates_format_of :tags_string, :with => /^([-a-zA-Z0-9_ ]+,?)+$/, :allow_blank => true, :message => "Invalid tags. Tags can be alphanumeric characters or -_ or a blank space."
   validates_format_of :url, :with => /\A(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/i, :message => "should look like a URL", :allow_blank => true
   validates_format_of :alt_url, :with => /\A(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/i, :message => "should look like a URL", :allow_blank => true
-  
-  
+
+
   def self.per_page; 10; end
 
   def self.top
     self.tally({
-    	:at_least => 1,
-    	:limit    => 10,
-    	:order    => "votes.count desc"
+      :at_least => 1,
+      :limit    => 10,
+      :order    => "vote_count desc"
     })
   end
-  
+
   def self.create_from_facebook_event(facebook_event, user)
-    return nil if not facebook_event.is_a? Facebooker::Event
-    check = Event.find_by_eid(facebook_event.eid)
+    return nil if not facebook_event.is_a? Mogli::Event
+    check = Event.find_by_eid(facebook_event.id)
     if check
       return check
     else
@@ -46,24 +46,23 @@ class Event < ActiveRecord::Base
           :source => "Facebook",
           :user => user,
           :name => facebook_event.name,
-          :eid => facebook_event.eid,
-          :start_time => Time.at(facebook_event.start_time.to_i),
-          :end_time => Time.at(facebook_event.end_time.to_i),
+          :eid => facebook_event.id,
+          :start_time => facebook_event.start_time.nil? ? nil : Time.parse(facebook_event.start_time),
+          :end_time =>  facebook_event.end_time.nil? ? nil : Time.parse(facebook_event.end_time),
           :description => facebook_event.description,
           :location => facebook_event.location,
-          :street => facebook_event.venue[:street],
-          :city => facebook_event.venue[:city],
-          :state => facebook_event.venue[:state],
-          :country => facebook_event.venue[:country],
+          :street => facebook_event.venue.blank? ? "": facebook_event.venue.street,
+          :city => facebook_event.venue.blank? ? "": facebook_event.venue.city,
+          :state => facebook_event.venue.blank? ? "": facebook_event.venue.state,
+          :country => facebook_event.venue.blank? ? "": facebook_event.venue.country,
           #:privacy_type => facebook_event.privacy,
-          :creator => facebook_event.creator,
-          :pic => facebook_event.pic,
-          :pic_big => facebook_event.pic_big,
-          :pic_small => facebook_event.pic_small,
-          :update_time => facebook_event.update_time,
-          :tagline => facebook_event.tagline,
-          :url => "http://www.facebook.com/event.php?eid="+facebook_event.eid.to_s)
-      e.images.create(:remote_image_url=>facebook_event.pic) if facebook_event.pic
+          :creator => facebook_event.owner,
+          #:pic => facebook_event.pic,
+          #:pic_big => facebook_event.pic_big,
+          #:pic_small => facebook_event.pic_small,
+          #:update_time => facebook_event.update_time,
+          #:tagline => facebook_event.tagline,
+          :url => "http://www.facebook.com/event.php?eid="+facebook_event.id.to_s)
     end
   end
 
@@ -100,7 +99,7 @@ class Event < ActiveRecord::Base
       :pic => image,
       :url => url,
       :alt_url => alt_url)
-      
+
       e.images.create(:remote_image_url=>image) if image
     end
   end

@@ -1,12 +1,12 @@
 class Admin::PredictionResultsController < AdminController
 
   def index
-    render :partial => 'shared/admin/index_page', :layout => 'new_admin', :locals => {
-    	:items => PredictionResult.paginate(:page => params[:page], :per_page => 20, :order => "created_at desc"),
-    	:model => PredictionResult,
-    	:fields => [:result, :prediction_question_id, :created_at],
-    	:associations => { :belongs_to => { :user => :user_id, :prediction_question => :prediction_question_id } },
-    	:paginate => true
+    render 'shared/admin/index_page', :layout => 'new_admin', :locals => {
+      :items => PredictionResult.paginate(:page => params[:page], :per_page => 20, :order => "created_at desc"),
+      :model => PredictionResult,
+      :fields => [:result, :prediction_question_id, :created_at],
+      :associations => { :belongs_to => { :user => :user_id, :prediction_question => :prediction_question_id } },
+      :paginate => true
     }
   end
 
@@ -32,11 +32,11 @@ class Admin::PredictionResultsController < AdminController
   end
 
   def show
-    render :partial => 'shared/admin/show_page', :layout => 'new_admin', :locals => {
-    	:item => PredictionResult.find(params[:id]),
-    	:model => PredictionResult,
-    	:fields => [:result, :alternate_result, :url, :details, :is_accepted, :user_id, :prediction_question_id, :created_at],
-    	:associations => { :belongs_to => { :user => :user_id, :prediction_question => :prediction_question_id } }
+    render 'shared/admin/show_page', :layout => 'new_admin', :locals => {
+      :item => PredictionResult.find(params[:id]),
+      :model => PredictionResult,
+      :fields => [:result, :alternate_result, :url, :details, :is_accepted, :user_id, :prediction_question_id, :created_at],
+      :associations => { :belongs_to => { :user => :user_id, :prediction_question => :prediction_question_id } }
     }
   end
 
@@ -57,7 +57,7 @@ class Admin::PredictionResultsController < AdminController
 
     redirect_to admin_prediction_results_path
   end
-    
+
   def accept
     @prediction_result = PredictionResult.find(params[:id])
     unless @prediction_result
@@ -69,7 +69,7 @@ class Admin::PredictionResultsController < AdminController
       flash[:success] = "Successfully accepted this result"
       redirect_to admin_prediction_results_path
     else
-    	flash[:error] = "Could not accept this result"
+      flash[:error] = "Could not accept this result"
       redirect_to admin_prediction_results_path
     end
   end
@@ -79,20 +79,20 @@ class Admin::PredictionResultsController < AdminController
   def render_new prediction_result = nil
     prediction_result ||= PredictionResult.new
 
-    render :partial => 'shared/admin/new_page', :layout => 'new_admin', :locals => {
-    	:item => @prediction_result,
-    	:model => PredictionResult,
-    	:fields => [:result, lambda {|f| f.input :details, :required => false }, :url, :is_accepted, :user_id, :prediction_question_id],
-    	:associations => { :belongs_to => { :user => :user_id, :prediction_question => :prediction_question_id } }
+    render 'shared/admin/new_page', :layout => 'new_admin', :locals => {
+      :item => @prediction_result,
+      :model => PredictionResult,
+      :fields => [:result, lambda {|f| f.input :details, :required => false }, :url, :is_accepted, :user_id, :prediction_question_id],
+      :associations => { :belongs_to => { :user => :user_id, :prediction_question => :prediction_question_id } }
     }
   end
 
   def render_edit prediction_result
-    render :partial => 'shared/admin/edit_page', :layout => 'new_admin', :locals => {
-    	:item => prediction_result,
-    	:model => PredictionResult,
-    	:fields => [:result, lambda {|f| f.input :details, :required => false }, :url, :is_accepted, :user_id, :prediction_question_id],
-    	:associations => { :belongs_to => { :user => :user_id, :prediction_question => :prediction_question_id } }
+    render 'shared/admin/edit_page', :layout => 'new_admin', :locals => {
+      :item => prediction_result,
+      :model => PredictionResult,
+      :fields => [:result, lambda {|f| f.input :details, :required => false }, :url, :is_accepted, :user_id, :prediction_question_id],
+      :associations => { :belongs_to => { :user => :user_id, :prediction_question => :prediction_question_id } }
     }
   end
 

@@ -86,6 +86,7 @@ The primary(required) config files are:
 
   * database.yml
   * facebooker.yml -- remember to set callback_url to your base site, ie http://my.site.com
+  * locales.yml -- select the languagues you will be using
 
 The optional config files for advanced settings are:
 
@@ -96,12 +97,20 @@ The optional config files for advanced settings are:
   * menu.yml -- configure what menu items you want to appear in your application
   * application.god for use with the [God monitoring system](http://god.rubyforge.org/)
   * unicorn.conf.rb
-  * locales.yml -- select the languagues you will be using
   * There are a number of other advanced files in the config directory
 
 We provide .sample files for the majority of these config files to facilitate easy setup.
 
 As mentioned above, when you set your config options, **remember to use** http://my.site.com and **not** http://my.site.com/iframe/
+
+Internationalization (Locales)
+------------------------------
+
+For every language you add in the file config/locales.yml (there is a sample file named config/locales.yml.sample), you
+should be sure that you check all the files under /config/locales and create the right locale file for it.
+In example, if you add the language "Spanish" with the code "es", you should make sure that under the directory
+/config/locales, in each subdirectory, there is a file names es.yml with the right translation.
+
 
 Install dependencies and setup the framework
 --------------------------------------------
@@ -112,15 +121,33 @@ Now that we got the hard part out of the way, there are just a few commands left
         sudo gem install bundler
         # Install the required gems
         bundle install
+        # Copy the locales file
+        cp config/locales.yml.sample config/locales.yml
+        # Copy the application file
+        cp config/application.yml.sample config/application.yml
+        # Copy the providers file
+        # Edit the providers file and enter your Facebook app ID and secret key in the appropriate spots
+        cp config/providers.yml.sample config/providers.yml
+        # Copy the databas file
+        cp config/database.yml.sample config/database.yml
+        # Create the database
+        bundle exec rake db:create
+        # Create a database user
+        # Temporary workaround for locales bootstrap issue
+        # This is strictly to initialize the database so there is at least a locales table in existence to
+        # prevent i18n_backend_database from exploding while bootstrapping itself.
+        mysql -u mydbuser -p my_n2_db < db/development_structure.sql
         # Run the newscloud setup process, this will create your database along with configuring your application
-        rake n2:setup
+        bundle exec rake n2:setup
+        # Load the default locales
+        bundle exec rake i18n:populate:update_from_rails
 
 Post Installation
 -----------------
 
 You can now run your application in the typical rails fashion by doing:
 
-       ruby script/server
+       rails server
 
 or by whatever means you normally use.
 

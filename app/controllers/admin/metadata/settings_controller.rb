@@ -1,11 +1,11 @@
 class Admin::Metadata::SettingsController < Admin::MetadataController
 
   def index
-    render :partial => 'shared/admin/index_page', :layout => 'new_admin', :locals => {
-    	:items => Metadata::Setting.find(:all, :conditions => [ "key_sub_type not like ?", 'twitter%' ] ).paginate(:page => params[:page], :per_page => 30, :order => "key_sub_type asc, key_name asc"),
-    	:model => Metadata::Setting,
-    	:fields => [:setting_name, :setting_sub_type_name, :setting_value],
-    	:paginate => true
+    render 'shared/admin/index_page', :layout => 'new_admin', :locals => {
+      :items => Metadata::Setting.where("key_sub_type not like ?", 'twitter%').paginate(:page => params[:page], :per_page => 30, :order => "key_sub_type asc, key_name asc"),
+      :model => Metadata::Setting,
+      :fields => [:setting_name, :setting_sub_type_name, :setting_value],
+      :paginate => true
     }
   end
 
@@ -49,10 +49,10 @@ class Admin::Metadata::SettingsController < Admin::MetadataController
   end
 
   def show
-    render :partial => 'shared/admin/show_page', :layout => 'new_admin', :locals => {
+    render 'shared/admin/show_page', :layout => 'new_admin', :locals => {
       :item => Metadata::Setting.find(params[:id]),
       :model => Metadata::Setting,
-    	:fields => [:setting_name, :setting_sub_type_name, :setting_value, :setting_hint, :created_at],
+      :fields => [:setting_name, :setting_sub_type_name, :setting_value, :setting_hint, :created_at],
     }
   end
 
@@ -79,10 +79,10 @@ class Admin::Metadata::SettingsController < Admin::MetadataController
   def render_new setting = nil
     setting ||= Metadata::Setting.new
 
-    render :partial => 'shared/admin/new_page', :layout => 'new_admin', :locals => {
-    	:item => setting,
-    	:model => Metadata::Setting,
-    	:fields => [:setting_name, :setting_hint, lambda {|f| f.input :setting_sub_type_name, :required => false }, :setting_value]
+    render 'shared/admin/new_page', :layout => 'new_admin', :locals => {
+      :item => setting,
+      :model => Metadata::Setting,
+      :fields => [:setting_name, :setting_hint, lambda {|f| f.input :setting_sub_type_name, :required => false }, :setting_value]
     }
   end
 
@@ -90,18 +90,18 @@ class Admin::Metadata::SettingsController < Admin::MetadataController
     setting ||= Metadata::Setting.new
 =begin
     if setting.name == 'site_notification_user'
-      render :partial => 'shared/admin/edit_page', :layout => 'new_admin', :locals => {
-      	:item => setting,
-      	:model => Metadata::Setting,
-      	:fields => [:setting_name, :setting_hint, lambda {|f| f.input :setting_sub_type_name, :required => false }, lambda {|f| f.input :setting_value, :as => :select, :collection => User.admins, :hint => :setting_hint } ]
+      render 'shared/admin/edit_page', :layout => 'new_admin', :locals => {
+        :item => setting,
+        :model => Metadata::Setting,
+        :fields => [:setting_name, :setting_hint, lambda {|f| f.input :setting_sub_type_name, :required => false }, lambda {|f| f.input :setting_value, :as => :select, :collection => User.admins, :hint => :setting_hint } ]
       }
-    else  
+    else
     end
 =end
-    render :partial => 'shared/admin/edit_page', :layout => 'new_admin', :locals => {
-    	:item => setting,
-    	:model => Metadata::Setting,
-    	:fields => [:setting_name, :setting_hint, lambda {|f| f.input :setting_sub_type_name, :required => false }, lambda {|f| f.input :setting_value, :hint => :setting_hint } ]
+    render 'shared/admin/edit_page', :layout => 'new_admin', :locals => {
+      :item => setting,
+      :model => Metadata::Setting,
+      :fields => [:setting_name, :setting_hint, lambda {|f| f.input :setting_sub_type_name, :required => false }, lambda {|f| f.input :setting_value, :hint => :setting_hint } ]
     }
   end
 

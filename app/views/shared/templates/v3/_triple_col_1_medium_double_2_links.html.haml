@@ -1,10 +1,12 @@
 - items = vo.dataset
 = panel3 do
   = large_feature_panel do
-    = large_featured_item(items.shift, :class => 'first')
+    = large_featured_item(items.shift, :class => 'first') if items.any?
     = medium_featured_item_block() do
       = panel_bar vt.t(vo.setting.locale_title)
-      = featured_item_list [items.shift, items.shift]
+      - if items.size >= 2
+        = featured_item_list [items.shift, items.shift]
     = medium_featured_item_block(:class => 'last') do
       = panel_bar vt.t(vo.setting.locale_title)
-      = featured_item_list [items.shift, items.shift]
+      - if items.size >= 2
+        = featured_item_list [items.shift, items.shift]

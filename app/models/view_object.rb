@@ -1,8 +1,7 @@
 class ViewObject < ActiveRecord::Base
-  
+
   belongs_to :view_object_template
   belongs_to :parent, :class_name => "ViewObject", :foreign_key => :parent_id
-  #has_one :setting, :class_name => "Metadata::ViewObjectSetting", :as => :metadatable
   has_one :setting, :class_name => "Metadata", :as => :metadatable
 
   has_many :direct_view_tree_edges, :class_name => "ViewTreeEdge", :foreign_key => :parent_id, :order => "position desc"
@@ -39,8 +38,8 @@ class ViewObject < ActiveRecord::Base
   end
 
   def add_dataset_dep klass
-    $redis.sadd dataset_key, klass.cache_id
-    $redis.sadd klass.model_deps_key, self.cache_id
+    Newscloud::Redcloud.redis.sadd dataset_key, klass.cache_id
+    Newscloud::Redcloud.redis.sadd klass.model_deps_key, self.cache_id
   end
 
   def add_dataset_deps
@@ -48,8 +47,8 @@ class ViewObject < ActiveRecord::Base
   end
 
   def rem_dataset_dep klass
-    $redis.srem dataset_key, klass.cache_id
-    $redis.srem klass.model_deps_key, self.cache_id
+    Newscloud::Redcloud.redis.srem dataset_key, klass.cache_id
+    Newscloud::Redcloud.redis.srem klass.model_deps_key, self.cache_id
   end
 
   def rem_dataset_deps
@@ -58,10 +57,10 @@ class ViewObject < ActiveRecord::Base
 
   def r_dataset
     {
-      :dataset_keys => $redis.smembers(dataset_key),
-      :klass_dep_keys => dataset.inject({}) {|s,k| s["#{k.cache_id}"] = $redis.smembers(k.model_deps_key); s},
-      :namespaces_key => $redis.smembers(namespaces_key),
-      :namespace_deps => setting.kommands.inject({}) {|s,k| s[namespace_deps_key(setting.klass_name, k[:method_name])] = $redis.smembers(namespace_deps_key(setting.klass_name, k[:method_name])); s}
+      :dataset_keys => Newscloud::Redcloud.redis.smembers(dataset_key),
+      :klass_dep_keys => dataset.inject({}) {|s,k| s["#{k.cache_id}"] = Newscloud::Redcloud.redis.smembers(k.model_deps_key); s},
+      :namespaces_key => Newscloud::Redcloud.redis.smembers(namespaces_key),
+      :namespace_deps => setting.kommands.inject({}) {|s,k| s[namespace_deps_key(setting.klass_name, k[:method_name])] = Newscloud::Redcloud.redis.smembers(namespace_deps_key(setting.klass_name, k[:method_name])); s}
     }
   end
 
@@ -71,8 +70,8 @@ class ViewObject < ActiveRecord::Base
     if setting.kommands.any? and setting.klass_name.present?
       setting.kommands.each do |kommand|
         if kommand[:method_name].present?
-          $redis.sadd namespaces_key, klass_method_key(setting.klass_name, kommand[:method_name])
-          $redis.sadd namespace_deps_key(setting.klass_name, kommand[:method_name]), self.cache_id
+          Newscloud::Redcloud.redis.sadd namespaces_key, klass_method_key(setting.klass_name, kommand[:method_name])
+          Newscloud::Redcloud.redis.sadd namespace_deps_key(setting.klass_name, kommand[:method_name]), self.cache_id
         end
       end
     end
@@ -84,8 +83,8 @@ class ViewObject < ActiveRecord::Base
     if setting.kommands.any? and setting.klass_name.present?
       setting.kommands.each do |kommand|
         if kommand[:method_name].present?
-          $redis.srem namespaces_key, klass_method_key(setting.klass_name, kommand[:method_name])
-          $redis.srem namespace_deps_key(setting.klass_name, kommand[:method_name]), self.cache_id
+          Newscloud::Redcloud.redis.srem namespaces_key, klass_method_key(setting.klass_name, kommand[:method_name])
+          Newscloud::Redcloud.redis.srem namespace_deps_key(setting.klass_name, kommand[:method_name]), self.cache_id
         end
       end
     end
@@ -99,7 +98,7 @@ class ViewObject < ActiveRecord::Base
   def uncache_deps
     rem_dataset_deps
     rem_namespace_deps
-    $redis.del view_tree_cache_key_name
+    Newscloud::Redcloud.redis.del view_tree_cache_key_name
     edge_parents.each {|p| p.uncache_deps }
   end
 
@@ -130,8 +129,12 @@ class ViewObject < ActiveRecord::Base
     setting ? setting.try(:version) : nil
   end
 
+  def cache_enabled?
+    setting and not setting.cache_disabled
+  end
+
   private
-    
+
     def klass_method_key klass_name, method
       "#{klass_name.downcase}:#{method.to_s.downcase}"
     end

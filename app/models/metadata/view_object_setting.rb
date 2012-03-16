@@ -1,15 +1,14 @@
 class Metadata::ViewObjectSetting < Metadata
+  metadata_keys :view_object_name, :klass_name, :kommands, :use_post_button, :locale_title, :cache_disabled, :item_descriptions, :profiles_disabled, :version, :dataset, :is_curated
 
-  named_scope :key_sub_type_name, lambda { |*args| { :conditions => ["key_sub_type = ? AND key_name = ?", args.first, args.second] } }
+  scope :key_sub_type_name, lambda { |*args| { :conditions => ["key_sub_type = ? AND key_name = ?", args.first, args.second] } }
 
   validates_format_of :view_object_name, :with => /^[A-Za-z0-9 _-]+$/, :message => "View Object Name must be present and may only contain letters, numbers and spaces"
-  validates_format_of :klass_name, :with => /^[A-Za-z _]+$/, :message => "Klass Name must be present and may only contain letters and spaces"
+  validates_format_of :klass_name, :with => /^[A-Za-z _]+$/, :message => "Klass Name must be present and may only contain letters and spaces", :unless => :is_curated
+  validates_presence_of :dataset, :if => :is_curated
   # HACK:: emulate validate_presence_of
   # these are dynamicly created attributes to they don't exist for the model
   validate :validate_kommands
-  attr_accessible :data
-
-  #before_save :build_view_object
 
   def after_initialize
     init_data
@@ -65,48 +64,26 @@ class Metadata::ViewObjectSetting < Metadata
     args = params[:args]
     raise "Missing argument" unless method_name
     kommand = {
-    	:method_name => method_name
+      :method_name => method_name
     }
     kommand[:args] = args if args.any?
     kommand[:options] = options if options.any?
     if self.kommands
-    	self.kommands << kommand
+      self.kommands << kommand
     else
-    	self.kommands = [kommand]
+      self.kommands = [kommand]
     end
   end
 
-  def method_missing(name, *args)
-    return self.send(name, *args) if self.respond_to? name, true
-    init_data
-    name = key_from_assign name
-    if data[name].present?
-      data[name] = args.first if args.present?
-      return data[name]
-    else
-    	data[name] = args.empty? ? nil : args.first
-    end
-  end
-
-  def locale_title() self.data[:locale_title] end
-  def locale_title=(val) self.data[:locale_title] = val end
-  def use_post_button() self.data[:use_post_button] end
-  def use_post_button=(val) self.data[:use_post_button] = !! val end
   def locale_subtitle() self.data[:locale_subtitle] end
   def locale_subtitle=(val) self.data[:locale_subtitle] = val end
   def meta() self.data[:meta] end
   def meta=(val) self.data[:meta] = val end
-  def version() self.data[:version] end
-  def version=(val) self.data[:version] = val end
-  def cache_enabled() self.data[:cache_enabled] or true end #default to true
-  def cache_enabled=(val) self.data[:cache_enabled] = val end
   def old_widget() self.data[:old_widget] or false end #default to false
   def old_widget=(val) self.data[:old_widget] = val end
   def css_class() self.data[:css_class] or self.klass_name.tableize end
   def css_class=(val) self.data[:css_class] = val end
-  def dataset() self.data[:dataset] end
   def kommands() self.data[:kommands] ||= [] end
-  def dataset=(val) self.data[:dataset] = val end
 
   def load_dataset
     return [] unless self.dataset
@@ -120,10 +97,14 @@ class Metadata::ViewObjectSetting < Metadata
     return true if super method
     return true if not internal and method.to_s =~ /=$/
     return false if internal
-    
+
     #init_data
     self.data[method].present?
     #return self.data
+  end
+
+  def get_klass
+    klass_name.present? and klass_name.constantize
   end
 
   private
@@ -150,9 +131,9 @@ class Metadata::ViewObjectSetting < Metadata
     return true unless valid_data? and metadatable.nil?
 
     @widget = Widget.create!({
-    	:name => key_name,
-    	:content_type => content_type,
-    	:partial => 'shared/custom_widget'
+      :name => key_name,
+      :content_type => content_type,
+      :partial => 'shared/custom_widget'
     })
     self.metadatable = @widget
 

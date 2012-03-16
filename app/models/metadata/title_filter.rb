@@ -1,6 +1,7 @@
 class Metadata::TitleFilter < Metadata
-
-  named_scope :key_sub_type_name, lambda { |*args| { :conditions => ["key_sub_type = ? AND key_name = ?", args.first, args.second] } }
+  metadata_keys :keyword
+  
+  scope :key_sub_type_name, lambda { |*args| { :conditions => ["key_sub_type = ? AND key_name = ?", args.first, args.second] } }
 
   # HACK:: emulate validate_presence_of
   # these are dynamicly created attributes so they don't exist for the model

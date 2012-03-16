@@ -2,34 +2,34 @@ class Admin::AnnouncementsController < AdminController
   cache_sweeper :announcement_sweeper, :only => [:create, :update, :destroy]
 
   def index
-    render :partial => 'shared/admin/index_page', :layout => 'new_admin', :locals => {
-    	:items => Announcement.paginate(:page => params[:page], :per_page => 20, :order => "created_at desc"),
-    	:model => Announcement,
-    	:fields => [:prefix, :title, :url, :created_at],
-    	:paginate => true
+    render 'shared/admin/index_page', :layout => 'new_admin', :locals => {
+      :items => Announcement.paginate(:page => params[:page], :per_page => 20, :order => "created_at desc"),
+      :model => Announcement,
+      :fields => [:prefix, :title, :url, :created_at],
+      :paginate => true
     }
   end
 
   def new
-    render :partial => 'shared/admin/new_page', :layout => 'new_admin', :locals => {
-    	:model => Announcement,
-    	:fields => [:prefix, :title, :details, :url, :type]
+    render 'shared/admin/new_page', :layout => 'new_admin', :locals => {
+      :model => Announcement,
+      :fields => [:prefix, :title, :details, :url, :type]
     }
   end
 
   def edit
     @announcement = Announcement.find(params[:id])
-    render :partial => 'shared/admin/edit_page', :layout => 'new_admin', :locals => {
-    	:item => @announcement,
-    	:model => Announcement,
-    	:fields => [:prefix, :title, :details, :url, :type]
+    render 'shared/admin/edit_page', :layout => 'new_admin', :locals => {
+      :item => @announcement,
+      :model => Announcement,
+      :fields => [:prefix, :title, :details, :url, :type]
     }
   end
 
   def update
     @announcement = Announcement.find(params[:id])
     if @announcement.update_attributes(params[:announcement])
-    	@announcement.expire
+      @announcement.expire
       flash[:success] = "Successfully updated your Announcement."
       redirect_to [:admin, @announcement]
     else
@@ -39,10 +39,10 @@ class Admin::AnnouncementsController < AdminController
   end
 
   def show
-    render :partial => 'shared/admin/show_page', :layout => 'new_admin', :locals => {
-    	:item => Announcement.find(params[:id]),
-    	:model => Announcement,
-    	:fields => [:prefix, :title, :details, :url, :type,:created_at]
+    render 'shared/admin/show_page', :layout => 'new_admin', :locals => {
+      :item => Announcement.find(params[:id]),
+      :model => Announcement,
+      :fields => [:prefix, :title, :details, :url, :type,:created_at]
     }
   end
 

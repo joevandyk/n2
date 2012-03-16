@@ -1,89 +1,95 @@
 source :gemcutter
 
-gem "rails", "2.3.11"
-gem "rack", '1.1.0'
-
-
-gem "haml", "3.1.3"
-gem 'compass', '0.11.5'
+gem "rails", "3.1.3"
+gem "acts_as_tree"
+gem "sprockets"
+gem 'haml'
+gem "sass-rails"
+gem 'compass', :git => 'git://github.com/chriseppstein/compass.git', :ref => "8c84869b0b6bc5396e264fea15c71d4e346ac5d0"
 gem 'compass-960-plugin'
-gem 'json', '1.4.6'
-gem 'json_pure', '1.5.1'
-gem 'mogli'
+gem 'json'
+gem 'mogli', :git => 'git://github.com/adahmash/mogli.git'
+gem "thumbs_up"
+gem "prototype-rails"
 
-gem "formtastic", "1.1.0"
-gem "friendly_id", '2.2.7'
-gem 'will_paginate', '~> 2.3.11'
-gem "tzinfo", '0.3.23'
-gem "oauth"
-gem "twitter"
-gem "mysql"
+gem "formtastic", :git => "git://github.com/joevandyk/formtastic.git", :ref => "90e58f7"
+gem "friendly_id", '3.3.1'
+gem 'will_paginate'
+gem "oauth-plugin", ">= 0.4.0.pre1"
+gem "twitter", :git => "https://github.com/jnunemaker/twitter.git"
+gem "mysql2"
 gem "bitly"
 gem "redis"
 gem "redis-namespace"
-gem "resque"
+gem "resque", :git => 'git://github.com/defunkt/resque.git'
+gem "resque-retry"
 gem "resque-scheduler", :require => 'resque_scheduler'
 gem 'sitemap_generator'
 gem "SystemTimer"
 gem "aasm"
 gem "aws-s3"
+gem "aws-sdk"
 gem "acl9"
 gem "paperclip"
-#gem "ruby-aaws"
 gem 'amazon-ecs'
+gem 'routing-filter'
 
-# switched from vendor/plugins
-gem "hoptoad_notifier"
-gem "newrelic_rpm"
-gem "acts-as-taggable-on", '2.0.0.rc1'
+# JVD: having problems getting this working with an empty database
+# The gem tries to load the locales table before it exists.
+# Patched this to fix issues with the Translation model
+gem 'i18n_backend_database', :git => "git://github.com/chewbranca/i18n_backend_database.git"
+# JVD: Use this when developing, checkout the i18n_backend_database to ../
+# gem 'i18n_backend_database', :path => "../i18n_backend_database"
 
-#gem 'redis-store', '= 1.0.0.beta2', :git => 'https://github.com/jodosha/redis-store.git', :ref => '20d5a4d3741095b3509d'
-gem 'redis-store', '= 1.0.0.beta5'
+#gem "hoptoad_notifier"
+gem "airbrake"
+gem "acts-as-taggable-on"
 
-# Rails_xss plugin requirements
-gem 'erubis'
+gem 'redis-store'
 
 # Feedzirra related
 gem 'nokogiri'
-gem 'loofah', '0.4.7'
-gem 'builder', '2.1.2'
-gem 'curb', :git => 'git://github.com/taf2/curb.git'
-gem 'sax-machine', :git => 'git://github.com/pauldix/sax-machine.git'
+gem 'loofah'
+gem 'feedzirra', :git => 'https://github.com/pauldix/feedzirra.git'
+#gem 'curb', :git => 'git://github.com/taf2/curb.git'
+#gem 'sax-machine', :git => 'git://github.com/pauldix/sax-machine.git'
 
-gem "omniauth", "~> 0.2.6"
+gem "omniauth", '1.0.1'
+gem "omniauth-facebook", :git => "git://github.com/mkdynamic/omniauth-facebook.git"
+gem "omniauth-twitter"
 
-source("http://gems.github.com") { gem "mdalessio-dryopteris", "0.1.2" }
-
-#gem 'feedzirra', '0.0.18.1'
-gem 'feedzirra', :git => 'git://github.com/chewbranca/feedzirra.git'
 
 group :development do
+  gem "rails-dev-tweaks"
   gem "wirble"
   gem "awesome_print"
-	gem "faker"
 	gem "capistrano"
 	gem "capistrano-ext"
 end
 
+group :development, :test do
+	gem "rspec"
+	gem "rspec-rails"
+end
+
 group :test, :cucumber do
-	gem "rspec", "1.3.0"
-	gem "rspec-rails", "1.3.2"
-	gem "faker"
-	gem "database_cleaner", :git => "git://github.com/bmabey/database_cleaner.git"
-	gem "capybara", :git => "git://github.com/jnicklas/capybara.git"
-	#gem "capybara-envjs"
+	gem "database_cleaner", '0.7.0'
+	gem "capybara", '1.1.2'
 	gem "cucumber"
-	gem "cucumber-rails", "0.3.2"
+	gem "cucumber-rails"
 	gem "factory_girl"
-	#gem "email_spec"
 	gem "rcov"
-	gem "faker"
 	gem "pickle"
 	gem "launchy"
-	gem "ZenTest"
+	gem "ZenTest", "4.5.0"
 	gem "rr"
 end
 
 group :production do
-  gem "unicorn"
+  gem "passenger"
+  gem "newrelic_rpm"
 end
+
+#group :assets do
+  #gem 'uglifier'
+#end

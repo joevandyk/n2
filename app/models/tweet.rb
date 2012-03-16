@@ -9,7 +9,7 @@ class Tweet < ActiveRecord::Base
   has_many :item_tweets
   has_many :items, :through => :item_tweets
 
-  named_scope :sorted_twitter_id, :order => "twitter_id_str desc"
+  scope :sorted_twitter_id, :order => "twitter_id_str desc"
 
   def user
     tweet_account.user
@@ -52,10 +52,12 @@ class Tweet < ActiveRecord::Base
         if tweet_account.tags.any?
           content.tag_list = tweet_account.tag_list
         end
+
       end
       begin
         user.contents.push content
         content.expire
+        #ItemAction.gen_user_posted_item! user, content, :tweeted_item if content and not content.new_record?
       rescue Exception
         next
       end
@@ -64,7 +66,8 @@ class Tweet < ActiveRecord::Base
     end
   end
 
-  def self.build_from_raw_tweet raw_tweet, stream
+  def self.build_from_raw_tweet tweet_object, stream
+    raw_tweet = tweet_object.attrs
     tweet = Tweet.find_by_twitter_id_str(raw_tweet["id_str"])
     return tweet if tweet
 

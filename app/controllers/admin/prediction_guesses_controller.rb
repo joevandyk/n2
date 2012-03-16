@@ -1,12 +1,12 @@
 class Admin::PredictionGuessesController < AdminController
 
   def index
-    render :partial => 'shared/admin/index_page', :layout => 'new_admin', :locals => {
-    	:items => PredictionGuess.paginate(:page => params[:page], :per_page => 20, :order => "created_at desc"),
-    	:model => PredictionGuess,
-    	:fields => [:prediction_question, :user, :guess, :guess_numeric, :guess_date, :created_at],
-    	:associations => { :belongs_to => { :user => :user_id , :prediction_question => :prediction_question_id } },
-    	:paginate => true
+    render 'shared/admin/index_page', :layout => 'new_admin', :locals => {
+      :items => PredictionGuess.paginate(:page => params[:page], :per_page => 20, :order => "created_at desc"),
+      :model => PredictionGuess,
+      :fields => [:prediction_question, :user, :guess, :guess_numeric, :guess_date, :created_at],
+      :associations => { :belongs_to => { :user => :user_id , :prediction_question => :prediction_question_id } },
+      :paginate => true
     }
   end
 
@@ -32,11 +32,11 @@ class Admin::PredictionGuessesController < AdminController
   end
 
   def show
-    render :partial => 'shared/admin/show_page', :layout => 'new_admin', :locals => {
-    	:item => PredictionGuess.find(params[:id]),
-    	:model => PredictionGuess,
-    	:fields => [:prediction_question, :user, :guess, :guess_numeric, :guess_date],
-    	:associations => { :belongs_to => { :user => :user_id , :prediction_question => :prediction_question_id } }
+    render 'shared/admin/show_page', :layout => 'new_admin', :locals => {
+      :item => PredictionGuess.find(params[:id]),
+      :model => PredictionGuess,
+      :fields => [:prediction_question, :user, :guess, :guess_numeric, :guess_date],
+      :associations => { :belongs_to => { :user => :user_id , :prediction_question => :prediction_question_id } }
     }
   end
 
@@ -63,20 +63,20 @@ class Admin::PredictionGuessesController < AdminController
   def render_new prediction_guess = nil
     prediction_guess ||= PredictionGuess.new
 
-    render :partial => 'shared/admin/new_page', :layout => 'new_admin', :locals => {
-    	:item => @prediction_guess,
-    	:model => PredictionGuess,
-    	:fields => [:prediction_question, :user, :guess, :guess_numeric, :guess_date],
-    	:associations => { :belongs_to => { :user => :user_id , :prediction_question => :prediction_question_id } }
+    render 'shared/admin/new_page', :layout => 'new_admin', :locals => {
+      :item => @prediction_guess,
+      :model => PredictionGuess,
+      :fields => [:prediction_question, :user, :guess, :guess_numeric, :guess_date],
+      :associations => { :belongs_to => { :user => :user_id , :prediction_question => :prediction_question_id } }
     }
   end
 
   def render_edit prediction_guess
-    render :partial => 'shared/admin/edit_page', :layout => 'new_admin', :locals => {
-    	:item => prediction_guess,
-    	:model => PredictionGuess,
-    	:fields => [:prediction_question, :user, :guess, :guess_numeric, :guess_date],
-    	:associations => { :belongs_to => { :user => :user_id , :prediction_question => :prediction_question_id } }
+    render 'shared/admin/edit_page', :layout => 'new_admin', :locals => {
+      :item => prediction_guess,
+      :model => PredictionGuess,
+      :fields => [:prediction_question, :user, :guess, :guess_numeric, :guess_date],
+      :associations => { :belongs_to => { :user => :user_id , :prediction_question => :prediction_question_id } }
     }
   end
 

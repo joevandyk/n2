@@ -2,12 +2,16 @@ class ItemAction < ActiveRecord::Base
   belongs_to :user
   belongs_to :actionable, :polymorphic => true
 
-  named_scope :for_item, lambda {|item| { :conditions => ["actionable_type = ? and actionable_id = ?", item.class.name, item.id] } }
-  named_scope :for_class, lambda {|item| { :conditions => ["actionable_type = ?", item.name] } }
-  named_scope :within, lambda {|timeframe| { :conditions => ["created_at > ?", timeframe] } }
-  named_scope :active, { :conditions => {:is_blocked => false} }
-  named_scope :newest, lambda { |*args| { :order => ["created_at desc"], :limit => (args.first || 10)} }
-  
+  acts_as_moderatable
+
+  scope :for_item, lambda {|item| { :conditions => ["actionable_type = ? and actionable_id = ?", item.class.name, item.id] } }
+  scope :for_class, lambda {|item| { :conditions => ["actionable_type = ?", item.name] } }
+  scope :for_action, lambda {|item| { :conditions => ["action_type = ?", item.name] } }
+  scope :for_user, lambda {|user| { :conditions => ["user_id = ?", user.id] } }
+  scope :within, lambda {|timeframe| { :conditions => ["created_at > ?", timeframe] } }
+  scope :active, { :conditions => {:is_blocked => false} }
+  scope :newest, lambda { |*args| { :order => ["created_at desc"], :limit => (args.first || 10)} }
+
   def self.top_items_for_class klass, opts = {}
     self.fetch_items opts.merge({:klass => klass})
   end
@@ -18,10 +22,18 @@ class ItemAction < ActiveRecord::Base
     item_actions ? item_actions.item_count.to_i : 0
   end
 
+  def self.newest_for_user user, limit = 5
+    for_user(user).active.newest(limit).map(&:actionable)
+  end
+
+  def self.newest_items limit = 5
+    active.newest(limit).find(:all, :conditions => ["action_type LIKE ? or action_type = ?", "posted_%", :tweeted_item.to_s]).map(&:actionable)
+  end
+
   def self.top_items opts = {}
     self.fetch_items opts
   end
-  
+
   def self.fetch_items opts = {}
     options = {
       :limit      => 10,
@@ -53,12 +65,12 @@ class ItemAction < ActiveRecord::Base
       chains.pop # remove :within
       results = self.get_chain_results chains, amount, options # try again
     end
-    
+
     if item
       return results
     else
       results.map do |item|
-        include_item_count ? [item.actionable, item.item_count.to_i] : item.actionable
+        include_item_count ? [item.actionable.item_link, item.item_count.to_i] : item.actionable.item_link
       end
     end
   end
@@ -77,9 +89,9 @@ class ItemAction < ActiveRecord::Base
   def self.get_chain_results chains, amount, options
     results = chains.inject(self) do |chain, scope|
       if scope.is_a? Array
-      	chain.send scope[0], scope[1]
+        chain.send scope[0], scope[1]
       else
-      	chain.send scope
+        chain.send scope
       end
     end
 
