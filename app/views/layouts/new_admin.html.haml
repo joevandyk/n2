@@ -65,6 +65,7 @@
                     %li= link_to 'Feature Stories', admin_featured_items_path
                   - if APP_CONFIG['use_view_objects']
                     %li= link_to 'Build Layout', newer_widgets_admin_widgets_path
+                    %li= link_to 'Widgets', admin_view_objects_path
                   - else
                     %li= link_to 'Build Layout', new_widgets_admin_widgets_path
                   %li= link_to 'Custom Widgets', admin_metadata_custom_widgets_path
