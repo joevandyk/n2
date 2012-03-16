@@ -1,7 +1,7 @@
 - items = vo.dataset
 = panel2 do
   = large_feature_panel do
-    = large_featured_item(items.shift, :class => 'first')
+    = large_featured_item(items.shift, :class => 'first') if items.any?
     = small_featured_item_block(:class => 'last') do
-      = small_featured_item items.shift, :class => 'top'
-      = small_featured_item items.shift
+      = small_featured_item(items.shift, :class => 'top') if items.any?
+      = small_featured_item(items.shift) if items.any?

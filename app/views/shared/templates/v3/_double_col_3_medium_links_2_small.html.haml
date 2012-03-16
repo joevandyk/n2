@@ -3,7 +3,8 @@
   = large_feature_panel do
     = large_featured_item_block(:class => 'first') do
       = panel_bar vt.t(vo.setting.locale_title)
-      = featured_item_list items.slice!(0,3)
+      - if items.size >= 3
+        = featured_item_list items.slice!(0,3)
     = small_featured_item_block(:class => 'last') do
-      = small_featured_item items.shift, :class => 'top'
-      = small_featured_item items.shift
+      = small_featured_item items.shift, :class => 'top' if items.any?
+      = small_featured_item items.shift if items.any?

@@ -1,5 +1,5 @@
 - items = vo.dataset
 = panel3 do
   = xlarge_feature_panel do
-    = xlarge_featured_item(items.shift, :class => 'first')
-    = xlarge_featured_item(items.shift, :class => 'last')
+    = xlarge_featured_item(items.shift, :class => 'first') if items.any?
+    = xlarge_featured_item(items.shift, :class => 'last') if items.any?

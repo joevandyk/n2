@@ -4,4 +4,4 @@
   = feature_panel do
     = medium_featured_item_block do
       = panel_bar vt.t(vo.setting.locale_title)
-      = single_featured_item(item)
+      = single_featured_item(item) if item
