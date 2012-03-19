@@ -89,12 +89,13 @@
             rewrite (.*) $1.html break;
           }
           
-          <% if is_using_unicorn %>
+          <% if is_using_unicorn or is_using_passenger %>
           if (!-f $request_filename) {
             proxy_pass http://<%= application %>_app_server;
             break;
           }
           <% end %>
+
         }
         
         # Now this supposedly should work as it gets the filenames with querystrings that Rails provides.
