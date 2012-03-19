@@ -30,12 +30,12 @@ Capistrano::Configuration.instance.load do
   
   # Server settings
   set :app_server, :passenger       unless exists?(:app_server)
-  set :web_server, :nginx         unless exists?(:web_server)
-  set :runner, user               unless exists?(:runner)
-  set :application_port, 80       unless exists?(:application_port)
+  set :web_server, :nginx           unless exists?(:web_server)
+  set :runner, user                 unless exists?(:runner)
+  set :application_port, 80         unless exists?(:application_port)
 
   set :application_uses_ssl, false unless exists?(:application_uses_ssl)
-  set :application_port_ssl, 443  unless exists?(:application_port_ssl)
+  set :application_port_ssl, 443   unless exists?(:application_port_ssl)
   
   # Database settings
   set :database, :mysql unless exists?(:database)
@@ -76,6 +76,7 @@ Capistrano::Configuration.instance.load do
   # Make sure the runner can access this though.
   #set :sockets_path, "/var/run/#{application}" unless exists?(:sockets_path)
   set(:unicorn_socket) { "#{shared_path}/tmp/sockets/unicorn.sock" } unless exists?(:unicorn_socket)
+  set(:passenger_socket) { "#{shared_path}/tmp/sockets/passenger.sock" } unless exists?(:passenger_socket)
   
   # Just to be safe, put the pid somewhere that survives deploys. shared/pids is
   # a good choice as any.
