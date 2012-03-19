@@ -29,7 +29,7 @@ Capistrano::Configuration.instance.load do
   set :group,'www-data' unless exists?(:group)
   
   # Server settings
-  set :app_server, :unicorn       unless exists?(:app_server)
+  set :app_server, :passenger       unless exists?(:app_server)
   set :web_server, :nginx         unless exists?(:web_server)
   set :runner, user               unless exists?(:runner)
   set :application_port, 80       unless exists?(:application_port)
