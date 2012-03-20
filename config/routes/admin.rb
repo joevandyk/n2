@@ -79,6 +79,7 @@ N2::Application.routes.draw do
       end
     end
     resources :galleries
+    resources :gallery_items
     resources :gos
     resources :idea_boards
     resources :ideas
@@ -151,7 +152,17 @@ N2::Application.routes.draw do
     end
     resources :user_profiles,      :active_scaffold => true
     resources :users,           :active_scaffold => true
-    resources :view_objects
+    resources :view_objects do
+      member do
+        get :edit_curated
+        post :update_curated
+        get :clone
+      end
+      collection do
+        get :new_curated
+        post :create_curated
+      end
+    end
     resources :view_object_templates
     resources :votes,           :active_scaffold => true
 

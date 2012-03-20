@@ -156,7 +156,8 @@ module Newscloud
       enabled = Metadata::Setting.find_setting('tweet_popular_items').try(:value)
       raise Newscloud::TweeterDisabled.new("You must enable the setting 'tweet_popular_items' to use Tweeter.") unless enabled
 
-      klasses = Dir.glob("#{Rails.root}/app/models/*.rb").map {|f| f.sub(%r{^.*/(.*?).rb$}, '\1').pluralize.classify }.map(&:constantize).select {|m| m.respond_to?(:tweetable?) and m.tweetable? }
+      klasses = Dir.glob("#{Rails.root}/app/models/*.rb").map {|f| f.sub(%r{^.*/(.*?).rb$}, '\1').pluralize.classify }.map {|s| s == "Metadatum" ? "Metadata" : s}.map(&:constantize).select {|m| m.respond_to?(:tweetable?) and m.tweetable? }
+
       klasses.each do |klass|
         hot_items = klass.hot_items
         next unless hot_items

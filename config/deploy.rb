@@ -169,10 +169,20 @@ namespace :deploy do
   task :cold_bootstrap do
     set :skip_post_deploy, true
     update
+    run_mysql_locales_table_hack
     setup_app_server
     setup_worker_server
     deploy.god.init
     start
+  end
+
+  # This hack bootstraps the mysql database with the development schema
+  # We have to do this right now because the locales plugin expects
+  # there to be a locales table when rails loads, even if you're running
+  # db:create. We run this to get around the chicken and egg problem.
+  desc "Run mysql locales table hack (requried for initial bootstrap)"
+  task :run_mysql_locales_table_hack, :roles => :app do
+    run "cd #{current_path} && mysql -u #{db_user} -p#{db_password} #{db_name} < db/development_structure.sql"
   end
 
   desc "Fresh deploy and start (like cold but skip setup_db)"

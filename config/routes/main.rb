@@ -259,6 +259,10 @@ N2::Application.routes.draw do
     resources :comments, :flags, :related_items
   end
 
+  resources :gallery_items, :format => false do
+    resources :comments, :flags, :related_items
+  end
+
   resources :go, :only => :show
 
   resource :home, :controller => "home" do

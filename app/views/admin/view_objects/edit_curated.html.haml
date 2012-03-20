@@ -1,0 +1,161 @@
+- content_for :head do
+  :javascript
+    $(function() {
+    var baseLimitOptions = #{limit_options.to_json};
+    var viewObjectTemplateLimits = #{view_object_template_limit_json};
+    var viewObjectKlasses = #{view_object_class_methods_json};
+
+    var rangeForTemplate = function(templateID) {
+    var templateLimits = viewObjectTemplateLimits[templateID];
+    var min = templateLimits.min, max = templateLimits.max;
+    if (min == null && max == null) {
+    return [];
+    } else if (min != null && max != null) {
+    return _.range(min,max+1);
+    } else if (min != null) {
+    return _.range(min, baseLimitOptions[baseLimitOptions.length - 1] + 1);
+    } else if (max != null) {
+    return _.range(baseLimitOptions[0], max+1);
+    } else {
+    return baseLimitOptions;
+    };
+    };
+
+    var optionsFromRange = function(list) {
+    return _.map(list, function(val) {
+    return '<option value="' + val + '">' + val + '</option>';
+    });
+    };
+
+    $('#view_object_view_object_template_id').change(function(event) {
+    var templateID = $(this).val();
+    var templateLimits = viewObjectTemplateLimits[templateID];
+    var min = templateLimits.min, max = templateLimits.max;
+    min = min || 0;
+    max = max || baseLimitOptions[baseLimitOptions.length-1];
+    $('.drop-item').hide().slice(0,max).show();
+    });
+    $('#view_object_view_object_template_id').trigger('change');
+
+
+      $('.view-object a').click(function(e) { e.preventDefault(); });
+
+      $('#items').html("<p>Loading items...</p>");
+      $.get('/admin/featured_items/contents/load_items', null, null, 'script');
+
+      $('#featured-items-select').live('change', function() {
+        var type = $('option:selected', this).val();
+        $('#items').html("<p>Loading items...</p>");
+        $.get('/admin/featured_items/'+type+'/load_items', null, null, 'script');
+      });
+
+      $('#items ul a').live("click", function() { return false; });
+      $('#items .pagination a').live("click", function(event) {
+        event.preventDefault();
+        var url = this.href.replace(/^(.+load_items\/)([0-9]+).*$/, "$1page/$2");
+        $('#items').html("<p>Loading items...</p>");
+        $.get(url, null, null, 'script');
+      });
+
+      $('.primary-drop').droppable({
+        accept: 'li.ui-widget-content',
+        activeClass: 'ui-state-hover',
+        hoverClass: 'ui-state-active',
+        drop: function(event, ui) {
+          var dropContainer = $(this).parent(),
+              dropBox       = $('.primary-drop', dropContainer),
+              dropTitle     = $('.drop-item-title', dropContainer);
+
+          $(this).addClass('dropped').removeClass('drop-error');
+
+          $(this).attr('data-id', ui.draggable.attr('id'));
+          $(this).siblings('input.view-object-id:first').val(ui.draggable.attr('id'));
+          dropTitle.html("<h1>"+$('h5', ui.draggable).text()+"</p>");
+          dropBox.html('<img src="'+$('img', ui.draggable).attr('src')+'" />');
+        }
+      });
+
+    });
+
+#content
+  -##admin-actions
+    =# link_to 'Return to View Objects index', admin_view_objects_path, :class=>"admin-btn"
+    %button#save-button.admin-btn.float-right{:type => "button"} Update Template Settings
+
+  - item_count = 10
+  -# case @view_object_template.name
+    - when "v2_double_col_triple_item", "v2_triple_col_large_2"
+      - item_count = 3
+    - when "v2_double_col_feature_triple_item"
+      - item_count = 4
+    - else
+      - item_count = 3
+
+  %h2 Update View Object
+  - if @view_object_setting.errors.any?
+    %h3{:style => "color: red"} Please clear the following errors and try again.
+    %ul
+      - @view_object_setting.errors.full_messages.each do |error|
+        %li{:style => "color: red"}= error
+
+  - if @view_object.errors.any?
+    %ul
+      - @view_object.errors.full_messages.each do |error|
+        %li{:style => "color: red"}= error
+
+  = form_tag(update_curated_admin_view_object_path(@view_object), :class => "formtastic") do
+    = field_set_tag nil, :class => 'inputs' do
+      %ol
+        %li.input.string
+          = label_tag 'view_object[key_name]', 'View Object Name', :class => "label"
+          = text_field_tag 'view_object[key_name]', @view_object.name
+        %li.input.string
+          = label_tag 'view_object_setting[locale_title]', 'Locale Title', :class => "label"
+          = text_field_tag 'view_object_setting[locale_title]', @view_object_setting.locale_title
+        %li.input.string
+          = label_tag 'view_object_setting[locale_subtitle]', 'Locale Subtitle', :class => "label"
+          = text_field_tag 'view_object_setting[locale_subtitle]', @view_object_setting.locale_subtitle
+        = hidden_field_tag 'view_object[view_object_template_id]', @view_object.view_object_template_id 
+        -#%li.input.string
+          = label_tag 'view_object[view_object_template_id]', 'View Object Template', :class => "label"
+          = select_tag 'view_object[view_object_template_id]', options_for_select(select_view_object_template_options, @view_object.view_object_template_id)
+        %li.input.boolean
+          = label_tag 'view_object_setting[use_post_button]', nil, :class => "label" do
+            = check_box_tag 'view_object_setting[use_post_button]', 1, @view_object_setting.use_post_button
+            Use Post Button
+        %li.input.boolean
+          = label_tag 'view_object_setting[cache_disabled]', 'Disable Caching', :class => "label" do
+            = check_box_tag 'view_object_setting[cache_disabled]', 1, @view_object_setting.cache_disabled
+            Disable Caching
+
+    -#%h2== Template Builder #{@view_object_template.pretty_name}
+    .template-builder-column
+
+      .template-builder
+        .drop-zone
+          - item_count.times do |index|
+            - index += 1
+            .drop-item
+              = hidden_field_tag "view_object_setting[items][#{index}]", nil, :class => "view-object-id"
+              .primary-drop{:id => "item-#{index}"}
+                %p== Drop #{index.ordinalize} Item
+              .drop-item-title{:id => "item-#{index}-title"}
+            .clear
+
+    .template-item-selector-column
+      %h2 Items
+      = select_tag 'featured-items-select', options_for_select(@featurables)
+      #items
+
+    = field_set_tag nil, :class => 'buttons' do
+      %ol
+        %li
+          = submit_tag "Update View Object"
+
+
+-#.clearfix
+  %h2 Existing Layout
+  - if @view_object.setting.dataset
+    .view-object= ViewTree.render(@view_object.name, @controller).html_safe
+  - else
+    %h4 You have not yet configured this View Object

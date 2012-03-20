@@ -28,9 +28,9 @@ if defined?(ActiveRecord)
 end
 
 # If we're in rails, set the global redis connection
-if defined?(Newscloud)
-  $redis = Newscloud::Redcloud.create
-end
+#if defined?(Newscloud)
+#  $redis = Newscloud::Redcloud.create
+#end
 
 require 'resque_scheduler'
 resque_schedule_base_file = File.join(rails_root, 'config/resque_schedule.yml')

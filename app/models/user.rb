@@ -210,11 +210,12 @@ class User < ActiveRecord::Base
   end
 
   def facebook_user?
-    return !fb_user_id.nil? && fb_user_id > 0
+    (!fb_user_id.nil? && fb_user_id > 0) or has_facebook_auth?
   end
 
   def has_facebook_auth?
-    authentications.for_facebook.any?
+    # Note: When the user is registering, the authentication was not yet saved into the database
+    authentications.for_facebook.any? || authentications.detect {|a| a.provider == 'facebook'}
   end
 
   def accepts_email_notifications?
@@ -243,6 +244,9 @@ class User < ActiveRecord::Base
     return super unless super.nil?
     return nil unless self.user_profile.present?
     return self.user_profile.facebook_user_id unless self.user_profile.facebook_user_id.nil? or self.user_profile.facebook_user_id.zero?
+
+    fb_auth = authentications.for_facebook.first
+    return fb_auth.uid.to_i if fb_auth
 
     nil
   end
@@ -436,18 +440,18 @@ class User < ActiveRecord::Base
   #
   def redis_update_friends friends_string
     friends = redis_friends friends_string.split(',')
-    $redis.multi do
-      friends.each {|f| $redis.sadd "#{self.cache_id}:friends", f.id }
+    Newscloud::Redcloud.redis.multi do
+      friends.each {|f| Newscloud::Redcloud.redis.sadd "#{self.cache_id}:friends", f.id }
     end
   end
 
   def redis_friends friends_array = nil
-    friends_array ||= $redis.smembers "#{self.cache_id}:friends"
+    friends_array ||= Newscloud::Redcloud.redis.smembers "#{self.cache_id}:friends"
     User.find(:all, :conditions => ["ID IN (?)", friends_array])
   end
 
   def redis_friend_ids
-    $redis.smembers "#{self.cache_id}:friends"
+    Newscloud::Redcloud.redis.smembers "#{self.cache_id}:friends"
   end
 
   def friend_ids friends_array = []
@@ -476,7 +480,11 @@ class User < ActiveRecord::Base
   def self.build_from_omniauth(omniauth_auth_hash)
     user = User.new
     user.name = omniauth_auth_hash.info.name
-    user.twitter_user = true
+    if omniauth_auth_hash[:provider] == "twitter"
+      user.twitter_user = true  
+    else
+      user.twitter_user = false  
+    end
     user.build_profile
     user.profile.profile_image = omniauth_auth_hash.info.image
     user.build_authentication_from_omniauth(omniauth_auth_hash)

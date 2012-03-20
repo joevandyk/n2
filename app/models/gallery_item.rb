@@ -1,9 +1,21 @@
 class GalleryItem < ActiveRecord::Base
   include N2::CurrentSite
 
+  acts_as_media_item
+  acts_as_voteable
+  acts_as_taggable_on :tags, :sections
+  acts_as_moderatable
+  acts_as_wall_postable
+  acts_as_tweetable
+  acts_as_relatable
+  acts_as_scorable
+  acts_as_featured_item
+
   belongs_to :gallery
   belongs_to :user
   belongs_to :galleryable, :polymorphic => true, :touch => true
+
+  has_many :comments, :as => :commentable
 
   accepts_nested_attributes_for :galleryable
 

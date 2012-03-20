@@ -13,6 +13,7 @@ module Newscloud
           has_many :flags, :as => :flaggable
           # HACK:: move this out to its own location
           has_many :item_actions, :as => :actionable
+          has_many :item_scores, :as => :scorable
 
           after_save :rescore_item
 

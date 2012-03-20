@@ -1,0 +1,74 @@
+#content
+  #admin-actions
+    -# link_to 'Return to View Objects index', admin_view_objects_path, :class=>"admin-btn"
+    -#%button#save-button.admin-btn.float-right{:type => "button"} Update Template Settings
+  #main-content
+    %h1 View Object Details
+    %hr
+    %p== Name: #{@view_object.name}
+    %p== Locale Title Text: #{t(@view_object_setting.locale_title.try(:to_sym)) || @view_object_setting.locale_title}
+    - if @view_object_setting.locale_subtitle.present?
+      %p== Locale Subtitle Text: #{t(@view_object_setting.locale_subtitle.to_sym) || @view_object_setting.locale_subtitle}
+    - unless @view_object_setting.is_curated
+      %p== Model Resource: #{@view_object_setting.klass_name.tableize.titleize}
+      - kommand = @view_object_setting.kommands.first
+      %p== Model Method: #{kommand[:method_name].titleize}
+      - if kommand[:limit].present?
+        %p== Number of Items: #{kommand[:limit]}
+    - else
+      %p Dataset
+      %ul
+        - @view_object_setting.load_dataset.each do |item|
+          %li= link_to item.item_title, item.item_link
+    %p== Post Items Button: #{@view_object_setting.use_post_button ? "Enabled" : "Disabled"}
+    %p== Caching: #{@view_object_setting.cache_disabled ? "Disabled" : "Enabled"}
+
+    %br
+    %p
+      Actions
+      = link_to "Back", admin_view_objects_path
+      |
+      - if @view_object.setting.is_curated
+        = link_to "Edit", edit_curated_admin_view_object_path(@view_object)
+      - else
+        = link_to "Edit", edit_admin_view_object_path(@view_object)
+      |
+      = link_to "Clone", clone_admin_view_object_path(@view_object)
+-#
+  %h2 Update View Object
+  = form_tag(admin_view_object_path(@view_object), :method => :put, :class => "formtastic") do
+    = field_set_tag nil, :class => 'inputs' do
+      %ol
+        %li.input.string
+          = label_tag 'view_object[key_name]', 'View Object Name', :class => "label"
+          = text_field_tag 'view_object[key_name]', @view_object.name
+        %li.input.string
+          = label_tag 'view_object_setting[locale_title]', 'Locale Title', :class => "label"
+          = text_field_tag 'view_object_setting[locale_title]', @view_object_setting.locale_title
+        %li.input.string
+          = label_tag 'view_object_setting[locale_subtitle]', 'Locale Subtitle', :class => "label"
+          = text_field_tag 'view_object_setting[locale_subtitle]', @view_object_setting.locale_subtitle
+        %li.input.string
+          = label_tag 'view_object_setting[klass_name]', 'Model Resource', :class => "label"
+          = select_tag 'view_object_setting[klass_name]', options_for_select(@view_object_setting.class.view_object_classes.map {|c| [c.name.titleize, c.name] }, @view_object_setting.klass_name)
+        - kommand = @view_object_setting.kommands.first
+        - klass = @view_object_setting.get_klass
+        %li.input.string
+          = label_tag 'view_object_setting[kommand_name]', 'Method', :class => "label"
+          = select_tag 'view_object_setting[kommand_name]', options_for_select(klass.view_object_scope_methods, kommand[:method_name])
+        %li.input.string
+          = label_tag 'view_object_setting[kommand_limit]', 'Number of Items', :class => "label"
+          = select_tag 'view_object_setting[kommand_limit]', options_for_select(limit_options, kommand[:args].try(:first))
+        %li.input.boolean
+          = label_tag 'view_object_setting[use_post_button]', nil, :class => "label" do
+            = check_box_tag 'view_object_setting[use_post_button]', 1, @view_object_setting.use_post_button
+            Use Post Button
+        %li.input.boolean
+          = label_tag 'view_object_setting[cache_disabled]', 'Disable Caching', :class => "label" do
+            = check_box_tag 'view_object_setting[cache_disabled]', 1, @view_object_setting.cache_disabled
+            Disable Caching
+
+    = field_set_tag nil, :class => 'buttons' do
+      %ol
+        %li
+          = submit_tag "Update View Object"
