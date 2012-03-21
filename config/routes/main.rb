@@ -7,6 +7,8 @@ N2::Application.routes.draw do
 
   match '/auth/:provider/callback' => "sessions#create"
 
+  resources :sites, :only => [:new, :create]
+
   resources :oauth_consumers do
     member do
       get :callback

@@ -1,5 +1,6 @@
 class Site < ActiveRecord::Base
   validates :domain, :name, :presence => true
+  after_create :load_default_data
 
   belongs_to :site_group
 
@@ -24,6 +25,22 @@ class Site < ActiveRecord::Base
     Site.all.each do |site|
       Site.current_id = site.id
       block.call
+    end
+  end
+
+  # Temporarily use the passed in site as the current site
+  def self.use_as_current site, &block
+    original_site = Site.current
+    Site.current_domain = site.domain
+    block.call
+    Site.current_domain = original_site.domain
+  end
+
+  private
+
+  def load_default_data
+    Site.use_as_current(self) do
+      load Rails.root.join('db/seeds.rb')
     end
   end
 end

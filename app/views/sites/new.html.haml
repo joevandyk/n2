@@ -1,0 +1,7 @@
+%h1 New Site Form Here
+
+= semantic_form_for @site do |f|
+  = f.input :name, :as => :string
+  = f.input :domain, :as => :string
+  = f.submit
+  %p (can take a few seconds)
