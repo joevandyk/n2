@@ -1,8 +1,15 @@
 class Site < ActiveRecord::Base
   validates :domain, :name, :presence => true
   after_create :load_default_data
-
   belongs_to :site_group
+
+  def master?
+    site_group.primary_site_id == self.id
+  end
+
+  def parent_site
+    site_group.primary_site
+  end
 
   def self.current
     @current_site || default
