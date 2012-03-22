@@ -1,7 +1,7 @@
 begin;
 
-create unique index lower_name on sites using btree(lower(name));
-create unique index lower_domain on sites using btree(lower(domain));
+create unique index on sites using btree(lower(name));
+create unique index on sites using btree(lower(domain));
 
 alter table site_groups 
   drop column primary_site_id,
