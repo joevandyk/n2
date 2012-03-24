@@ -24,7 +24,7 @@
 
     .panel-2
       %ul.gallery-content.clearfix
-        %li= image_tag(@item.full_url, :alt => @item.item_title) 
+        %li= image_tag(@item.full_url, :alt => @item.item_title, :class => 'full-size') 
 
     .panel-2
       - if @item.moderatable?
