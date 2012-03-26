@@ -9,7 +9,7 @@
   = render_ad(:leaderboard, @ad_layout, @ad_leaderboard)
 
 #left-col
-  - cache "#{@gallery_item.cache_key}_html" do
+  - cache "#{@item.cache_key}_html" do
     .panel-2#item-details
       .add-this-wrap
         = add_this @gallery
