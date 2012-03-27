@@ -11,7 +11,7 @@
         - vo.dataset.each do |item|
           %li
             .story
-              .profile-pic= local_linked_profile_pic item.item_user
+              .profile-pic= local_linked_profile_pic item.item_user unless item.nil?
               %h5
                 %span.ellipsis_title_2= link_to sanitize_title(item.item_title), item.item_link
               .meta-data

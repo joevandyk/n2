@@ -47,8 +47,8 @@ class ViewObject < ActiveRecord::Base
   end
 
   def rem_dataset_dep klass
-    Newscloud::Redcloud.redis.srem dataset_key, klass.cache_id
-    Newscloud::Redcloud.redis.srem klass.model_deps_key, self.cache_id
+    Newscloud::Redcloud.redis.srem dataset_key, klass.cache_id unless klass.nil?
+    Newscloud::Redcloud.redis.srem klass.model_deps_key, self.cache_id unless klass.nil?
   end
 
   def rem_dataset_deps
