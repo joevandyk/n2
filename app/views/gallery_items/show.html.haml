@@ -31,6 +31,9 @@
         .mod-panel.clearfix
           .float-right= render :partial => 'shared/moderate_form', :locals => { :moderatable => @item }
           .float-left= render :partial => 'shared/flag_form', :locals => { :flaggable => @item }
+    .panel-2
+      %ul
+        %li=link_to('Back to Gallery', @gallery)
     = render_ad(:banner, @ad_layout, @ad_banner)
     .panel-2.comment-list
       = render :partial => 'shared/comments', :locals => { :comments => @item.comments }

@@ -368,6 +368,7 @@ settings = [
  { :key_sub_type => 'options', :key_name => 'native_voting',  :value => "false" , :hint => 'False turns on Add This toolbar with Facebook Likes. True turns on native likes and Twitter Connect.' },
  { :key_sub_type => 'options', :key_name => 'framed_item_content',  :value => "false" , :hint => 'True makes links to destination item urls appear in a frameset.' },
  { :key_sub_type => 'options', :key_name => 'extended_footer_content',  :value => "false" , :hint => 'Advanced users only - place additional javascript for the footer here.' },
+ { :key_sub_type => 'facebook', :key_name => 'display_facebook_app_badge',  :value => "false" , :hint => 'Display App badge from Facebook in footer' },
 ]
 
 settings.each do |setting|
