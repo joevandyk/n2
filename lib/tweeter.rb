@@ -167,11 +167,13 @@ module Newscloud
       end
     end
 
+    # This functionality is not in use right now.
+    # Should we decide in the future to tweet all moderator items then
+    # we can reuse this code
     def tweet_moderator_items
       enabled = Metadata::Setting.find_setting('tweet_all_moderator_items').try(:value)
       raise Newscloud::TweeterDisabled.new("You must enable the setting 'tweet_all_moderator_items' to use Tweeter.") unless enabled
       klasses = Dir.glob("#{Rails.root}/app/models/*.rb").map {|f| f.sub(%r{^.*/(.*?).rb$}, '\1').pluralize.classify }.map {|s| s == "Metadatum" ? "Metadata" : s}.map(&:constantize).select {|m| m.respond_to?(:tweetable?) and m.tweetable? }
-      puts "tweeting moderator items"
       klasses.each do |klass|
         begin
           moderator_items = klass.moderator_items

@@ -7,11 +7,6 @@ class TwitterScheduledWorker
     rescue Newscloud::TweeterDisabled => e
       Rails.logger.info("ERROR:: TwitterScheduledWorker failed with: #{e.inspect}")
     end
-    begin
-      Newscloud::Tweeter.new.tweet_moderator_items
-    rescue Newscloud::TweeterDisabled => e
-      Rails.logger.info("ERROR:: TwitterScheduledWorker failed with: #{e.inspect}")
-    end
   end
 
 end
