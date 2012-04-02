@@ -43,7 +43,7 @@ class Admin::WidgetsController < AdminController
       { :name => 'media', :regex => /image|video|galler(y|ies)/i },
       { :name => 'users', :regex => /user|welcome panel?/i },
       { :name => 'ads', :regex => /\bad[s_\. ]/i },
-      { :name => 'misc', :regex => /.+/i }
+      { :name => 'universal', :regex => /.+/i }
     ]
     @page = ViewObject.find_by_name("home--index")
     @view_objects = ViewObject.find(:all, :conditions => ["view_object_template_id is not null"])
