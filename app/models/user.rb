@@ -392,7 +392,12 @@ class User < ActiveRecord::Base
 
   def mogli_user
     return nil unless authentications.for_facebook.any?
-    @mogli_user ||= Mogli::User.find("me", mogli_client)
+    begin
+      @mogli_user ||= Mogli::User.find("me", mogli_client)
+      return @mogli_user
+    rescue Exception => e
+      return nil
+    end
   end
 
   def mogli_friends

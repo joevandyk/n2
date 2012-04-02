@@ -45,6 +45,15 @@ module Newscloud
           end
         end
 
+        def moderator_items
+          begin
+            self.find(:all, :include => [:user, :tweeted_item], :conditions => ["users.is_moderator =? AND tweeted_items.item_id IS NULL", true])
+          rescue Exception => e
+            Rails.logger.error("ERROR: Tweet Moderator Items error:: #{e}")
+            return false
+          end
+        end
+
         def tweet_setting_group
           self.table_name
         end

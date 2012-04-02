@@ -167,6 +167,22 @@ module Newscloud
       end
     end
 
+    def tweet_moderator_items
+      enabled = Metadata::Setting.find_setting('tweet_all_moderator_items').try(:value)
+      raise Newscloud::TweeterDisabled.new("You must enable the setting 'tweet_all_moderator_items' to use Tweeter.") unless enabled
+      klasses = Dir.glob("#{Rails.root}/app/models/*.rb").map {|f| f.sub(%r{^.*/(.*?).rb$}, '\1').pluralize.classify }.map {|s| s == "Metadatum" ? "Metadata" : s}.map(&:constantize).select {|m| m.respond_to?(:tweetable?) and m.tweetable? }
+      puts "tweeting moderator items"
+      klasses.each do |klass|
+        begin
+          moderator_items = klass.moderator_items
+          next unless moderator_items
+          tweet_items moderator_items
+        rescue Exception => e
+          Rails.logger.error("ERROR TWEETING MODERATOR ITEMS: #{e}")
+        end
+      end
+    end
+
     def self.shorten_url(url)
       @bitly_username = Metadata::Setting.find_setting('bitly_username').try(:value)
       @bitly_api_key = Metadata::Setting.find_setting('bitly_api_key').try(:value)
