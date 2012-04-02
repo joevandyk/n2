@@ -7,7 +7,11 @@ module AdminHelper
     set_model_vars model
 
     html = []
-    html << "<br /><h1>#{@model_list_name} List</h1"
+    if model.name == "ViewObject"
+      html << "<br /><h1>Manage Widgets</h1"
+    else
+      html << "<br /><h1>#{@model_list_name} List</h1"
+    end
     html << "<br />"
 
     html << "<h2>#{gen_new_link model}</h2>"
@@ -40,7 +44,7 @@ module AdminHelper
   def gen_new_link model
     set_model_vars model
     if model.name == "ViewObject"
-      [link_to("New Automated View Object", new_admin_view_object_path), link_to("New Curated View Object", new_curated_admin_view_objects_path)].join(" | ")
+      [link_to("Create New Automated Widget", new_admin_view_object_path), link_to("Create New Curated Widget", new_curated_admin_view_objects_path)].join(" | ")
     elsif model.name != 'Topic'
       link_to "New #{@model_name}", new_polymorphic_path([:admin, model])
     end
@@ -60,7 +64,13 @@ module AdminHelper
       html << "<table id='#{model_id}-table' class='admin-table'>"
       html << "<thead>"
       html << "<tr>"
-      fields.each {|field| html << "<th>#{field.to_s.titleize}</th>" }
+      fields.each do |field| 
+        if field.to_s == "view_object_template_id"
+          html << "<th>Template</th>" 
+        else
+          html << "<th>#{field.to_s.titleize}</th>" 
+        end
+      end
       html << "<th>Actions</th>"
       html << "</tr>"
       html << "</thead>"
@@ -148,7 +158,11 @@ module AdminHelper
     return item.send(field).to_s unless associations.present?
     association = association_exists? field, associations
     if association and item.send(association).present?
-      "#{link_to h(item.send(association).to_s), [:admin, item.send(association)]}"
+      if field.to_s == "view_object_template_id"
+        "#{link_to h(item.send(association).send("pretty_name").to_s), [:admin, item.send(association)]}"
+      else
+        "#{link_to h(item.send(association).to_s), [:admin, item.send(association)]}"
+      end
     else
       item.send(field).to_s
     end
