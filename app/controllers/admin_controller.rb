@@ -50,6 +50,8 @@ class AdminController < ApplicationController
             @config = self.admin_scaffold_config
             if @config.extra_scopes and @config.extra_scopes.any?
               @items = @config.model_klass.send(@config.extra_scopes.first).paginate(:page => params[:page], :per_page => 20, :order => "created_at desc")
+            elsif !@config.order_by.blank?
+              @items = @config.model_klass.paginate(:page => params[:page], :per_page => 20, :order => @config.order_by)
             else
               @items = @config.model_klass.paginate(:page => params[:page], :per_page => 20, :order => "created_at desc")
             end

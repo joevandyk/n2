@@ -9,6 +9,8 @@ module AdminHelper
     html = []
     if model.name == "ViewObject"
       html << "<br /><h1>Manage Widgets</h1"
+    elsif model.name == "Metadata::CustomWidget"
+      html << "<br /><h1>Manage Custom Widgets</h1"
     else
       html << "<br /><h1>#{@model_list_name} List</h1"
     end
@@ -44,7 +46,9 @@ module AdminHelper
   def gen_new_link model
     set_model_vars model
     if model.name == "ViewObject"
-      [link_to("Create New Automated Widget", new_admin_view_object_path), link_to("Create New Curated Widget", new_curated_admin_view_objects_path)].join(" | ")
+      [link_to("Create New Automated Widget", new_admin_view_object_path), link_to("Create New Curated Widget", new_curated_admin_view_objects_path), link_to("Manage Custom Widgets", admin_metadata_custom_widgets_path)].join(" | ")
+    elsif model.name == "Metadata::CustomWidget"
+      link_to "Create New Custom Widget", new_polymorphic_path([:admin, model])
     elsif model.name != 'Topic'
       link_to "New #{@model_name}", new_polymorphic_path([:admin, model])
     end

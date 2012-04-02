@@ -2,7 +2,7 @@ class Admin::CustomWidgetsController < AdminController
 
   def index
     render 'shared/admin/index_page', :layout => 'new_admin', :locals => {
-      :items => Metadata.meta_type('custom_widget').paginate(:page => params[:page], :per_page => 20, :order => "created_at desc"),
+      :items => Metadata.meta_type('custom_widget').paginate(:page => params[:page], :per_page => 20, :order => "name asc"),
       :model => Metadata,
       :fields => [:meta_type, :key_name, :created_at],
       :paginate => true
