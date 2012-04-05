@@ -34,7 +34,8 @@ class Admin::FeaturedItemsController < AdminController
   def load_items
     case params[:id]
       when Content.name.tableize
-        @items = Content.active.paginate  :page => params[:page], :per_page => 12, :order => "created_at desc"
+        # workaround for pagination issue in creating new curated view objects on genomics
+        @items = Content.active.paginate  :page => params[:page], :per_page => 6, :order => "created_at desc"
       when Idea.name.tableize
         @items = Idea.active.paginate     :page => params[:page], :per_page => 12, :order => "created_at desc"
       when IdeaBoard.name.tableize
